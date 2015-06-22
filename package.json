@@ -1,0 +1,37 @@
+{
+  "name": "SBKH",
+  "version": "1.0.0",
+  "description": "Secret Book of Know How",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.disney.com/DMA/WDI-SecretBookofKnowHow.git"
+  },
+  "author": "Quinn Keaveney",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.disney.com/DMA/WDI-SecretBookofKnowHow/issues"
+  },
+  "homepage": "https://github.disney.com/DMA/WDI-SecretBookofKnowHow/",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-autoprefixer": "^2.1.0",
+    "grunt-contrib-copy": "^0.6.0",
+    "grunt-contrib-imagemin": "^0.8.1",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-sass": "^0.8.1",
+    "grunt-contrib-uglify": "^0.6.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-css-url-embed": "^1.5.1",
+    "grunt-fontface": "^0.9.0",
+    "grunt-newer": "^0.7.0",
+    "grunt-notify": "^0.4.1",
+    "grunt-responsive-images": "^0.1.4",
+    "grunt-svgmin": "^1.0.0",
+    "grunt-webfont": "^0.4.8",
+    "imagemin-mozjpeg": "^2.0.0"
+  }
+}

@@ -1,0 +1,276 @@
+.content{
+	overflow-x: hidden;
+}
+
+
+// TYPE TESTER
+.typeTester{
+	&.odd {
+		background: $grey;
+	}
+	&.even {
+		background: $white;
+	}
+	&:before{
+		content: "";
+		display: block;
+		width: 0;
+		height: 0;
+		margin: 0 auto;
+		border-top: solid 20px $grey;
+		border-left: solid 20px transparent;
+		border-right: solid 20px transparent;
+	  	position: absolute;
+	  	left: 50%;
+	  	margin-left: -10px;
+	}
+
+	&.odd:before{
+		border-top: solid 20px $white;
+	}
+
+	&.withOptions{
+		& + .typeTester:before{
+			display: none;
+		}
+	}
+
+	&.typeTester1{
+		margin-top: 50px;
+	}
+	&.lastTypeTester{
+		margin-bottom: 50px;
+		&:after{
+			content: "";
+			display: block;
+			width: 0;
+			height: 0;
+			margin: 0 auto;
+			border-top: solid 20px $white;
+			border-left: solid 20px transparent;
+			border-right: solid 20px transparent;
+		  	position: absolute;
+		  	left: 50%;
+		  	margin-left: -10px;
+		}
+		&.odd{
+			&:after{
+				border-top: solid 20px $grey;
+			}
+		}
+		&.withOptions{
+			&:after{
+				display: none;
+			}
+		}
+	}
+	.enterTXT, .enterTXT:focus, .enterTXT:active{
+		outline: none;
+		border: none;
+		padding: 0.5em 0;
+	}
+	.container:not(.testerFit){
+		width: 100%;
+		padding: 0;
+		.type{
+  			display: flex;
+			width: 100%;
+		  	overflow: hidden;
+		  	overflow-x: scroll;
+		  	padding: 0 40px;
+		  	margin: 0 auto;
+		  	.enterTXT{
+				white-space: nowrap;
+				padding-right: 40px;
+				width: 100%;
+			}
+		}
+	}
+	.options{
+		height: 20px;
+		color: $black;
+		font-size: 17px;
+		transition: all $fast;
+		.active{
+			background: $green;
+		}
+		&.width0{
+			display: none;
+		}
+		&.width1{
+			.option{
+				width: 100%;
+			}
+		}
+		&.width2{
+			.option{
+				width: 50%;
+				@include m(max, 400px){
+					width: 100%;
+				}
+			}
+		}
+		&.width3{
+			.option{
+				width: 33.33333333%;
+				@include m(max, 500px){
+					width: 100%;
+				}
+			}
+		}
+		&.width4{
+			.option{
+				width: 25%;
+				@include m(max, 700px){
+					width: 50%;
+				}
+				@include m(max, 400px){
+					width: 100%;
+				}
+			}
+		}
+		&.width5{
+			.option{
+				width: 20%;
+				@include m(max, 800px){
+					width: 100%;
+				}
+			}
+		}
+		.slider, .optButton, .italicButton{
+			border: 0;
+		  	border-radius: 0;
+		  	height: 20px;
+		  	background: $black;
+			.ui-slider-range{
+			  	border-radius: 0;
+  				background: $green;
+			}
+			.ui-slider-handle{
+				opacity: 0;
+			}
+			.ui-state-focus{
+				border-radius: 0;
+				border: 0;
+				outline: 0;
+				background: none;
+				font-weight: 600;
+				margin: 0;
+			}
+		}
+		.option {
+			float: left;
+			.label, .amount, .dropdown span{
+				font-family: "Fakta Grotesk","Helvetica Neue",Helvetica,Arial,sans-serif;
+				font-size: 0px;
+				color: $white;
+				text-align: center;
+				width: 100%;
+				display: block;
+				text-transform: uppercase;
+				letter-spacing: .1em;
+				opacity: 0;
+				transition: all $fast;
+				z-index: 99;
+				height: 20px;
+  				line-height: 18px;
+				position: relative;
+				padding: 2px 5px;
+			}
+			&.slider{
+				cursor: ew-resize;
+			}
+			&.optButton, &.italicButton{
+				@include pointer();
+				&.active{
+					background-color: $green;
+				}
+				.label{
+					border-radius: 0;
+					&:hover, &.active{
+						background: $green;
+					}
+				}
+				.dropdown{
+					display: none;
+					position: relative;
+					background: $black;
+					span{
+						height: 20px;
+						background: $black;
+						display:block;
+						font-weight: 600;
+						transition: all $fast;
+						&:hover, &.active{
+							background: $green;
+							transition: all $fast;
+						}
+					}
+				}
+			}
+		}
+		&:hover, &:active, &:focus{
+			height: 50px;
+			transition: all $fast;
+			box-shadow: none;
+			outline: none;
+			.slider, .optButton, .italicButton{
+				height: 50px;
+				transition: all $fast;
+			}
+			.option{
+				.label, .amount, .dropdown span{
+					font-size: 14px;
+					height: 50px;
+  					line-height: 47px;
+					opacity: 1;
+					transition: all $fast;
+				}
+				.amount{
+					display:none;
+					font-weight: 600;
+					font-size: 14px;
+					line-height: 46px;
+					text-transform: lowercase;
+				}
+				&.slider:active, &.slider:focus{
+					.label{
+						display:none;
+					}
+					.amount{
+						display:block;
+					}
+				}
+
+				&.optButton{
+					.dropdown{
+						span{
+							height: 50px;
+							transition: all $fast;
+						}
+					}
+				}
+			}
+			.optButton{
+				&.open, &:hover{
+					.dropdown{
+						display: block;
+					}
+				}
+			}
+		}
+	}
+
+	.type{
+		padding: 0 10px;
+	}
+
+	.testerFit{
+		text-align: center;
+		span.enterTXT{
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+}
+
