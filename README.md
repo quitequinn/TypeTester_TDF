@@ -1,6 +1,3 @@
-WDI-SecretBookofKnowHow
-=======================
-
 #Ramp-Up
 
 install node if you haven't already
