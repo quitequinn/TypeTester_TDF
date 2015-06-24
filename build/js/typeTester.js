@@ -20,11 +20,10 @@ function sized(){
 var testerNumber = testerTotal = 0;
 
 function typetester(e, font, size, tracking, italic,  weight, opt){
-	var option, typetester;
+	var option, options, typetester;
 	var theTester = e;
 	var size =
 		font =
-		options =
 		tracking =
 		weight =
 		italic =
@@ -112,7 +111,7 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 	    return optValues[propertyName];
 	};
 
-	var typeVars = ["options", "sizeoptions", "trackingoptions", "opt", "weightoptions", "italicoptions", "alignoptions", "singlelineoptions", "size", "font", "tracking", "weight", "italic", "align", "singleline", "text"];
+	var typeVars = ["sizeoptions", "trackingoptions", "opt", "weightoptions", "italicoptions", "alignoptions", "singlelineoptions", "size", "font", "tracking", "weight", "italic", "align", "singleline", "text"];
 	$.each(typeVars, function(index, value) {
 		if ($(theTester).is("["+value+"]")) {
 		    eval(value + " = '" + $(theTester).attr(value) + "'");
@@ -158,7 +157,7 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 			return false;
 
 		}else{
-			testerFont = " font-family: " + font + ";";
+			testerFont = " font-family: " + font + ", 'Fakta Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif;";
 
 		}
 
