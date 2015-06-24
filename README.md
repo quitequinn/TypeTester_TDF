@@ -23,6 +23,10 @@ TDF Type Tester is a flexible display for the numerouse features available in a 
 
 <!-- Call Type Tester Function -->
 <script src="build/js/typeTester.js"></script>
+
+
+<!-- Call Type Tester Style -->
+<link href="build/css/style.css" rel="stylesheet" type="text/css"  media="all"  />
 ```
 
 ## Example
