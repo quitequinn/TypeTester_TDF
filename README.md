@@ -213,10 +213,10 @@ You can add them all by just copying this
 
 ## Ramp Up
 
-install node if you haven't already
+Install node if you haven't already
 http://nodejs.org/
 
-install grunt (via terminal)
+Install grunt (via terminal)
 http://gruntjs.com/getting-started
 ```
 npm install -g grunt-cli
