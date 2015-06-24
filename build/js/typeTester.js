@@ -30,6 +30,7 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 		italic =
 		opt =
 		align =
+		multiline =
 		testerfit =
 		testerSize =
 		testerFont =
@@ -206,7 +207,7 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 			return false;
 
 		}else{
-			testerTracking = " letter-spacing: " + tracking + "px;";
+			testerTracking = " letter-spacing: " + tracking + "em;";
 
 		}
 
@@ -274,25 +275,25 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 			weightselection = "";
 			elm -= 1;
 
-		}
-		if (weight !== ""){
 		}else{
+			if (weight !== ""){ }else{
+				if ($.inArray(weightselection, no) >= 0){
+					testerWeight = " font-weight: normal;";
+					weight = "400";
+					return false;
 
-			if ($.inArray(weightselection, no) >= 0){
-				testerWeight = " font-weight: normal;";
-				weight = "400";
-				return false;
-
-			}else{
-				weight = obj_weightselection[Object.keys(obj_weightselection)[0]];
-				testerWeight = " font-weight: " + obj_weightselection[Object.keys(obj_weightselection)[0]] + ";";
-				weightoptions = "\
-					<div class='option slider weightSlider weightSlider" + testerNumber + " weight'>\
-							<span class='label'>weight</span>\
-							<span class='amount'></span>\
-					</div>\
-				";
+				}else{
+					weight = obj_weightselection[Object.keys(obj_weightselection)[0]];
+					testerWeight = " font-weight: " + obj_weightselection[Object.keys(obj_weightselection)[0]] + ";";
+				}
 			}
+
+			weightoptions = "\
+			<div class='option slider weightSlider weightSlider" + testerNumber + " weight'>\
+					<span class='label'>weight</span>\
+					<span class='amount'></span>\
+			</div>\
+			";
 		}
 	}else{
 		if (weight == ""){
@@ -376,6 +377,16 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 		}
 	}
 
+	// ////////////////////////
+	// //Multiline
+	// if (size !== ""){
+	// 	if (multiline !== ""){
+	// 		testerAlign = " text-align: " + align + ";";
+	// 	}else{
+	// 		testerAlign = " text-align: left;"
+	// 	}
+	// }
+
 
 	////////////////////////
 	//Put them all together
@@ -427,17 +438,18 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 		$(".trackingSlider" + testerNumber).slider({
 	      	orientation: "horizontal",
 	      	range: "min",
-	      	min: -10,
-	      	max: 40,
+	      	min: -0.25,
+	      	max: 1,
+	      	step: 0.01,
 	      	value: tracking,
 	      	animate: true,
 		    slide: function(event, ui) {
-		        $(this).find( ".amount" ).text(ui.value + "px");
-		        $(this).parent().parent().find( ".type" ).css("letter-spacing", ui.value + "px");
+		        $(this).find( ".amount" ).text(ui.value + "em");
+		        $(this).parent().parent().find( ".type" ).css("letter-spacing", ui.value + "em");
 		    },
 		   	create: function( event, ui ) {
-		        $(this).find( ".amount" ).text(tracking + "px");
-		        $(this).parent().parent().find( ".type" ).css("letter-spacing", tracking + "px");
+		        $(this).find( ".amount" ).text(tracking + "em");
+		        $(this).parent().parent().find( ".type" ).css("letter-spacing", tracking + "em");
 		    }
 
 	    });
