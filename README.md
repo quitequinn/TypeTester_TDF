@@ -46,39 +46,39 @@ Multiple Feature Example
 
 All options are chosen by defining an attribute and feeding it a string.
 
-* font
+#### font
 This is the font-family the tester looks for.
 ```
 font="atc_timberline"
 ```
 
-* options
-* tracking
-* weight
-* italic
-* opt
-* align
-* singleline
-* testerfit
-* testerSize
-* testerFont
-* testerTracking
-* testerWeight
-* testerItalic
-* testerOpt
-* testerAlign
-* testerSingleline
-* sizeoptions
-* trackingoptions
-* weightoptions
-* italicoptions
-* singlelineoptions
-* alignoptions
-* optoptions
-* optButton
-* testeroptions
-* weightselection
-* weightPosition
+#### options
+#### tracking
+#### weight
+#### italic
+#### opt
+#### align
+#### singleline
+#### testerfit
+#### testerSize
+#### testerFont
+#### testerTracking
+#### testerWeight
+#### testerItalic
+#### testerOpt
+#### testerAlign
+#### testerSingleline
+#### sizeoptions
+#### trackingoptions
+#### weightoptions
+#### italicoptions
+#### singlelineoptions
+#### alignoptions
+#### optoptions
+#### optButton
+#### testeroptions
+#### weightselection
+#### weightPosition
 
 ## Dependencies
 
