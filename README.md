@@ -24,7 +24,6 @@ TDF Type Tester is a flexible display for the numerouse features available in a 
 <!-- Call Type Tester Function -->
 <script src="build/js/typeTester.js"></script>
 
-
 <!-- Call Type Tester Style -->
 <link href="build/css/style.css" rel="stylesheet" type="text/css"  media="all"  />
 ```
@@ -173,7 +172,7 @@ optoptions="dlig, hlig"
 ```
 
 #### True or False
-You can also set any of the above options with a variety of true or false terms.
+You can also set any of the above options with a variety of true or false terms. Cool right?
 
 True could be "yes", "true", "hawt", "yup", "yep", "siq", "swell", "chiller", "ok", "!", "fine", "right", "good", "aye", "indubitably", "sure", "yeah", "yay", etc...
 
