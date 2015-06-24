@@ -44,7 +44,10 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 		italicoptions =
 		optoptions =
 		optButton =
-		testeroptions = "";
+		testeroptions =
+		weightselection =
+		weightPosition = "";
+	var obj_weightselection = {};
 	var elm = 0;
 	var text = "Try typing here...";
 	var yes = [ "yes", "true", "hawt", "yup", "yep", "siq", "swell", "chiller", "ok", "!", "fine", "right", "good", "aye", "indubitably", "sure", "yeah", "yay"];
@@ -110,6 +113,17 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 
 		}
 	});
+
+	if ($(theTester).is("[weightselection]")) {
+	  	weightselection = $(theTester).attr("weightselection").replace(/:/g, ',').split(',');
+	  	weightselection.forEach(function(val, i) {
+		    weightselection[i] = $.trim(val);
+		});
+		weightselection.forEach(function(val, i) {
+		    if (i % 2 === 1) return;
+		    obj_weightselection[val] = weightselection[i + 1];
+		});
+	}
 
 	if ($(theTester).is("[optoptions]")) {
 	  	optoptions = $(theTester).attr("optoptions").replace(/\s+/g, '').split(',');
@@ -230,11 +244,11 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 			testerWeight = " font-weight: " + weight  + ";";
 
 		}
-
 	}else{
-		testerWeight = " font-weight: normal;";
-		weight = "400";
-
+		if (weightselection == ""){
+			testerWeight = " font-weight: normal;";
+			weight = "400";
+		}
 	}
 
 	if (weightoptions !== ""){
@@ -253,6 +267,42 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 
 		}
 	}
+
+	if (weightselection !== ""){
+		elm += 1;
+		if ($.inArray(weightselection, no) >= 0){
+			weightselection = "";
+			elm -= 1;
+
+		}
+		if (weight !== ""){
+		}else{
+
+			if ($.inArray(weightselection, no) >= 0){
+				testerWeight = " font-weight: normal;";
+				weight = "400";
+				return false;
+
+			}else{
+				weight = obj_weightselection[Object.keys(obj_weightselection)[0]];
+				testerWeight = " font-weight: " + obj_weightselection[Object.keys(obj_weightselection)[0]] + ";";
+				weightoptions = "\
+					<div class='option slider weightSlider weightSlider" + testerNumber + " weight'>\
+							<span class='label'>weight</span>\
+							<span class='amount'></span>\
+					</div>\
+				";
+			}
+		}
+	}else{
+		if (weight == ""){
+			testerWeight = " font-weight: normal;";
+			weight = "400";
+		}
+	}
+
+
+
 
 	////////////////////////
 	//ITALICS
@@ -393,25 +443,58 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 	    });
 	};
 
+
 	if (weightoptions !== ""){
+		if (weightselection  == "") {
+			$(".weightSlider" + testerNumber).slider({
+		      	orientation: "horizontal",
+		      	range: "min",
+		      	min: 100,
+		      	max: 900,
+		      	step: 100,
+		      	value: weight,
+		      	animate: true,
+			    slide: function(event, ui) {
+			        $(this).find( ".amount" ).text(ui.value);
+			        $(this).parent().parent().find( ".type" ).css("font-weight", ui.value);
+			    },
+			   	create: function( event, ui ) {
+			        $(this).find( ".amount" ).text(weight);
+			        $(this).parent().parent().find( ".type" ).css("font-weight", weight);
+			    }
+		    });
+	    }
+	};
+
+	var ticker = 0
+	for(i in obj_weightselection) {
+		if (weight == obj_weightselection[i]) {
+			ticker += 1;
+			firstWeightPosition = ticker;
+			firstWeightName = i;
+			firstWeightValue = obj_weightselection[i];
+		}
+	}
+	if (weightselection  !== "") {
 		$(".weightSlider" + testerNumber).slider({
 	      	orientation: "horizontal",
 	      	range: "min",
-	      	min: 100,
-	      	max: 900,
-	      	step: 100,
-	      	value: weight,
+	      	min: 1,
+	      	max: Object.keys(obj_weightselection).length,
+	      	step: 1,
+	      	value: firstWeightPosition,
 	      	animate: true,
 		    slide: function(event, ui) {
-		        $(this).find( ".amount" ).text(ui.value);
-		        $(this).parent().parent().find( ".type" ).css("font-weight", ui.value);
+		        $(this).find( ".amount" ).text(Object.keys(obj_weightselection)[ui.value-1]);
+		        $(this).parent().parent().find( ".type" ).css("font-weight", obj_weightselection[Object.keys(obj_weightselection)[ui.value-1]]);
 		    },
 		   	create: function( event, ui ) {
-		        $(this).find( ".amount" ).text(weight);
-		        $(this).parent().parent().find( ".type" ).css("font-weight", weight);
+		        $(this).find( ".amount" ).text(firstWeightName);
+		        $(this).parent().parent().find( ".type" ).css("font-weight", firstWeightValue);
+
 		    }
 	    });
-	};
+	}
 
 
 	if (italicoptions !== ""){

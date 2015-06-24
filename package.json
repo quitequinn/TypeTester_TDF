@@ -1,21 +1,21 @@
 {
-  "name": "SBKH",
+  "name": "Type Tester TDF",
   "version": "1.0.0",
-  "description": "Secret Book of Know How",
+  "description": "Type Tester TDF",
   "main": "Gruntfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.disney.com/DMA/WDI-SecretBookofKnowHow.git"
+    "url": ""
   },
   "author": "Quinn Keaveney",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.disney.com/DMA/WDI-SecretBookofKnowHow/issues"
+    "url": ""
   },
-  "homepage": "https://github.disney.com/DMA/WDI-SecretBookofKnowHow/",
+  "homepage": "",
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-autoprefixer": "^2.1.0",
