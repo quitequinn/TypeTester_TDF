@@ -137,7 +137,59 @@
 				}
 			}
 		}
-		.slider, .optButton, .italicButton{
+		&.width6{
+			.option{
+				width: 16.6666666666%;
+				@include m(max, 900px){
+					width: 33.33333333%;
+				}
+				@include m(max, 500px){
+					width: 100%;
+				}
+			}
+		}
+		&.width7{
+			.option{
+				width: 14.285714286%;
+				@include m(max, 900px){
+					width: 100%;
+				}
+			}
+		}
+		&.width8{
+			.option{
+				width: 12.5%;
+				@include m(max, 900px){
+					width: 25%;
+				}
+				@include m(max, 700px){
+					width: 50%;
+				}
+				@include m(max, 400px){
+					width: 100%;
+				}
+			}
+		}
+		&.width9{
+			.option{
+				width: 11.111111111%;
+				@include m(max, 1000px){
+					width: 100%;
+				}
+			}
+		}
+		&.width10{
+			.option{
+				width: 10%;
+				@include m(max, 1300px){
+					width: 20%;
+				}
+				@include m(max, 800px){
+					width: 100%;
+				}
+			}
+		}
+		.slider, .optButton, .italicButton, .singlelineButton{
 			border: 0;
 		  	border-radius: 0;
 		  	height: 20px;
@@ -180,7 +232,7 @@
 			&.slider{
 				cursor: ew-resize;
 			}
-			&.optButton, &.italicButton{
+			&.optButton, &.italicButton, &.singlelineButton{
 				@include pointer();
 				&.active{
 					background-color: $green;
@@ -214,7 +266,7 @@
 			transition: all $fast;
 			box-shadow: none;
 			outline: none;
-			.slider, .optButton, .italicButton{
+			.slider, .optButton, .italicButton, .singlelineButton{
 				height: 50px;
 				transition: all $fast;
 			}
@@ -232,6 +284,13 @@
 					font-size: 14px;
 					line-height: 46px;
 					text-transform: lowercase;
+				}
+				&.weightSlider, &.alignSlider{
+
+					.amount{
+  						line-height: 47px;
+						text-transform: uppercase;
+					}
 				}
 				&.slider:active, &.slider:focus{
 					.label{

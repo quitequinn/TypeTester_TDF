@@ -7810,31 +7810,82 @@ body.page-template-collection, body.page-template-cart {
       /* line 133, ../sass/_typeTester.scss */
       .typeTester .options.width5 .option {
         width: 100%; } }
-  /* line 140, ../sass/_typeTester.scss */
-  .typeTester .options .slider, .typeTester .options .optButton, .typeTester .options .italicButton {
+  /* line 141, ../sass/_typeTester.scss */
+  .typeTester .options.width6 .option {
+    width: 16.6666666666%; }
+    @media (max-width: 900px) {
+      /* line 141, ../sass/_typeTester.scss */
+      .typeTester .options.width6 .option {
+        width: 33.33333333%; } }
+    @media (max-width: 500px) {
+      /* line 141, ../sass/_typeTester.scss */
+      .typeTester .options.width6 .option {
+        width: 100%; } }
+  /* line 152, ../sass/_typeTester.scss */
+  .typeTester .options.width7 .option {
+    width: 14.285714286%; }
+    @media (max-width: 900px) {
+      /* line 152, ../sass/_typeTester.scss */
+      .typeTester .options.width7 .option {
+        width: 100%; } }
+  /* line 160, ../sass/_typeTester.scss */
+  .typeTester .options.width8 .option {
+    width: 12.5%; }
+    @media (max-width: 900px) {
+      /* line 160, ../sass/_typeTester.scss */
+      .typeTester .options.width8 .option {
+        width: 25%; } }
+    @media (max-width: 700px) {
+      /* line 160, ../sass/_typeTester.scss */
+      .typeTester .options.width8 .option {
+        width: 50%; } }
+    @media (max-width: 400px) {
+      /* line 160, ../sass/_typeTester.scss */
+      .typeTester .options.width8 .option {
+        width: 100%; } }
+  /* line 174, ../sass/_typeTester.scss */
+  .typeTester .options.width9 .option {
+    width: 11.111111111%; }
+    @media (max-width: 1000px) {
+      /* line 174, ../sass/_typeTester.scss */
+      .typeTester .options.width9 .option {
+        width: 100%; } }
+  /* line 182, ../sass/_typeTester.scss */
+  .typeTester .options.width10 .option {
+    width: 10%; }
+    @media (max-width: 1300px) {
+      /* line 182, ../sass/_typeTester.scss */
+      .typeTester .options.width10 .option {
+        width: 20%; } }
+    @media (max-width: 800px) {
+      /* line 182, ../sass/_typeTester.scss */
+      .typeTester .options.width10 .option {
+        width: 100%; } }
+  /* line 192, ../sass/_typeTester.scss */
+  .typeTester .options .slider, .typeTester .options .optButton, .typeTester .options .italicButton, .typeTester .options .singlelineButton {
     border: 0;
     border-radius: 0;
     height: 20px;
     background: #000; }
-    /* line 145, ../sass/_typeTester.scss */
-    .typeTester .options .slider .ui-slider-range, .typeTester .options .optButton .ui-slider-range, .typeTester .options .italicButton .ui-slider-range {
+    /* line 197, ../sass/_typeTester.scss */
+    .typeTester .options .slider .ui-slider-range, .typeTester .options .optButton .ui-slider-range, .typeTester .options .italicButton .ui-slider-range, .typeTester .options .singlelineButton .ui-slider-range {
       border-radius: 0;
       background: #67f4b8; }
-    /* line 149, ../sass/_typeTester.scss */
-    .typeTester .options .slider .ui-slider-handle, .typeTester .options .optButton .ui-slider-handle, .typeTester .options .italicButton .ui-slider-handle {
+    /* line 201, ../sass/_typeTester.scss */
+    .typeTester .options .slider .ui-slider-handle, .typeTester .options .optButton .ui-slider-handle, .typeTester .options .italicButton .ui-slider-handle, .typeTester .options .singlelineButton .ui-slider-handle {
       opacity: 0; }
-    /* line 152, ../sass/_typeTester.scss */
-    .typeTester .options .slider .ui-state-focus, .typeTester .options .optButton .ui-state-focus, .typeTester .options .italicButton .ui-state-focus {
+    /* line 204, ../sass/_typeTester.scss */
+    .typeTester .options .slider .ui-state-focus, .typeTester .options .optButton .ui-state-focus, .typeTester .options .italicButton .ui-state-focus, .typeTester .options .singlelineButton .ui-state-focus {
       border-radius: 0;
       border: 0;
       outline: 0;
       background: none;
       font-weight: 600;
       margin: 0; }
-  /* line 161, ../sass/_typeTester.scss */
+  /* line 213, ../sass/_typeTester.scss */
   .typeTester .options .option {
     float: left; }
-    /* line 163, ../sass/_typeTester.scss */
+    /* line 215, ../sass/_typeTester.scss */
     .typeTester .options .option .label, .typeTester .options .option .amount, .typeTester .options .option .dropdown span {
       font-family: "Fakta Grotesk","Helvetica Neue",Helvetica,Arial,sans-serif;
       font-size: 0px;
@@ -7852,56 +7903,56 @@ body.page-template-collection, body.page-template-cart {
       line-height: 18px;
       position: relative;
       padding: 2px 5px; }
-    /* line 180, ../sass/_typeTester.scss */
+    /* line 232, ../sass/_typeTester.scss */
     .typeTester .options .option.slider {
       cursor: ew-resize; }
-    /* line 183, ../sass/_typeTester.scss */
-    .typeTester .options .option.optButton, .typeTester .options .option.italicButton {
+    /* line 235, ../sass/_typeTester.scss */
+    .typeTester .options .option.optButton, .typeTester .options .option.italicButton, .typeTester .options .option.singlelineButton {
       -webkit-user-select: none;
          -moz-user-select: none;
           -ms-user-select: none;
               user-select: none;
       cursor: pointer; }
-      /* line 185, ../sass/_typeTester.scss */
-      .typeTester .options .option.optButton.active, .typeTester .options .option.italicButton.active {
+      /* line 237, ../sass/_typeTester.scss */
+      .typeTester .options .option.optButton.active, .typeTester .options .option.italicButton.active, .typeTester .options .option.singlelineButton.active {
         background-color: #67f4b8; }
-      /* line 188, ../sass/_typeTester.scss */
-      .typeTester .options .option.optButton .label, .typeTester .options .option.italicButton .label {
+      /* line 240, ../sass/_typeTester.scss */
+      .typeTester .options .option.optButton .label, .typeTester .options .option.italicButton .label, .typeTester .options .option.singlelineButton .label {
         border-radius: 0; }
-        /* line 190, ../sass/_typeTester.scss */
-        .typeTester .options .option.optButton .label:hover, .typeTester .options .option.optButton .label.active, .typeTester .options .option.italicButton .label:hover, .typeTester .options .option.italicButton .label.active {
+        /* line 242, ../sass/_typeTester.scss */
+        .typeTester .options .option.optButton .label:hover, .typeTester .options .option.optButton .label.active, .typeTester .options .option.italicButton .label:hover, .typeTester .options .option.italicButton .label.active, .typeTester .options .option.singlelineButton .label:hover, .typeTester .options .option.singlelineButton .label.active {
           background: #67f4b8; }
-      /* line 194, ../sass/_typeTester.scss */
-      .typeTester .options .option.optButton .dropdown, .typeTester .options .option.italicButton .dropdown {
+      /* line 246, ../sass/_typeTester.scss */
+      .typeTester .options .option.optButton .dropdown, .typeTester .options .option.italicButton .dropdown, .typeTester .options .option.singlelineButton .dropdown {
         display: none;
         position: relative;
         background: #000; }
-        /* line 198, ../sass/_typeTester.scss */
-        .typeTester .options .option.optButton .dropdown span, .typeTester .options .option.italicButton .dropdown span {
+        /* line 250, ../sass/_typeTester.scss */
+        .typeTester .options .option.optButton .dropdown span, .typeTester .options .option.italicButton .dropdown span, .typeTester .options .option.singlelineButton .dropdown span {
           height: 20px;
           background: #000;
           display: block;
           font-weight: 600;
           -webkit-transition: all 0.25s;
                   transition: all 0.25s; }
-          /* line 204, ../sass/_typeTester.scss */
-          .typeTester .options .option.optButton .dropdown span:hover, .typeTester .options .option.optButton .dropdown span.active, .typeTester .options .option.italicButton .dropdown span:hover, .typeTester .options .option.italicButton .dropdown span.active {
+          /* line 256, ../sass/_typeTester.scss */
+          .typeTester .options .option.optButton .dropdown span:hover, .typeTester .options .option.optButton .dropdown span.active, .typeTester .options .option.italicButton .dropdown span:hover, .typeTester .options .option.italicButton .dropdown span.active, .typeTester .options .option.singlelineButton .dropdown span:hover, .typeTester .options .option.singlelineButton .dropdown span.active {
             background: #67f4b8;
             -webkit-transition: all 0.25s;
                     transition: all 0.25s; }
-  /* line 212, ../sass/_typeTester.scss */
+  /* line 264, ../sass/_typeTester.scss */
   .typeTester .options:hover, .typeTester .options:active, .typeTester .options:focus {
     height: 50px;
     -webkit-transition: all 0.25s;
             transition: all 0.25s;
     box-shadow: none;
     outline: none; }
-    /* line 217, ../sass/_typeTester.scss */
-    .typeTester .options:hover .slider, .typeTester .options:hover .optButton, .typeTester .options:hover .italicButton, .typeTester .options:active .slider, .typeTester .options:active .optButton, .typeTester .options:active .italicButton, .typeTester .options:focus .slider, .typeTester .options:focus .optButton, .typeTester .options:focus .italicButton {
+    /* line 269, ../sass/_typeTester.scss */
+    .typeTester .options:hover .slider, .typeTester .options:hover .optButton, .typeTester .options:hover .italicButton, .typeTester .options:hover .singlelineButton, .typeTester .options:active .slider, .typeTester .options:active .optButton, .typeTester .options:active .italicButton, .typeTester .options:active .singlelineButton, .typeTester .options:focus .slider, .typeTester .options:focus .optButton, .typeTester .options:focus .italicButton, .typeTester .options:focus .singlelineButton {
       height: 50px;
       -webkit-transition: all 0.25s;
               transition: all 0.25s; }
-    /* line 222, ../sass/_typeTester.scss */
+    /* line 274, ../sass/_typeTester.scss */
     .typeTester .options:hover .option .label, .typeTester .options:hover .option .amount, .typeTester .options:hover .option .dropdown span, .typeTester .options:active .option .label, .typeTester .options:active .option .amount, .typeTester .options:active .option .dropdown span, .typeTester .options:focus .option .label, .typeTester .options:focus .option .amount, .typeTester .options:focus .option .dropdown span {
       font-size: 14px;
       height: 50px;
@@ -7909,34 +7960,38 @@ body.page-template-collection, body.page-template-cart {
       opacity: 1;
       -webkit-transition: all 0.25s;
               transition: all 0.25s; }
-    /* line 229, ../sass/_typeTester.scss */
+    /* line 281, ../sass/_typeTester.scss */
     .typeTester .options:hover .option .amount, .typeTester .options:active .option .amount, .typeTester .options:focus .option .amount {
       display: none;
       font-weight: 600;
       font-size: 14px;
       line-height: 46px;
       text-transform: lowercase; }
-    /* line 237, ../sass/_typeTester.scss */
+    /* line 290, ../sass/_typeTester.scss */
+    .typeTester .options:hover .option.weightSlider .amount, .typeTester .options:hover .option.alignSlider .amount, .typeTester .options:active .option.weightSlider .amount, .typeTester .options:active .option.alignSlider .amount, .typeTester .options:focus .option.weightSlider .amount, .typeTester .options:focus .option.alignSlider .amount {
+      line-height: 47px;
+      text-transform: uppercase; }
+    /* line 296, ../sass/_typeTester.scss */
     .typeTester .options:hover .option.slider:active .label, .typeTester .options:hover .option.slider:focus .label, .typeTester .options:active .option.slider:active .label, .typeTester .options:active .option.slider:focus .label, .typeTester .options:focus .option.slider:active .label, .typeTester .options:focus .option.slider:focus .label {
       display: none; }
-    /* line 240, ../sass/_typeTester.scss */
+    /* line 299, ../sass/_typeTester.scss */
     .typeTester .options:hover .option.slider:active .amount, .typeTester .options:hover .option.slider:focus .amount, .typeTester .options:active .option.slider:active .amount, .typeTester .options:active .option.slider:focus .amount, .typeTester .options:focus .option.slider:active .amount, .typeTester .options:focus .option.slider:focus .amount {
       display: block; }
-    /* line 247, ../sass/_typeTester.scss */
+    /* line 306, ../sass/_typeTester.scss */
     .typeTester .options:hover .option.optButton .dropdown span, .typeTester .options:active .option.optButton .dropdown span, .typeTester .options:focus .option.optButton .dropdown span {
       height: 50px;
       -webkit-transition: all 0.25s;
               transition: all 0.25s; }
-    /* line 256, ../sass/_typeTester.scss */
+    /* line 315, ../sass/_typeTester.scss */
     .typeTester .options:hover .optButton.open .dropdown, .typeTester .options:hover .optButton:hover .dropdown, .typeTester .options:active .optButton.open .dropdown, .typeTester .options:active .optButton:hover .dropdown, .typeTester .options:focus .optButton.open .dropdown, .typeTester .options:focus .optButton:hover .dropdown {
       display: block; }
-/* line 264, ../sass/_typeTester.scss */
+/* line 323, ../sass/_typeTester.scss */
 .typeTester .type {
   padding: 0 10px; }
-/* line 268, ../sass/_typeTester.scss */
+/* line 327, ../sass/_typeTester.scss */
 .typeTester .testerFit {
   text-align: center; }
-  /* line 270, ../sass/_typeTester.scss */
+  /* line 329, ../sass/_typeTester.scss */
   .typeTester .testerFit span.enterTXT {
     margin-left: auto;
     margin-right: auto; }

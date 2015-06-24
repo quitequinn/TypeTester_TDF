@@ -30,7 +30,7 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 		italic =
 		opt =
 		align =
-		multiline =
+		singleline =
 		testerfit =
 		testerSize =
 		testerFont =
@@ -39,10 +39,13 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 		testerItalic =
 		testerOpt =
 		testerAlign =
+		testerSingleline =
 		sizeoptions =
 		trackingoptions =
 		weightoptions =
 		italicoptions =
+		singlelineoptions =
+		alignoptions =
 		optoptions =
 		optButton =
 		testeroptions =
@@ -53,6 +56,8 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 	var text = "Try typing here...";
 	var yes = [ "yes", "true", "hawt", "yup", "yep", "siq", "swell", "chiller", "ok", "!", "fine", "right", "good", "aye", "indubitably", "sure", "yeah", "yay"];
 	var no = [ "sus", "no", "nah", "nvm", "false", "rathernot", "nope", "naaah", "naah", "bye", "fart", "sans", "terminal"];
+
+	var alignValues = ["left", "center", "right"];
 
 	var optValues = {
 
@@ -107,7 +112,7 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 	    return optValues[propertyName];
 	};
 
-	var typeVars = ["options", "sizeoptions", "trackingoptions", "opt", "weightoptions", "italicoptions", "size", "font", "tracking", "weight", "italic", "align", "text"];
+	var typeVars = ["options", "sizeoptions", "trackingoptions", "opt", "weightoptions", "italicoptions", "alignoptions", "singlelineoptions", "size", "font", "tracking", "weight", "italic", "align", "singleline", "text"];
 	$.each(typeVars, function(index, value) {
 		if ($(theTester).is("["+value+"]")) {
 		    eval(value + " = '" + $(theTester).attr(value) + "'");
@@ -363,8 +368,6 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 			$(theTester).addClass("withOptions");
 
 		}
-
-
 	}
 
 	////////////////////////
@@ -375,22 +378,71 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 		}else{
 			testerAlign = " text-align: left;"
 		}
+
+		if (alignoptions !== ""){
+			elm += 1;
+			if ($.inArray(alignoptions, no) >= 0){
+				alignoptions = "";
+				elm -= 1;
+
+			}else{
+				if (align == ""){
+					align = "center";
+
+				}
+				alignoptions = "\
+					<div class='option slider alignSlider alignSlider" + testerNumber + " align'>\
+						<span class='label'>align</span>\
+						<span class='amount'></span>\
+					</div>\
+				";
+			}
+		}
 	}
 
-	// ////////////////////////
-	// //Multiline
-	// if (size !== ""){
-	// 	if (multiline !== ""){
-	// 		testerAlign = " text-align: " + align + ";";
-	// 	}else{
-	// 		testerAlign = " text-align: left;"
-	// 	}
-	// }
+	////////////////////////
+	//Singleline
+	if (size !== ""){
+		if (singleline !== ""){
+			if ($.inArray(singleline, no) >= 0){
+				testerSingleline = " white-space: initial;"
+			}else{
+				testerSingleline = " white-space: nowrap;";
+			}
+		}else{
+			testerSingleline = " white-space: initial;"
+		}
+
+		if (singlelineoptions !== ""){
+			elm += 1;
+			if ($.inArray(singlelineoptions, no) >= 0){
+				singlelineoptions = "";
+				elm -= 1;
+
+			}else{
+				singlelineoptions = "\
+					<div class='option button singlelineButton singlelineButton" + testerNumber + " singleline'>\
+							<span class='label'>singleline</span>\
+					</div>\
+				";
+
+			}
+		}
+	}
+
+
+	////////////////////////
+	//Text Fallback
+	if (font !== "") {
+		if (text == "Try typing here...") {
+			text = "Try " + font;
+		};
+	};
 
 
 	////////////////////////
 	//Put them all together
-	totaloptions = sizeoptions + trackingoptions + weightoptions + italicoptions + optoptions;
+	totaloptions = sizeoptions + trackingoptions + weightoptions + italicoptions + singlelineoptions + alignoptions + optoptions;
 
 	if (options !== "false"){
 		testeroptions = "\
@@ -402,7 +454,7 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 	typetester = "\
 		<div class='container " + testerfit + "'>\
 			<div class='type row' style='" + testerFont + testerSize + testerTracking + testerWeight + testerItalic + testerAlign + "''>\
-				<span class='enterTXT' spellcheck='false' contenteditable>" + text + "</span>\
+				<span class='enterTXT' spellcheck='false' contenteditable style='" + testerSingleline + "'>" + text + "</span>\
 			</div>\
 		</div>\
 		" + testeroptions;
@@ -526,7 +578,6 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 	    });
 	};
 
-
 	if (opt !== ""){
 		if ($.inArray(opt, no) >= 0){
 			opt = "";
@@ -592,6 +643,46 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 
 	};
 
+
+	if (size !== ""){
+
+		if (singlelineoptions !== ""){
+			if ($(".singlelineButton" + testerNumber).parent().parent().find( ".enterTXT" ).css("white-space") == "nowrap"){
+				$(".singlelineButton" + testerNumber).addClass("active");
+
+			}
+			$(".singlelineButton" + testerNumber).click(function(){
+				$(this).toggleClass("active");
+				if ($(this).hasClass("active")) {
+			    	$(this).parent().parent().find( ".enterTXT" ).css("white-space", "nowrap");
+
+				}else{
+			    	$(this).parent().parent().find( ".enterTXT" ).css("white-space", "initial");
+
+				};
+		    });
+		};
+
+
+		if (alignoptions !== ""){
+			$(".alignSlider" + testerNumber).slider({
+		      	orientation: "horizontal",
+		      	range: "min",
+		      	min: 1,
+		      	max: 3,
+		      	value: alignValues.indexOf(align) + 1,
+		      	animate: true,
+			    slide: function(event, ui) {
+			        $(this).find( ".amount" ).text(alignValues[ui.value - 1]);
+			        $(this).parent().parent().find( ".type" ).css("text-align", alignValues[ui.value - 1]);
+			    },
+			   	create: function( event, ui ) {
+			        $(this).find( ".amount" ).text(align);
+			        $(this).parent().parent().find( ".type" ).css("text-align", align);
+			    }
+			});
+		}
+	}
 }
 
 
