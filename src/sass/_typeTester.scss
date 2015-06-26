@@ -212,7 +212,7 @@
 		}
 		.option {
 			float: left;
-			.label, .amount, .dropdown span{
+			.label, .amount, .dropdown span, {
 				font-family: "Fakta Grotesk","Helvetica Neue",Helvetica,Arial,sans-serif;
 				font-size: 0px;
 				color: $white;
@@ -261,11 +261,38 @@
 				}
 			}
 		}
+		.optsupport{
+			font-family: "Fakta Grotesk","Helvetica Neue",Helvetica,Arial,sans-serif;
+			font-size: 0px;
+			color: $white;
+			background: $black;
+			text-align: center;
+			width: 100%;
+			display: block;
+			letter-spacing: .1em;
+			opacity: 0;
+			transition: all $fast;
+			z-index: 90;
+			height: 0px;
+			line-height: 19px;
+			position: relative;
+			float: left;
+			display: block;
+			text-decoration: none;
+			&:hover{
+				background: $salmon;
+			}
+		}
 		&:hover, &:active, &:focus{
 			height: 50px;
 			transition: all $fast;
 			box-shadow: none;
 			outline: none;
+			.optsupport{
+				min-height: 20px;
+				font-size: 11px;
+				opacity: 1;
+			}
 			.slider, .optButton, .italicButton, .singlelineButton{
 				height: 50px;
 				transition: all $fast;

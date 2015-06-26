@@ -9,6 +9,54 @@
 	//TYPE TESTER BEGINS
 ////////////////////////////////////////////////
 
+    ////////////////////////
+	//IF MOBILE
+
+function isMobile() {
+	if(navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/iPhone|iPad|iPod/i) || navigator.userAgent.match(/IEMobile/i)){
+		return true; } else { return false; }
+}
+function iphone() {
+	if(navigator.userAgent.match(/iPhone|iPad|iPod/i)){
+		return true; } else { return false; }
+}
+var isTouchDevice = 'ontouchstart' in document.documentElement;
+
+    ////////////////////////
+	//GET VENDOR PREFIXES
+
+var browser, webkit, touch;
+
+var prefix = (function () {
+	var styles = window.getComputedStyle(document.documentElement, ''),
+		pre = (Array.prototype.slice
+			.call(styles)
+			.join('')
+			.match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
+		)[1],
+		dom = ('WebKit|Moz|MS|O').match(new RegExp('(' + pre + ')', 'i'))[1];
+	return {
+		dom: dom,
+		lowercase: pre,
+		css: '-' + pre + '-',
+		js: pre[0].toUpperCase() + pre.substr(1)
+	};
+})();
+browser = prefix.lowercase;
+
+if (isTouchDevice) {
+	touch = true;
+}else{
+	touch = false;
+}
+if (navigator.userAgent.indexOf('Safari') != -1){
+	if (navigator.userAgent.indexOf('Chrome') == -1){
+		webkit = 'safari';
+	} else {
+		webkit = 'chrome';
+	}
+}
+
 	////////////////////////
 	//Define Variables
 
@@ -47,6 +95,7 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 		alignoptions =
 		optoptions =
 		optButton =
+		optDisclaim =
 		testeroptions =
 		weightselection =
 		weightPosition = "";
@@ -369,6 +418,15 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 		}
 	}
 
+	if (optoptions !== ""){
+		if ($.inArray(optoptions, no) <= 0){
+			if (webkit == "safari" || browser == "moz") {
+				optDisclaim = "<a href='http://caniuse.com/#feat=font-feature' class='row optsupport'>Switch browsers for better <smcp>OPT</smcp> support</a>";
+			}
+		}
+	}
+
+
 	////////////////////////
 	//Alignment
 	if (size !== ""){
@@ -446,7 +504,7 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 	if (options !== "false"){
 		testeroptions = "\
 			<div class='options row width" + elm + "'>" +
-				totaloptions +
+				totaloptions + optDisclaim +
 			"</div>"
 	}
 

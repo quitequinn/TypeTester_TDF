@@ -9,6 +9,56 @@
 	//TYPE TESTER BEGINS
 ////////////////////////////////////////////////
 
+    ////////////////////////
+	//IF MOBILE
+
+function isMobile() {
+	if(navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/iPhone|iPad|iPod/i) || navigator.userAgent.match(/IEMobile/i)){
+		return true; } else { return false; }
+}
+function iphone() {
+	if(navigator.userAgent.match(/iPhone|iPad|iPod/i)){
+		return true; } else { return false; }
+}
+var isTouchDevice = 'ontouchstart' in document.documentElement;
+
+    ////////////////////////
+	//GET VENDOR PREFIXES
+
+var browser, webkit, touch;
+
+var prefix = (function () {
+	var styles = window.getComputedStyle(document.documentElement, ''),
+		pre = (Array.prototype.slice
+			.call(styles)
+			.join('')
+			.match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
+		)[1],
+		dom = ('WebKit|Moz|MS|O').match(new RegExp('(' + pre + ')', 'i'))[1];
+	return {
+		dom: dom,
+		lowercase: pre,
+		css: '-' + pre + '-',
+		js: pre[0].toUpperCase() + pre.substr(1)
+	};
+})();
+browser = prefix.lowercase;
+
+if (isTouchDevice) {
+	touch = true;
+}else{
+	touch = false;
+}
+if (navigator.userAgent.indexOf('Safari') != -1){
+	if (navigator.userAgent.indexOf('Chrome') == -1){
+		webkit = 'safari';
+	} else {
+		webkit = 'chrome';
+	}
+}
+alert(webkit);
+
+
 	////////////////////////
 	//Define Variables
 
@@ -18,6 +68,7 @@ function sized(){
 	});
 };
 var testerNumber = testerTotal = 0;
+
 
 function typetester(e, font, size, tracking, italic,  weight, opt){
 	var option, typetester;
@@ -44,6 +95,7 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 		italicoptions =
 		optoptions =
 		optButton =
+		optDisclaim =
 		testeroptions = "";
 	var elm = 0;
 	var text = "Try typing here...";
@@ -130,6 +182,7 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 
 	};
 
+	console.log('bingo');
 
 	////////////////////////
 	//FONT
@@ -291,6 +344,7 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 
 	////////////////////////
 	//Open Type Feautures
+
 	if (optoptions !== ""){
 		elm += 1;
 		if ($.inArray(optoptions, no) >= 0){
@@ -306,14 +360,23 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 					<span class='label'>features</span>\
 					<div class='dropdown'>" +
 						testerOpt +
-					"</div>\
-				</div>\
+					"</div>" +
+				"</div>\
 			";
 			$(theTester).addClass("withOptions");
 
 		}
 
+	}
 
+	if (optoptions !== ""){
+		if ($.inArray(optoptions, no) >= 0){
+		}else{
+
+			if (webkit == "safari" || browser == "moz") {
+				optDisclaim = "<a href='http://caniuse.com/#feat=font-feature' class='row optsupport'>Please change browsers for better OPT support</a>";
+			}
+		}
 	}
 
 	////////////////////////
@@ -338,13 +401,14 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 			"</div>"
 	}
 
+
 	typetester = "\
 		<div class='container " + testerfit + "'>\
 			<div class='type row' style='" + testerFont + testerSize + testerTracking + testerWeight + testerItalic + testerAlign + "''>\
 				<span class='enterTXT' spellcheck='false' contenteditable>" + text + "</span>\
 			</div>\
 		</div>\
-		" + testeroptions;
+		" + testeroptions + optDisclaim;
 	typetesterFont = "<style></style>";
 
 	$(theTester).append(typetester);

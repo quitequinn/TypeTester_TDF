@@ -7941,18 +7941,46 @@ body.page-template-collection, body.page-template-cart {
             -webkit-transition: all 0.25s;
                     transition: all 0.25s; }
   /* line 264, ../sass/_typeTester.scss */
+  .typeTester .options .optsupport {
+    font-family: "Fakta Grotesk","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 0px;
+    color: #fff;
+    background: #000;
+    text-align: center;
+    width: 100%;
+    display: block;
+    letter-spacing: .1em;
+    opacity: 0;
+    -webkit-transition: all 0.25s;
+            transition: all 0.25s;
+    z-index: 90;
+    height: 0px;
+    line-height: 19px;
+    position: relative;
+    float: left;
+    display: block;
+    text-decoration: none; }
+    /* line 282, ../sass/_typeTester.scss */
+    .typeTester .options .optsupport:hover {
+      background: #ED7872; }
+  /* line 286, ../sass/_typeTester.scss */
   .typeTester .options:hover, .typeTester .options:active, .typeTester .options:focus {
     height: 50px;
     -webkit-transition: all 0.25s;
             transition: all 0.25s;
     box-shadow: none;
     outline: none; }
-    /* line 269, ../sass/_typeTester.scss */
+    /* line 291, ../sass/_typeTester.scss */
+    .typeTester .options:hover .optsupport, .typeTester .options:active .optsupport, .typeTester .options:focus .optsupport {
+      min-height: 20px;
+      font-size: 11px;
+      opacity: 1; }
+    /* line 296, ../sass/_typeTester.scss */
     .typeTester .options:hover .slider, .typeTester .options:hover .optButton, .typeTester .options:hover .italicButton, .typeTester .options:hover .singlelineButton, .typeTester .options:active .slider, .typeTester .options:active .optButton, .typeTester .options:active .italicButton, .typeTester .options:active .singlelineButton, .typeTester .options:focus .slider, .typeTester .options:focus .optButton, .typeTester .options:focus .italicButton, .typeTester .options:focus .singlelineButton {
       height: 50px;
       -webkit-transition: all 0.25s;
               transition: all 0.25s; }
-    /* line 274, ../sass/_typeTester.scss */
+    /* line 301, ../sass/_typeTester.scss */
     .typeTester .options:hover .option .label, .typeTester .options:hover .option .amount, .typeTester .options:hover .option .dropdown span, .typeTester .options:active .option .label, .typeTester .options:active .option .amount, .typeTester .options:active .option .dropdown span, .typeTester .options:focus .option .label, .typeTester .options:focus .option .amount, .typeTester .options:focus .option .dropdown span {
       font-size: 14px;
       height: 50px;
@@ -7960,38 +7988,38 @@ body.page-template-collection, body.page-template-cart {
       opacity: 1;
       -webkit-transition: all 0.25s;
               transition: all 0.25s; }
-    /* line 281, ../sass/_typeTester.scss */
+    /* line 308, ../sass/_typeTester.scss */
     .typeTester .options:hover .option .amount, .typeTester .options:active .option .amount, .typeTester .options:focus .option .amount {
       display: none;
       font-weight: 600;
       font-size: 14px;
       line-height: 46px;
       text-transform: lowercase; }
-    /* line 290, ../sass/_typeTester.scss */
+    /* line 317, ../sass/_typeTester.scss */
     .typeTester .options:hover .option.weightSlider .amount, .typeTester .options:hover .option.alignSlider .amount, .typeTester .options:active .option.weightSlider .amount, .typeTester .options:active .option.alignSlider .amount, .typeTester .options:focus .option.weightSlider .amount, .typeTester .options:focus .option.alignSlider .amount {
       line-height: 47px;
       text-transform: uppercase; }
-    /* line 296, ../sass/_typeTester.scss */
+    /* line 323, ../sass/_typeTester.scss */
     .typeTester .options:hover .option.slider:active .label, .typeTester .options:hover .option.slider:focus .label, .typeTester .options:active .option.slider:active .label, .typeTester .options:active .option.slider:focus .label, .typeTester .options:focus .option.slider:active .label, .typeTester .options:focus .option.slider:focus .label {
       display: none; }
-    /* line 299, ../sass/_typeTester.scss */
+    /* line 326, ../sass/_typeTester.scss */
     .typeTester .options:hover .option.slider:active .amount, .typeTester .options:hover .option.slider:focus .amount, .typeTester .options:active .option.slider:active .amount, .typeTester .options:active .option.slider:focus .amount, .typeTester .options:focus .option.slider:active .amount, .typeTester .options:focus .option.slider:focus .amount {
       display: block; }
-    /* line 306, ../sass/_typeTester.scss */
+    /* line 333, ../sass/_typeTester.scss */
     .typeTester .options:hover .option.optButton .dropdown span, .typeTester .options:active .option.optButton .dropdown span, .typeTester .options:focus .option.optButton .dropdown span {
       height: 50px;
       -webkit-transition: all 0.25s;
               transition: all 0.25s; }
-    /* line 315, ../sass/_typeTester.scss */
+    /* line 342, ../sass/_typeTester.scss */
     .typeTester .options:hover .optButton.open .dropdown, .typeTester .options:hover .optButton:hover .dropdown, .typeTester .options:active .optButton.open .dropdown, .typeTester .options:active .optButton:hover .dropdown, .typeTester .options:focus .optButton.open .dropdown, .typeTester .options:focus .optButton:hover .dropdown {
       display: block; }
-/* line 323, ../sass/_typeTester.scss */
+/* line 350, ../sass/_typeTester.scss */
 .typeTester .type {
   padding: 0 10px; }
-/* line 327, ../sass/_typeTester.scss */
+/* line 354, ../sass/_typeTester.scss */
 .typeTester .testerFit {
   text-align: center; }
-  /* line 329, ../sass/_typeTester.scss */
+  /* line 356, ../sass/_typeTester.scss */
   .typeTester .testerFit span.enterTXT {
     margin-left: auto;
     margin-right: auto; }
