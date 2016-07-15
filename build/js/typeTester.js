@@ -206,7 +206,7 @@ function typetester(e, font, size, tracking, italic,  weight, opt){
 			return false;
 
 		}else{
-			testerFont = " font-family: " + font + ", 'Fakta Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif;";
+			testerFont = " font-family: " + font + ", Fakta Grotesk, Helvetica Neue, Helvetica, Arial, sans-serif;";
 
 		}
 

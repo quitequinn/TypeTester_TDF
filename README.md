@@ -2,6 +2,13 @@
 
 TDF Type Tester is a flexible display for the numerouse features available in a typeface. Made specifically for TDF.
 
+## License
+
+Copyright 2015 Quinn Keaveney
+
+Feel free to look, learn, comment or criticize. If you want a private license please contact me independently. 
+
+
 ## Table of contents
 
 - [Quick Start](#quick-start)
