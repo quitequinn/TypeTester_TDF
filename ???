@@ -1,0 +1,38 @@
+tt-css
+
+tt-tag
+<section font="" class="typeTester" weightoptions="true"></section>
+
+weightselection="Normal:400, Bold:700"
+
+weightselection=""
+italicoptions="ok" 
+optoptions=""
+opt="salt" 
+
+<section class="typeTester" font="atc_timberline" text="ATC Timberline" align="center" weight="400" weightoptions="true" tracking="0" trackingoptions="siq" italic="yup" italicoptions="ok" singlelineoptions="true" size="90" sizeoptions="cool" opt="dlig" optoptions="dlig, hlig" singleline="true" alignoptions="true"></section>
+<section class='typeTester' font="atc_timberline" weight="800" weightselection="Light:100, wonka do:400, Black:800"></section>
+
+
+weightselection="Inline:200, Light:300, Display:400, Shadow:500"
+
+
+weightselection="CleanThin:100, Thin:200, DotLight:300, Light:400, Dot:500, Clean:600, Regular:700, Slant:800, Bold:900"
+
+
+weightselection="Line:100, Thickline:200, FullLine:300, Full:400, Dark:500, Shadow:600, ShadowThickline:700, BlackThickline:800, Black:900"
+
+
+weightselection="Thin:100, XLight:200, Light:300, Regular:400, Medium:500, Bold:700, Heavy:900"
+
+weightselection="Thin:100, XLight:200, Light:300, Regular:400, Medium:500, Bold:700"
+
+
+weightselection="Thin:100, Light:300, Regular:400, SemiBold:600, Bold:700, XBold:800, Black:900"
+
+
+weightselection=" Light:300, Regular:400, Medium:500,Black:900"
+
+weightselection=" Light:300, Regular:400, Bold:700,XBold:800"
+
+weightselection=" Display:300, Normal:400, Poster:500,PosterHeavy:600"
