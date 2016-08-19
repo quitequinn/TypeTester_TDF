@@ -1,12 +1,14 @@
 # [TDF Type Tester](http://tendollarfonts.com/)
 
-TDF Type Tester is a flexible display for the numerouse features available in a typeface. Made specifically for TDF.
+TDF Type Tester is a flexible display for the numerouse features available in a typeface. <br />
+Made specifically for TDF.
 
-As seen on [The Designer Foundrie](http://tendollarfonts.com/)
+As seen on [The Designer Foundrie](http://tendollarfonts.com/)<br />
 https://www.thedesignersfoundry.com/products/finkl-pro
 
 ![Image of Tester 1](https://raw.githubusercontent.com/quitequinn/TypeTester_TDF/master/examples/example_1.jpg)
 ![Image of Tester 2](https://raw.githubusercontent.com/quitequinn/TypeTester_TDF/master/examples/example_2.jpg)
+
 
 ## License
 
@@ -21,6 +23,7 @@ Feel free to look, learn, comment or criticize. If you want a private license or
 - [Options](#options)
 - [Dependencies](#dependencies)
 - [Ramp Up](#ramp-up)
+
 
 ## Quick Start
 ```
@@ -39,6 +42,7 @@ Feel free to look, learn, comment or criticize. If you want a private license or
 <!-- Call Type Tester Style -->
 <link href="build/css/style.css" rel="stylesheet" type="text/css"  media="all"  />
 ```
+
 
 ## Example
 
@@ -195,6 +199,7 @@ False could be "sus", "no", "nah", "nvm", "false", "rathernot", "nope", "naaah",
 
 A short list of depencencies for the project.
 
+
 ### Jquery
 http://jquery.com/download/
 ```
@@ -221,6 +226,7 @@ You can add them all by just copying this
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="https://zachleat.github.io/BigText/dist/bigtext.js"></script>
 ```
+
 
 ## Ramp Up
 
