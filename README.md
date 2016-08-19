@@ -3,7 +3,7 @@
 TDF Type Tester is a flexible display for the numerouse features available in a typeface. <br />
 Made specifically for TDF.
 
-As seen on [The Designer Foundrie](http://tendollarfonts.com/)<br />
+As seen on [The Designers Foundry](http://tendollarfonts.com/).<br />
 https://www.thedesignersfoundry.com/products/finkl-pro
 
 ![Image of Tester 1](https://raw.githubusercontent.com/quitequinn/TypeTester_TDF/master/examples/example_1.jpg)
@@ -12,7 +12,7 @@ https://www.thedesignersfoundry.com/products/finkl-pro
 
 ## License
 
-Copyright 2015 Quinn Keaveney
+Copyright 2015 Quinn Keaveney.<br />
 Feel free to look, learn, comment or criticize. If you want a private license or support please contact me independently. 
 
 
@@ -65,7 +65,7 @@ Multiple Feature Example
 
 All options are chosen by defining an attribute and feeding it a string.
 
-W A R N I N G
+W A R N I N G.<br />
 The attribute names are case specific.
 
 ### font
