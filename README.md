@@ -5,8 +5,8 @@ TDF Type Tester is a flexible display for the numerouse features available in a 
 As seen on [The Designer Foundrie](http://tendollarfonts.com/)
 https://www.thedesignersfoundry.com/products/finkl-pro
 
-![Image of Tester 1](https://github.com/quitequinn/TypeTester_TDF/examples/example_1)
-![Image of Tester 2](https://github.com/quitequinn/TypeTester_TDF/examples/example_2)
+![Image of Tester 1](https://raw.githubusercontent.com/quitequinn/TypeTester_TDF/master/examples/example_1.jpg)
+![Image of Tester 2](https://raw.githubusercontent.com/quitequinn/TypeTester_TDF/master/examples/example_2.jpg)
 
 ## License
 
