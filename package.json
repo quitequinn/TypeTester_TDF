@@ -1,37 +1,76 @@
 {
-  "name": "Type Tester TDF",
-  "version": "1.0.0",
-  "description": "Type Tester TDF",
-  "main": "Gruntfile.js",
+  "name": "type-tester-tdf",
+  "version": "2.0.0",
+  "description": "Accessible, dependency-free type tester for the web — a vanilla JS core with an optional React wrapper. Composable OpenType features, variable-font axes, and auto-fit sizing.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/react.cjs"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
-  "repository": {
-    "type": "git",
-    "url": ""
-  },
+  "keywords": [
+    "typography",
+    "type-tester",
+    "font",
+    "opentype",
+    "variable-fonts",
+    "font-feature-settings",
+    "react",
+    "accessibility"
+  ],
   "author": "Quinn Keaveney",
   "license": "ISC",
-  "bugs": {
-    "url": ""
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quitequinn/TypeTester_TDF.git"
   },
-  "homepage": "",
+  "homepage": "https://github.com/quitequinn/TypeTester_TDF#readme",
+  "bugs": {
+    "url": "https://github.com/quitequinn/TypeTester_TDF/issues"
+  },
+  "peerDependencies": {
+    "react": ">=17",
+    "react-dom": ">=17"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-autoprefixer": "^2.1.0",
-    "grunt-contrib-copy": "^0.6.0",
-    "grunt-contrib-imagemin": "^0.8.1",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-sass": "^0.8.1",
-    "grunt-contrib-uglify": "^0.6.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-css-url-embed": "^1.5.1",
-    "grunt-fontface": "^0.9.0",
-    "grunt-newer": "^0.7.0",
-    "grunt-notify": "^0.4.1",
-    "grunt-responsive-images": "^0.1.4",
-    "grunt-svgmin": "^1.0.0",
-    "grunt-webfont": "^0.4.8",
-    "imagemin-mozjpeg": "^2.0.0"
+    "@types/react": "^18.3.0",
+    "jsdom": "^25.0.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
   }
 }

@@ -1,257 +1,195 @@
-# [TDF Type Tester](http://tendollarfonts.com/)
+# Type Tester TDF
 
-TDF Type Tester is a flexible display for the numerouse features available in a typeface. <br />
-Made specifically for TDF.
+[![npm](https://img.shields.io/npm/v/type-tester-tdf.svg)](https://www.npmjs.com/package/type-tester-tdf)
 
-As seen on [The Designers Foundry](http://tendollarfonts.com/).<br />
-https://www.thedesignersfoundry.com/products/finkl-pro
+An accessible, **dependency-free** type tester for the web. Type a sample, then
+adjust size, tracking, weight, italic, alignment, line-wrap, and **composable
+OpenType features** live. Ships a framework-agnostic vanilla core and an optional
+React component.
 
-![Image of Tester 1](https://raw.githubusercontent.com/quitequinn/TypeTester_TDF/master/examples/example_1.jpg)
-![Image of Tester 2](https://raw.githubusercontent.com/quitequinn/TypeTester_TDF/master/examples/example_2.jpg)
+> **v2 is a ground-up rewrite.** The legacy jQuery + jQuery UI + BigText widget
+> (v1) is preserved under [`legacy/`](./legacy). v2 has **no runtime
+> dependencies**, builds accessible native controls, escapes all input (no
+> `eval`, no `innerHTML`), composes multiple OpenType features at once, and
+> auto-fits with `ResizeObserver`. See [Migrating from v1](#migrating-from-v1).
 
-
-## License
-
-Copyright 2015 Quinn Keaveney.<br />
-Feel free to look, learn, comment or criticize. If you want a private license or support please contact me independently. 
-
-
-## Table of contents
-
-- [Quick Start](#quick-start)
-- [Example](#example)
+- [Install](#install)
+- [Vanilla JS](#vanilla-js) · full guide in [docs/vanilla.md](./docs/vanilla.md)
+- [React](#react) · full guide in [docs/react.md](./docs/react.md)
 - [Options](#options)
-- [Dependencies](#dependencies)
-- [Ramp Up](#ramp-up)
+- [Controls](#controls)
+- [OpenType features](#opentype-features)
+- [Accessibility](#accessibility)
+- [Migrating from v1](#migrating-from-v1)
+- [Development](#development)
 
+## Install
 
-## Quick Start
-```
-<!-- Dependencies -->
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<script src="https://zachleat.github.io/BigText/dist/bigtext.js"></script>
-
-<!-- Call The Type Tester -->
-<section class="typeTester" font="atc_timberline" text="Try ATC Timberline" align="center" weight="400" weightoptions="true" weightselection="Light:100, wonka do:400, Black:800" tracking="0" trackingoptions="siq" italic="yup" italicoptions="ok" singlelineoptions="true" size="90" sizeoptions="cool" opt="dlig" optoptions="dlig, hlig" singleline="true" alignoptions="true"></section>
-
-<!-- Call Type Tester Function -->
-<script src="build/js/typeTester.js"></script>
-
-<!-- Call Type Tester Style -->
-<link href="build/css/style.css" rel="stylesheet" type="text/css"  media="all"  />
+```bash
+npm install type-tester-tdf
 ```
 
+Import the stylesheet once (optional — the component works without it):
 
-## Example
-
-Simple Example
-```
-<section class="typeTester" ></section>
+```js
+import "type-tester-tdf/styles.css";
 ```
 
-One Feature Example
-```
-<section class="typeTester" size="20" ></section>
+## Vanilla JS
+
+### Programmatic
+
+```js
+import { TypeTester } from "type-tester-tdf";
+import "type-tester-tdf/styles.css";
+
+const tester = new TypeTester(document.querySelector("#demo"), {
+  text: "Typography",
+  fontFamily: "Inter",
+  size: 96,
+  controls: { size: true, tracking: true, weight: true, italic: true, features: true },
+});
+
+// later…
+tester.destroy();
 ```
 
-Multiple Feature Example
+### Declarative (`data-*` auto-init)
+
+```html
+<div
+  data-type-tester
+  data-font="Inter"
+  data-size="96"
+  data-text="Typography"
+  data-controls="size,tracking,weight,italic,align,features"
+></div>
+
+<script type="module">
+  import { autoInit } from "type-tester-tdf";
+  import "type-tester-tdf/styles.css";
+  autoInit(); // initialises every [data-type-tester] element
+</script>
 ```
-<section class="typeTester" font="atc_timberline" singleline="true" text="Try ATC Timberline" align="center" alignoptions="true" weight="400" weightoptions="true" weightselection="Light:100, wonka do:400, Black:800" tracking="0" trackingoptions="siq" italic="yup" italicoptions="ok" singlelineoptions="true" size="90" sizeoptions="cool" opt="dlig" optoptions="dlig, hlig" ></section>
+
+`autoInit()` is idempotent — already-initialised elements are skipped.
+
+## React
+
+```tsx
+import { TypeTesterComponent } from "type-tester-tdf/react";
+import "type-tester-tdf/styles.css";
+
+export function Demo() {
+  return (
+    <TypeTesterComponent
+      text="Typography"
+      fontFamily="Inter"
+      size={96}
+      controls={{ size: true, weight: true, features: true }}
+      onChange={(state) => console.log(state)}
+    />
+  );
+}
 ```
+
+React is a **peer dependency** (>=17); the core stays dependency-free.
 
 ## Options
 
-All options are chosen by defining an attribute and feeding it a string.
+`new TypeTester(host, options)` / `<TypeTesterComponent {...options} />`:
 
-W A R N I N G.<br />
-The attribute names are case specific.
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | `""` | Initial sample text. |
+| `fontFamily` | `string` | — | Primary family to test. |
+| `fallback` | `string` | `"sans-serif"` | Fallback stack appended after the family. |
+| `size` | `number \| "fit"` | `80` | Px size, or `"fit"` to auto-fit the container. |
+| `tracking` | `number` | `0` | Letter-spacing in em. |
+| `weight` | `number` | `400` | Font weight (or variable `wght` axis). |
+| `italic` | `boolean` | `false` | Italic state. |
+| `align` | `"left" \| "center" \| "right"` | `"left"` | Text alignment. |
+| `wrap` | `boolean` | `true` | Multi-line wrap vs single line. |
+| `features` | `string[]` | `[]` | Initially active OpenType feature tags. |
+| `editable` | `boolean` | `true` | Whether the sample is user-editable. |
+| `placeholder` | `string` | `"Type to test…"` | Empty-state placeholder (CSS, not real text). |
+| `controls` | `ControlsConfig` | `{}` | Which controls to render (see below). |
+| `variable` | `{ wght?: { min, max, step? } }` | — | Drive weight via `font-variation-settings`. |
+| `ariaLabel` | `string` | `"Sample text"` | Accessible name for the editable region. |
+| `onChange` | `(state) => void` | — | Called on every state change. |
 
-### font
-Sets the font-family that the tester looks for.
-Default is "'Fakta Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif".
-```
-font="atc_timberline"
-```
+## Controls
 
-### text
-Sets the placeholder text of the tester
-Default is "Try Typing Here..." but if you define the font it is "'Try' + font " .
-```
-text="Happy New Years!"
-```
+`controls` selects which interactive controls appear. A `true` value uses the
+default range; an object overrides it:
 
-### size
-Sets initial size for tester. Size is set in pixels via font-size.
-Default is 40.
-```
-size="22"
-```
-
-### sizeoptions
-Allows slider bar for size.
-Default is false.
-```
-sizeoptions="true"
-```
-
-### tracking
-Sets initial tracking for tester. Tracking is set in em via letter-spacing.
-You may choose between -0.25 –> 1. Default is 0.
-```
-tracking="0.8"
+```js
+controls: {
+  size: { min: 12, max: 240, step: 1 }, // or `true`
+  tracking: true,                       // em slider
+  weight: true,                         // 100–900, or the variable axis
+  italic: true,                         // aria-pressed toggle button
+  align: true,                          // native <select>
+  wrap: true,                           // single-line toggle
+  features: true,                       // full OpenType list (or string[] subset)
+}
 ```
 
-### trackingoptions
-Allows slider bar for tracking.
-Default is false.
-```
-trackingoptions="true"
+Default ranges: size `8–300px`, tracking `-0.1–0.5em`, weight `100–900` step 100.
+
+## OpenType features
+
+Unlike v1 (one feature at a time), **features compose**: selecting Small Caps
+and Oldstyle Figures yields `font-feature-settings: "smcp" 1, "onum" 1`.
+
+```js
+import { FEATURES, featureSettings } from "type-tester-tdf";
+
+featureSettings(["smcp", "onum"]); // => '"smcp" 1, "onum" 1'
 ```
 
-### weight
-Sets initial weight for tester. Weight is set on a 100 –> 900 scale via font-weight.
-Default is 400.
-```
-weight="800"
-```
+Supported tags include ligatures (`liga`, `dlig`, `hlig`, `clig`), case (`smcp`,
+`c2sc`, `case`, `cpsp`), figures (`lnum`, `onum`, `pnum`, `tnum`, `zero`, `ordn`),
+fractions (`frac`, `afrc`), alternates (`swsh`, `calt`, `salt`, `hist`, `nalt`),
+position (`sups`, `subs`), and stylistic sets `ss01`–`ss20`. Restrict the offered
+set with `controls: { features: ["smcp", "onum", "ss01"] }`.
 
-### weightoptions
-Allows slider bar for weight.
-Default is false.
-```
-weightoptions="true"
-```
+## Accessibility
 
-### weightselections
-Sets slider bar's options for weight.
-Default is 100 -> 900.
-```
-weightselections="Light:100, Book:400, Black:800"
-```
+- Native `<input type="range">`, `<button aria-pressed>`, `<select>`, and
+  checkbox feature toggles — full keyboard support out of the box.
+- Editable region is a labelled `role="textbox"` with `aria-multiline`; the
+  placeholder is CSS-only, so screen readers never read stale text.
+- The features panel manages focus, closes on `Escape` / outside click, and
+  exposes `aria-expanded` / `aria-haspopup`.
+- State changes are announced via a polite live region.
+- Toggle states use weight + colour (not colour alone); animations respect
+  `prefers-reduced-motion`.
 
-### align
-Sets initial alignment for tester. Align is set via text-align. Requires a set size.
-You may chose left, center, or right. Default is left.
-```
-align="right"
-```
+## Migrating from v1
 
-### alignoptions
-Sets slider bar's options for alignment.
-Default is false.
-```
-alignoptions="true"
-```
+| v1 (jQuery attributes) | v2 |
+| --- | --- |
+| `class="typeTester"` | `data-type-tester` (or `new TypeTester(el, …)`) |
+| `font="Inter"` | `data-font="Inter"` / `fontFamily: "Inter"` |
+| `size="90"` / `size=""` (fit) | `data-size="90"` / `data-size="fit"` |
+| `weightoptions="true"` | `data-controls="weight"` / `controls: { weight: true }` |
+| `optoptions="dlig,hlig"` | `data-features` / `controls: { features: [...] }` |
+| magic words `"yup"`, `"nope"` | plain booleans / `"true"` / `"false"` |
+| jQuery + jQuery UI + BigText | **no dependencies** |
 
-### italic
-Sets italic for tester. Italic is set via font-style.
-Default is false.
-```
-italic="true"
-```
+The v1 source remains in [`legacy/`](./legacy) for reference.
 
-### italicoptions
-Allows switch for italic.
-Default is false.
-```
-italicoptions="true"
-```
+## Development
 
-### singleline
-Sets initial wordwrap for tester. Singleline is set via white-space. Requires a set size.
-Default is false.
-```
-singleline="true"
-```
-
-### singlelineoptions
-Allows switch for singleline / wordwrap.
-Default is false.
-```
-singlelineoptions="true"
-```
-
-### opt
-Sets initial Open Type Feature for tester. OPT is set via font-feature-settings.
-Default is none.
-```
-opt="dlig"
-```
-
-### optoptions
-Allows dropdown for Open Type Features.
-Default is false.
-```
-optoptions="dlig, hlig"
-```
-
-### True or False
-You can also set any of the above options with a variety of true or false terms. Cool right?
-
-True could be "yes", "true", "hawt", "yup", "yep", "siq", "swell", "chiller", "ok", "!", "fine", "right", "good", "aye", "indubitably", "sure", "yeah", "yay", etc...
-
-False could be "sus", "no", "nah", "nvm", "false", "rathernot", "nope", "naaah", "naah", "bye", "fart", "sans", "terminal".
-
-
-## Dependencies
-
-A short list of depencencies for the project.
-
-
-### Jquery
-http://jquery.com/download/
-```
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-```
-
-### Jquery UI
-http://jquery.com/download/
-```
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-```
-
-### Big Text
-https://github.com/zachleat/BigText
-```
-<script src="https://zachleat.github.io/BigText/dist/bigtext.js"></script>
-```
-
-You can add them all by just copying this
-```
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<script src="https://zachleat.github.io/BigText/dist/bigtext.js"></script>
-```
-
-
-## Ramp Up
-
-Install node if you haven't already
-http://nodejs.org/
-
-Install grunt (via terminal)
-http://gruntjs.com/getting-started
-```
-npm install -g grunt-cli
-```
-
-Setting up grunt
-```
-# set current directory
-cd projectDirectory
-
-# install packages
+```bash
 npm install
+npm run build      # bundle ESM + CJS + types (tsup)
+npm test           # vitest + jsdom
+npm run typecheck  # tsc --noEmit
+npm run dev        # watch build
 ```
 
-Using grunt
-```
-# Run Grunt and grunt watch
-grunt && grunt watch
-```
+## License
 
-### You're all set!
+ISC © Quinn Keaveney. Originally built for [The Designers Foundry](https://www.thedesignersfoundry.com/).

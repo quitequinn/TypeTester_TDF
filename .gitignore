@@ -5,3 +5,8 @@ Thumbs.db
 node_modules
 .sass-cache
 .htaccess
+
+# Build output
+dist
+*.tsbuildinfo
+coverage
