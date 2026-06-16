@@ -1,0 +1,225 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { TypeTester } from "../src/core/typeTester.js";
+
+let host: HTMLDivElement;
+
+beforeEach(() => {
+	host = document.createElement("div");
+	document.body.appendChild(host);
+});
+
+afterEach(() => {
+	host.remove();
+});
+
+describe("TypeTester rendering", () => {
+	it("builds an accessible editable text region", () => {
+		new TypeTester(host, { text: "Hello", editable: true, ariaLabel: "Sample" });
+		const text = host.querySelector(".tt__text")!;
+		expect(text.getAttribute("role")).toBe("textbox");
+		expect(text.getAttribute("aria-label")).toBe("Sample");
+		expect(text.getAttribute("contenteditable")).toBe("true");
+		expect(text.textContent).toBe("Hello");
+	});
+
+	it("never injects user text as HTML", () => {
+		new TypeTester(host, { text: "<img src=x onerror=alert(1)>", editable: true });
+		const text = host.querySelector(".tt__text")!;
+		expect(text.querySelector("img")).toBeNull();
+		expect(text.textContent).toContain("<img");
+	});
+
+	it("applies typographic state via inline styles", () => {
+		new TypeTester(host, {
+			size: 64,
+			weight: 700,
+			italic: true,
+			tracking: 0.1,
+			align: "center",
+			fontFamily: "Test Sans",
+		});
+		const type = host.querySelector<HTMLElement>(".tt__type")!;
+		expect(type.style.fontSize).toBe("64px");
+		expect(type.style.fontWeight).toBe("700");
+		expect(type.style.fontStyle).toBe("italic");
+		expect(type.style.letterSpacing).toBe("0.1em");
+		expect(type.style.textAlign).toBe("center");
+		expect(type.style.fontFamily).toContain("Test Sans");
+	});
+
+	it("renders only the requested controls", () => {
+		new TypeTester(host, {
+			size: 40,
+			controls: { size: true, weight: true },
+		});
+		expect(host.querySelector(".tt__slider--size")).not.toBeNull();
+		expect(host.querySelector(".tt__slider--weight")).not.toBeNull();
+		expect(host.querySelector(".tt__slider--tracking")).toBeNull();
+		expect(host.querySelector(".tt__toggle--italic")).toBeNull();
+	});
+});
+
+describe("TypeTester controls", () => {
+	it("updates size from the slider and fires onChange", () => {
+		const onChange = vi.fn();
+		new TypeTester(host, { size: 40, controls: { size: true }, onChange });
+		const slider = host.querySelector<HTMLInputElement>(".tt__slider--size")!;
+		slider.value = "120";
+		slider.dispatchEvent(new Event("input"));
+		const type = host.querySelector<HTMLElement>(".tt__type")!;
+		expect(type.style.fontSize).toBe("120px");
+		expect(onChange).toHaveBeenCalled();
+		expect(onChange.mock.calls.at(-1)![0].size).toBe(120);
+	});
+
+	it("composes multiple OpenType features", () => {
+		const tester = new TypeTester(host, { controls: { features: true } });
+		const boxes = host.querySelectorAll<HTMLInputElement>(".tt__feature input");
+		const byTag = (tag: string) =>
+			Array.from(boxes).find((b) => b.value === tag)!;
+		const smcp = byTag("smcp");
+		const onum = byTag("onum");
+		smcp.checked = true;
+		smcp.dispatchEvent(new Event("change"));
+		onum.checked = true;
+		onum.dispatchEvent(new Event("change"));
+		const type = host.querySelector<HTMLElement>(".tt__type")!;
+		expect(type.style.fontFeatureSettings).toBe('"smcp" 1, "onum" 1');
+		expect(tester.getState().features).toEqual(["smcp", "onum"]);
+	});
+
+	it("toggles the features panel with aria-expanded", () => {
+		new TypeTester(host, { controls: { features: true } });
+		const toggle = host.querySelector<HTMLButtonElement>(".tt__toggle--features")!;
+		const panel = host.querySelector<HTMLElement>(".tt__panel")!;
+		expect(panel.hasAttribute("hidden")).toBe(true);
+		toggle.click();
+		expect(toggle.getAttribute("aria-expanded")).toBe("true");
+		expect(panel.hasAttribute("hidden")).toBe(false);
+	});
+
+	it("toggles italic via aria-pressed button", () => {
+		new TypeTester(host, { controls: { italic: true } });
+		const button = host.querySelector<HTMLButtonElement>(".tt__toggle--italic")!;
+		expect(button.getAttribute("aria-pressed")).toBe("false");
+		button.click();
+		expect(button.getAttribute("aria-pressed")).toBe("true");
+		expect(host.querySelector<HTMLElement>(".tt__type")!.style.fontStyle).toBe("italic");
+	});
+
+	it("clamps out-of-range initial size to the slider range", () => {
+		new TypeTester(host, { size: 5000, controls: { size: { min: 10, max: 200 } } });
+		const slider = host.querySelector<HTMLInputElement>(".tt__slider--size")!;
+		expect(Number(slider.value)).toBe(200);
+	});
+});
+
+describe("TypeTester more controls", () => {
+	it("updates tracking and weight from sliders", () => {
+		new TypeTester(host, { controls: { tracking: true, weight: true } });
+		const type = host.querySelector<HTMLElement>(".tt__type")!;
+		const tracking = host.querySelector<HTMLInputElement>(".tt__slider--tracking")!;
+		tracking.value = "0.2";
+		tracking.dispatchEvent(new Event("input"));
+		expect(type.style.letterSpacing).toBe("0.2em");
+		const weight = host.querySelector<HTMLInputElement>(".tt__slider--weight")!;
+		weight.value = "700";
+		weight.dispatchEvent(new Event("input"));
+		expect(type.style.fontWeight).toBe("700");
+	});
+
+	it("changes alignment via the select", () => {
+		new TypeTester(host, { controls: { align: true } });
+		const select = host.querySelector<HTMLSelectElement>(".tt__select--align")!;
+		select.value = "right";
+		select.dispatchEvent(new Event("change"));
+		expect(host.querySelector<HTMLElement>(".tt__type")!.style.textAlign).toBe("right");
+	});
+
+	it("wrap toggle updates white-space and aria-multiline", () => {
+		new TypeTester(host, { wrap: true, controls: { wrap: true } });
+		const text = host.querySelector<HTMLElement>(".tt__text")!;
+		expect(text.getAttribute("aria-multiline")).toBe("true");
+		host.querySelector<HTMLButtonElement>(".tt__toggle--wrap")!.click();
+		expect(text.getAttribute("aria-multiline")).toBe("false");
+		expect(text.style.whiteSpace).toBe("nowrap");
+	});
+
+	it("drives weight via font-variation-settings when variable", () => {
+		new TypeTester(host, {
+			weight: 500,
+			variable: { wght: { min: 100, max: 900 } },
+			controls: { weight: true },
+		});
+		const type = host.querySelector<HTMLElement>(".tt__type")!;
+		expect(type.style.getPropertyValue("font-variation-settings")).toBe('"wght" 500');
+	});
+
+	it("restricted features keep their real group/label", () => {
+		const tester = new TypeTester(host, { controls: { features: ["liga", "onum"] } });
+		const labels = Array.from(host.querySelectorAll(".tt__feature span")).map(
+			(s) => s.textContent,
+		);
+		expect(labels).toContain("Standard Ligatures");
+		expect(labels).toContain("Oldstyle Figures");
+		tester.destroy();
+	});
+
+	it("emits a complete state payload", () => {
+		let last: ReturnType<TypeTester["getState"]> | null = null;
+		new TypeTester(host, {
+			size: 40,
+			controls: { size: true },
+			onChange: (s) => (last = s),
+		});
+		const slider = host.querySelector<HTMLInputElement>(".tt__slider--size")!;
+		slider.value = "50";
+		slider.dispatchEvent(new Event("input"));
+		expect(last).not.toBeNull();
+		expect(Object.keys(last!).sort()).toEqual(
+			["align", "features", "fit", "italic", "size", "text", "tracking", "weight", "wrap"].sort(),
+		);
+	});
+});
+
+describe("TypeTester features panel behaviour", () => {
+	it("closes on Escape and restores focus to the toggle", () => {
+		new TypeTester(host, { controls: { features: true } });
+		const toggle = host.querySelector<HTMLButtonElement>(".tt__toggle--features")!;
+		const panel = host.querySelector<HTMLElement>(".tt__panel")!;
+		toggle.click();
+		expect(panel.hasAttribute("hidden")).toBe(false);
+		document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+		expect(panel.hasAttribute("hidden")).toBe(true);
+		expect(toggle.getAttribute("aria-expanded")).toBe("false");
+	});
+
+	it("closes on outside click", () => {
+		new TypeTester(host, { controls: { features: true } });
+		const toggle = host.querySelector<HTMLButtonElement>(".tt__toggle--features")!;
+		const panel = host.querySelector<HTMLElement>(".tt__panel")!;
+		toggle.click();
+		expect(panel.hasAttribute("hidden")).toBe(false);
+		document.body.click();
+		expect(panel.hasAttribute("hidden")).toBe(true);
+	});
+});
+
+describe("TypeTester teardown", () => {
+	it("removes all DOM on destroy", () => {
+		const tester = new TypeTester(host, { controls: { size: true }, size: 40 });
+		expect(host.children.length).toBeGreaterThan(0);
+		tester.destroy();
+		expect(host.children.length).toBe(0);
+	});
+
+	it("removes document-level listeners on destroy", () => {
+		const tester = new TypeTester(host, { controls: { features: true } });
+		tester.destroy();
+		// After destroy the outside-click/Escape listeners must be gone: dispatching
+		// must not throw and there is no panel left to toggle.
+		document.body.click();
+		document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+		expect(host.querySelector(".tt__panel")).toBeNull();
+	});
+});

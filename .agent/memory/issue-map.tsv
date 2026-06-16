@@ -1,0 +1,36 @@
+C1	2	Remove eval() of DOM attributes (arbitrary code execution)
+C2	3	Escape attribute/contenteditable values (XSS / CSS injection)
+M1	4	FONT disable-check tests wrong variable (size instead of font)
+M2	5	firstWeightPosition undefined when weight not found in weightselection
+M3	6	Auto-fit text does not reflow on window/container resize
+M4	7	Debounce keyup-driven re-fit (layout thrashing / bouncing text)
+M5	8	OpenType features are not composable (each overwrites the rest)
+M6	9	README documents weightselections but code reads weightselection
+M7	10	Build is unreproducible (EOL grunt deps, no lockfile, undeclared jQuery, wrong main)
+M8	11	Eliminate leaked/implicit globals and shared mutable counters
+M9	12	Custom controls have no role/tabindex/keyboard/ARIA
+M10	13	contenteditable editor lacks label/role; placeholder is real content
+M11	14	Features dropdown: no outside-click/Escape close or focus management
+M12	15	State signalled by color only (no aria-pressed/aria-selected)
+M13	16	No tests and no test framework; logic is untestable
+M14	17	Monolithic 670-line function with heavy copy-paste duplication
+m1	18	Remove dead 7-parameter function signature
+m2	19	Undefined options variable makes guard always true
+m3	20	Duplicate -moz-font-feature-settings with legacy =1 syntax
+m4	21	Dead vendor prefixes on font-feature-settings
+m5	22	Hardcoded private 'Fakta Grotesk' fallback leaks foundry default
+m6	23	OpenType feature mislabels and duplicate labels
+m7	24	Missing OpenType features and stylistic sets
+m8	25	Size slider range hardcoded 15-215; out-of-range size clamped
+m9	26	bigtext fits before web fonts load (FOUT/FOIT)
+m10	27	Empty style tag injected per tester into body
+m11	28	Committed build artifacts, stale min.js, dead 'scripts copy.js'; uglify off
+m12	29	prefers-reduced-motion ignored (slider animate:true)
+m13	30	Loose == equality and array-to-empty-string comparisons
+m14	31	font-style: initial used instead of normal for off-state
+m15	32	align not validated against allowed values
+m16	33	Dead device/vendor detection (isMobile/iphone/prefix unused)
+m17	34	Non-standard <smcp> element in disclaimer link
+m18	35	Fragile .parent().parent().find() coupling, uncached selectors
+m19	36	README gaps and missing JSDoc
+m20	37	return false mid-init leaves DOM partially initialized

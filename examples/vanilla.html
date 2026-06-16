@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Type Tester TDF — vanilla example</title>
+		<!-- Built stylesheet (run `npm run build` first). -->
+		<link rel="stylesheet" href="../dist/styles.css" />
+		<style>
+			body { margin: 2rem; font-family: system-ui, sans-serif; }
+			.demo { max-width: 60rem; }
+			pre { background: #f4f4f5; padding: 1rem; border-radius: 0.5rem; overflow: auto; }
+		</style>
+	</head>
+	<body>
+		<h1>Type Tester TDF</h1>
+
+		<!-- Declarative auto-init -->
+		<div
+			class="demo"
+			data-type-tester
+			data-text="Typography"
+			data-size="96"
+			data-weight="500"
+			data-controls="size,tracking,weight,italic,align,wrap,features"
+			data-placeholder="Type to test…"
+		></div>
+
+		<h2>Current state</h2>
+		<pre id="out"></pre>
+
+		<script type="module">
+			// Built ESM bundle (run `npm run build` first).
+			import { TypeTester } from "../dist/index.js";
+
+			const host = document.querySelector("[data-type-tester]");
+			new TypeTester(host, {
+				text: host.dataset.text,
+				size: Number(host.dataset.size),
+				weight: Number(host.dataset.weight),
+				controls: {
+					size: true,
+					tracking: true,
+					weight: true,
+					italic: true,
+					align: true,
+					wrap: true,
+					features: true,
+				},
+				onChange: (state) => {
+					document.getElementById("out").textContent = JSON.stringify(state, null, 2);
+				},
+			});
+		</script>
+	</body>
+</html>
