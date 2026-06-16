@@ -1,6 +1,9 @@
 # Type Tester TDF
 
 [![npm](https://img.shields.io/npm/v/type-tester-tdf.svg)](https://www.npmjs.com/package/type-tester-tdf)
+[![CI](https://github.com/quitequinn/TypeTester_TDF/actions/workflows/ci.yml/badge.svg)](https://github.com/quitequinn/TypeTester_TDF/actions/workflows/ci.yml)
+
+**[▶ Live demo](https://quitequinn.github.io/TypeTester_TDF/)**
 
 An accessible, **dependency-free** type tester for the web. Type a sample, then
 adjust size, tracking, weight, italic, alignment, line-wrap, and **composable
