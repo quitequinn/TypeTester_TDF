@@ -6,12 +6,12 @@ via a CDN that serves ES modules.
 ## Install
 
 ```bash
-npm install typebar
+npm install typebar-tdf
 ```
 
 ```js
-import { TypeBar, autoInit } from "typebar";
-import "typebar/styles.css";
+import { TypeBar, autoInit } from "typebar-tdf";
+import "typebar-tdf/styles.css";
 ```
 
 ## Programmatic API
@@ -69,7 +69,7 @@ Mark up an element and call `autoInit()`:
 ```
 
 ```js
-import { autoInit } from "typebar";
+import { autoInit } from "typebar-tdf";
 autoInit();              // whole document
 autoInit(someContainer); // or a subtree
 ```

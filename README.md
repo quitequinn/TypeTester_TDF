@@ -1,6 +1,6 @@
 # TypeBar
 
-[![npm](https://img.shields.io/npm/v/typebar.svg)](https://www.npmjs.com/package/typebar)
+[![npm](https://img.shields.io/npm/v/typebar-tdf.svg)](https://www.npmjs.com/package/typebar-tdf)
 [![CI](https://github.com/quitequinn/typebar/actions/workflows/ci.yml/badge.svg)](https://github.com/quitequinn/typebar/actions/workflows/ci.yml)
 
 **[▶ Live demo](https://quitequinn.github.io/typebar/)**
@@ -33,13 +33,13 @@ Ships a framework-agnostic vanilla core and an optional React component.
 ## Install
 
 ```bash
-npm install typebar
+npm install typebar-tdf
 ```
 
 Import the stylesheet once (optional — the component works without it):
 
 ```js
-import "typebar/styles.css";
+import "typebar-tdf/styles.css";
 ```
 
 ## Vanilla JS
@@ -47,8 +47,8 @@ import "typebar/styles.css";
 ### Programmatic
 
 ```js
-import { TypeBar } from "typebar";
-import "typebar/styles.css";
+import { TypeBar } from "typebar-tdf";
+import "typebar-tdf/styles.css";
 
 const tester = new TypeBar(document.querySelector("#demo"), {
   text: "Typography",
@@ -73,8 +73,8 @@ tester.destroy();
 ></div>
 
 <script type="module">
-  import { autoInit } from "typebar";
-  import "typebar/styles.css";
+  import { autoInit } from "typebar-tdf";
+  import "typebar-tdf/styles.css";
   autoInit(); // initialises every [data-typebar] element
 </script>
 ```
@@ -84,8 +84,8 @@ tester.destroy();
 ## React
 
 ```tsx
-import { TypeBarComponent } from "typebar/react";
-import "typebar/styles.css";
+import { TypeBarComponent } from "typebar-tdf/react";
+import "typebar-tdf/styles.css";
 
 export function Demo() {
   return (
@@ -150,7 +150,7 @@ Unlike v1 (one feature at a time), **features compose**: selecting Small Caps
 and Oldstyle Figures yields `font-feature-settings: "smcp" 1, "onum" 1`.
 
 ```js
-import { FEATURES, featureSettings } from "typebar";
+import { FEATURES, featureSettings } from "typebar-tdf";
 
 featureSettings(["smcp", "onum"]); // => '"smcp" 1, "onum" 1'
 ```

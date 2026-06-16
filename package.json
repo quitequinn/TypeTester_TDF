@@ -1,5 +1,5 @@
 {
-  "name": "typebar",
+  "name": "typebar-tdf",
   "version": "2.0.1",
   "description": "Accessible, dependency-free type tester for the web — a vanilla JS core with an optional React wrapper. Composable OpenType features, variable-font axes, and auto-fit sizing.",
   "type": "module",

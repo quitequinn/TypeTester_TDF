@@ -1,18 +1,18 @@
 # React guide
 
-React is an optional **peer dependency** (>=17). The `typebar/react`
+React is an optional **peer dependency** (>=17). The `typebar-tdf/react`
 entry wraps the dependency-free core in a component.
 
 ## Install
 
 ```bash
-npm install typebar
+npm install typebar-tdf
 # react / react-dom are peers you already have in a React app
 ```
 
 ```tsx
-import { TypeBarComponent } from "typebar/react";
-import "typebar/styles.css";
+import { TypeBarComponent } from "typebar-tdf/react";
+import "typebar-tdf/styles.css";
 ```
 
 ## Basic usage
@@ -37,8 +37,8 @@ plus `className` for the host element.
 
 ```tsx
 import { useState } from "react";
-import { TypeBarComponent } from "typebar/react";
-import type { TypeBarState } from "typebar/react";
+import { TypeBarComponent } from "typebar-tdf/react";
+import type { TypeBarState } from "typebar-tdf/react";
 
 export function Demo() {
   const [state, setState] = useState<TypeBarState | null>(null);
@@ -73,7 +73,7 @@ The weight slider then drives `font-variation-settings: "wght" …` (and
 
 ## TypeScript
 
-All option and state types are exported from `typebar/react` and
+All option and state types are exported from `typebar-tdf/react` and
 `typebar`:
 
 ```ts
@@ -82,5 +82,5 @@ import type {
   TypeBarState,
   ControlsConfig,
   FeatureTag,
-} from "typebar";
+} from "typebar-tdf";
 ```
