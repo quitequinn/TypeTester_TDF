@@ -8,7 +8,8 @@ OpenType features** live. Ships a framework-agnostic vanilla core and an optiona
 React component.
 
 > **v2 is a ground-up rewrite.** The legacy jQuery + jQuery UI + BigText widget
-> (v1) is preserved under [`legacy/`](./legacy). v2 has **no runtime
+> (v1) is preserved at the [`v1.0.0`](https://github.com/quitequinn/TypeTester_TDF/releases/tag/v1.0.0)
+> git tag. v2 has **no runtime
 > dependencies**, builds accessible native controls, escapes all input (no
 > `eval`, no `innerHTML`), composes multiple OpenType features at once, and
 > auto-fits with `ResizeObserver`. See [Migrating from v1](#migrating-from-v1).
@@ -178,7 +179,7 @@ set with `controls: { features: ["smcp", "onum", "ss01"] }`.
 | magic words `"yup"`, `"nope"` | plain booleans / `"true"` / `"false"` |
 | jQuery + jQuery UI + BigText | **no dependencies** |
 
-The v1 source remains in [`legacy/`](./legacy) for reference.
+The v1 source remains available at the [`v1.0.0`](https://github.com/quitequinn/TypeTester_TDF/releases/tag/v1.0.0) git tag.
 
 ## Development
 
