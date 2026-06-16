@@ -1,18 +1,18 @@
 # React guide
 
-React is an optional **peer dependency** (>=17). The `typebar-tdf/react`
+React is an optional **peer dependency** (>=17). The `fontproof/react`
 entry wraps the dependency-free core in a component.
 
 ## Install
 
 ```bash
-npm install typebar-tdf
+npm install fontproof
 # react / react-dom are peers you already have in a React app
 ```
 
 ```tsx
-import { TypeBarComponent } from "typebar-tdf/react";
-import "typebar-tdf/styles.css";
+import { FontProofComponent } from "fontproof/react";
+import "fontproof/styles.css";
 ```
 
 ## Basic usage
@@ -20,7 +20,7 @@ import "typebar-tdf/styles.css";
 ```tsx
 export function Demo() {
   return (
-    <TypeBarComponent
+    <FontProofComponent
       text="Typography"
       fontFamily="Inter"
       size={96}
@@ -30,21 +30,21 @@ export function Demo() {
 }
 ```
 
-`TypeBarComponent` accepts every [option](../README.md#options) as a prop,
+`FontProofComponent` accepts every [option](../README.md#options) as a prop,
 plus `className` for the host element.
 
 ## Reading state
 
 ```tsx
 import { useState } from "react";
-import { TypeBarComponent } from "typebar-tdf/react";
-import type { TypeBarState } from "typebar-tdf/react";
+import { FontProofComponent } from "fontproof/react";
+import type { FontProofState } from "fontproof/react";
 
 export function Demo() {
-  const [state, setState] = useState<TypeBarState | null>(null);
+  const [state, setState] = useState<FontProofState | null>(null);
   return (
     <>
-      <TypeBarComponent fontFamily="Inter" size={72} controls={{ weight: true }} onChange={setState} />
+      <FontProofComponent fontFamily="Inter" size={72} controls={{ weight: true }} onChange={setState} />
       <pre>{state && JSON.stringify(state, null, 2)}</pre>
     </>
   );
@@ -59,7 +59,7 @@ tester. The instance is rebuilt only when a **structural** option changes
 ## Variable fonts
 
 ```tsx
-<TypeBarComponent
+<FontProofComponent
   fontFamily="Inter Variable"
   size={120}
   weight={400}
@@ -73,14 +73,14 @@ The weight slider then drives `font-variation-settings: "wght" …` (and
 
 ## TypeScript
 
-All option and state types are exported from `typebar-tdf/react` and
-`typebar`:
+All option and state types are exported from `fontproof/react` and
+`fontproof`:
 
 ```ts
 import type {
-  TypeBarOptions,
-  TypeBarState,
+  FontProofOptions,
+  FontProofState,
   ControlsConfig,
   FeatureTag,
-} from "typebar-tdf";
+} from "fontproof";
 ```

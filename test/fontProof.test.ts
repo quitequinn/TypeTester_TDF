@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { TypeBar } from "../src/core/typeBar.js";
+import { FontProof } from "../src/core/fontProof.js";
 
 let host: HTMLDivElement;
 
@@ -12,10 +12,10 @@ afterEach(() => {
 	host.remove();
 });
 
-describe("TypeBar rendering", () => {
+describe("FontProof rendering", () => {
 	it("builds an accessible editable text region", () => {
-		new TypeBar(host, { text: "Hello", editable: true, ariaLabel: "Sample" });
-		const text = host.querySelector(".tb__text")!;
+		new FontProof(host, { text: "Hello", editable: true, ariaLabel: "Sample" });
+		const text = host.querySelector(".fp__text")!;
 		expect(text.getAttribute("role")).toBe("textbox");
 		expect(text.getAttribute("aria-label")).toBe("Sample");
 		expect(text.getAttribute("contenteditable")).toBe("true");
@@ -23,14 +23,14 @@ describe("TypeBar rendering", () => {
 	});
 
 	it("never injects user text as HTML", () => {
-		new TypeBar(host, { text: "<img src=x onerror=alert(1)>", editable: true });
-		const text = host.querySelector(".tb__text")!;
+		new FontProof(host, { text: "<img src=x onerror=alert(1)>", editable: true });
+		const text = host.querySelector(".fp__text")!;
 		expect(text.querySelector("img")).toBeNull();
 		expect(text.textContent).toContain("<img");
 	});
 
 	it("applies typographic state via inline styles", () => {
-		new TypeBar(host, {
+		new FontProof(host, {
 			size: 64,
 			weight: 700,
 			italic: true,
@@ -38,7 +38,7 @@ describe("TypeBar rendering", () => {
 			align: "center",
 			fontFamily: "Test Sans",
 		});
-		const type = host.querySelector<HTMLElement>(".tb__type")!;
+		const type = host.querySelector<HTMLElement>(".fp__type")!;
 		expect(type.style.fontSize).toBe("64px");
 		expect(type.style.fontWeight).toBe("700");
 		expect(type.style.fontStyle).toBe("italic");
@@ -48,33 +48,33 @@ describe("TypeBar rendering", () => {
 	});
 
 	it("renders only the requested controls", () => {
-		new TypeBar(host, {
+		new FontProof(host, {
 			size: 40,
 			controls: { size: true, weight: true },
 		});
-		expect(host.querySelector(".tb__slider--size")).not.toBeNull();
-		expect(host.querySelector(".tb__slider--weight")).not.toBeNull();
-		expect(host.querySelector(".tb__slider--tracking")).toBeNull();
-		expect(host.querySelector(".tb__toggle--italic")).toBeNull();
+		expect(host.querySelector(".fp__slider--size")).not.toBeNull();
+		expect(host.querySelector(".fp__slider--weight")).not.toBeNull();
+		expect(host.querySelector(".fp__slider--tracking")).toBeNull();
+		expect(host.querySelector(".fp__toggle--italic")).toBeNull();
 	});
 });
 
-describe("TypeBar controls", () => {
+describe("FontProof controls", () => {
 	it("updates size from the slider and fires onChange", () => {
 		const onChange = vi.fn();
-		new TypeBar(host, { size: 40, controls: { size: true }, onChange });
-		const slider = host.querySelector<HTMLInputElement>(".tb__slider--size")!;
+		new FontProof(host, { size: 40, controls: { size: true }, onChange });
+		const slider = host.querySelector<HTMLInputElement>(".fp__slider--size")!;
 		slider.value = "120";
 		slider.dispatchEvent(new Event("input"));
-		const type = host.querySelector<HTMLElement>(".tb__type")!;
+		const type = host.querySelector<HTMLElement>(".fp__type")!;
 		expect(type.style.fontSize).toBe("120px");
 		expect(onChange).toHaveBeenCalled();
 		expect(onChange.mock.calls.at(-1)![0].size).toBe(120);
 	});
 
 	it("composes multiple OpenType features", () => {
-		const tester = new TypeBar(host, { controls: { features: true } });
-		const boxes = host.querySelectorAll<HTMLInputElement>(".tb__feature input");
+		const tester = new FontProof(host, { controls: { features: true } });
+		const boxes = host.querySelectorAll<HTMLInputElement>(".fp__feature input");
 		const byTag = (tag: string) =>
 			Array.from(boxes).find((b) => b.value === tag)!;
 		const smcp = byTag("smcp");
@@ -83,15 +83,15 @@ describe("TypeBar controls", () => {
 		smcp.dispatchEvent(new Event("change"));
 		onum.checked = true;
 		onum.dispatchEvent(new Event("change"));
-		const type = host.querySelector<HTMLElement>(".tb__type")!;
+		const type = host.querySelector<HTMLElement>(".fp__type")!;
 		expect(type.style.fontFeatureSettings).toBe('"smcp" 1, "onum" 1');
 		expect(tester.getState().features).toEqual(["smcp", "onum"]);
 	});
 
 	it("toggles the features panel with aria-expanded", () => {
-		new TypeBar(host, { controls: { features: true } });
-		const toggle = host.querySelector<HTMLButtonElement>(".tb__toggle--features")!;
-		const panel = host.querySelector<HTMLElement>(".tb__panel")!;
+		new FontProof(host, { controls: { features: true } });
+		const toggle = host.querySelector<HTMLButtonElement>(".fp__toggle--features")!;
+		const panel = host.querySelector<HTMLElement>(".fp__panel")!;
 		expect(panel.hasAttribute("hidden")).toBe(true);
 		toggle.click();
 		expect(toggle.getAttribute("aria-expanded")).toBe("true");
@@ -99,65 +99,65 @@ describe("TypeBar controls", () => {
 	});
 
 	it("toggles italic via aria-pressed button", () => {
-		new TypeBar(host, { controls: { italic: true } });
-		const button = host.querySelector<HTMLButtonElement>(".tb__toggle--italic")!;
+		new FontProof(host, { controls: { italic: true } });
+		const button = host.querySelector<HTMLButtonElement>(".fp__toggle--italic")!;
 		expect(button.getAttribute("aria-pressed")).toBe("false");
 		button.click();
 		expect(button.getAttribute("aria-pressed")).toBe("true");
-		expect(host.querySelector<HTMLElement>(".tb__type")!.style.fontStyle).toBe("italic");
+		expect(host.querySelector<HTMLElement>(".fp__type")!.style.fontStyle).toBe("italic");
 	});
 
 	it("clamps out-of-range initial size to the slider range", () => {
-		new TypeBar(host, { size: 5000, controls: { size: { min: 10, max: 200 } } });
-		const slider = host.querySelector<HTMLInputElement>(".tb__slider--size")!;
+		new FontProof(host, { size: 5000, controls: { size: { min: 10, max: 200 } } });
+		const slider = host.querySelector<HTMLInputElement>(".fp__slider--size")!;
 		expect(Number(slider.value)).toBe(200);
 	});
 });
 
-describe("TypeBar more controls", () => {
+describe("FontProof more controls", () => {
 	it("updates tracking and weight from sliders", () => {
-		new TypeBar(host, { controls: { tracking: true, weight: true } });
-		const type = host.querySelector<HTMLElement>(".tb__type")!;
-		const tracking = host.querySelector<HTMLInputElement>(".tb__slider--tracking")!;
+		new FontProof(host, { controls: { tracking: true, weight: true } });
+		const type = host.querySelector<HTMLElement>(".fp__type")!;
+		const tracking = host.querySelector<HTMLInputElement>(".fp__slider--tracking")!;
 		tracking.value = "0.2";
 		tracking.dispatchEvent(new Event("input"));
 		expect(type.style.letterSpacing).toBe("0.2em");
-		const weight = host.querySelector<HTMLInputElement>(".tb__slider--weight")!;
+		const weight = host.querySelector<HTMLInputElement>(".fp__slider--weight")!;
 		weight.value = "700";
 		weight.dispatchEvent(new Event("input"));
 		expect(type.style.fontWeight).toBe("700");
 	});
 
 	it("changes alignment via the select", () => {
-		new TypeBar(host, { controls: { align: true } });
-		const select = host.querySelector<HTMLSelectElement>(".tb__select--align")!;
+		new FontProof(host, { controls: { align: true } });
+		const select = host.querySelector<HTMLSelectElement>(".fp__select--align")!;
 		select.value = "right";
 		select.dispatchEvent(new Event("change"));
-		expect(host.querySelector<HTMLElement>(".tb__type")!.style.textAlign).toBe("right");
+		expect(host.querySelector<HTMLElement>(".fp__type")!.style.textAlign).toBe("right");
 	});
 
 	it("wrap toggle updates white-space and aria-multiline", () => {
-		new TypeBar(host, { wrap: true, controls: { wrap: true } });
-		const text = host.querySelector<HTMLElement>(".tb__text")!;
+		new FontProof(host, { wrap: true, controls: { wrap: true } });
+		const text = host.querySelector<HTMLElement>(".fp__text")!;
 		expect(text.getAttribute("aria-multiline")).toBe("true");
-		host.querySelector<HTMLButtonElement>(".tb__toggle--wrap")!.click();
+		host.querySelector<HTMLButtonElement>(".fp__toggle--wrap")!.click();
 		expect(text.getAttribute("aria-multiline")).toBe("false");
 		expect(text.style.whiteSpace).toBe("nowrap");
 	});
 
 	it("drives weight via font-variation-settings when variable", () => {
-		new TypeBar(host, {
+		new FontProof(host, {
 			weight: 500,
 			variable: { wght: { min: 100, max: 900 } },
 			controls: { weight: true },
 		});
-		const type = host.querySelector<HTMLElement>(".tb__type")!;
+		const type = host.querySelector<HTMLElement>(".fp__type")!;
 		expect(type.style.getPropertyValue("font-variation-settings")).toBe('"wght" 500');
 	});
 
 	it("restricted features keep their real group/label", () => {
-		const tester = new TypeBar(host, { controls: { features: ["liga", "onum"] } });
-		const labels = Array.from(host.querySelectorAll(".tb__feature span")).map(
+		const tester = new FontProof(host, { controls: { features: ["liga", "onum"] } });
+		const labels = Array.from(host.querySelectorAll(".fp__feature span")).map(
 			(s) => s.textContent,
 		);
 		expect(labels).toContain("Standard Ligatures");
@@ -166,13 +166,13 @@ describe("TypeBar more controls", () => {
 	});
 
 	it("emits a complete state payload", () => {
-		let last: ReturnType<TypeBar["getState"]> | null = null;
-		new TypeBar(host, {
+		let last: ReturnType<FontProof["getState"]> | null = null;
+		new FontProof(host, {
 			size: 40,
 			controls: { size: true },
 			onChange: (s) => (last = s),
 		});
-		const slider = host.querySelector<HTMLInputElement>(".tb__slider--size")!;
+		const slider = host.querySelector<HTMLInputElement>(".fp__slider--size")!;
 		slider.value = "50";
 		slider.dispatchEvent(new Event("input"));
 		expect(last).not.toBeNull();
@@ -182,11 +182,11 @@ describe("TypeBar more controls", () => {
 	});
 });
 
-describe("TypeBar features panel behaviour", () => {
+describe("FontProof features panel behaviour", () => {
 	it("closes on Escape and restores focus to the toggle", () => {
-		new TypeBar(host, { controls: { features: true } });
-		const toggle = host.querySelector<HTMLButtonElement>(".tb__toggle--features")!;
-		const panel = host.querySelector<HTMLElement>(".tb__panel")!;
+		new FontProof(host, { controls: { features: true } });
+		const toggle = host.querySelector<HTMLButtonElement>(".fp__toggle--features")!;
+		const panel = host.querySelector<HTMLElement>(".fp__panel")!;
 		toggle.click();
 		expect(panel.hasAttribute("hidden")).toBe(false);
 		document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
@@ -195,9 +195,9 @@ describe("TypeBar features panel behaviour", () => {
 	});
 
 	it("closes on outside click", () => {
-		new TypeBar(host, { controls: { features: true } });
-		const toggle = host.querySelector<HTMLButtonElement>(".tb__toggle--features")!;
-		const panel = host.querySelector<HTMLElement>(".tb__panel")!;
+		new FontProof(host, { controls: { features: true } });
+		const toggle = host.querySelector<HTMLButtonElement>(".fp__toggle--features")!;
+		const panel = host.querySelector<HTMLElement>(".fp__panel")!;
 		toggle.click();
 		expect(panel.hasAttribute("hidden")).toBe(false);
 		document.body.click();
@@ -205,21 +205,21 @@ describe("TypeBar features panel behaviour", () => {
 	});
 });
 
-describe("TypeBar teardown", () => {
+describe("FontProof teardown", () => {
 	it("removes all DOM on destroy", () => {
-		const tester = new TypeBar(host, { controls: { size: true }, size: 40 });
+		const tester = new FontProof(host, { controls: { size: true }, size: 40 });
 		expect(host.children.length).toBeGreaterThan(0);
 		tester.destroy();
 		expect(host.children.length).toBe(0);
 	});
 
 	it("removes document-level listeners on destroy", () => {
-		const tester = new TypeBar(host, { controls: { features: true } });
+		const tester = new FontProof(host, { controls: { features: true } });
 		tester.destroy();
 		// After destroy the outside-click/Escape listeners must be gone: dispatching
 		// must not throw and there is no panel left to toggle.
 		document.body.click();
 		document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
-		expect(host.querySelector(".tb__panel")).toBeNull();
+		expect(host.querySelector(".fp__panel")).toBeNull();
 	});
 });

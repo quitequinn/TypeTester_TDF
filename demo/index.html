@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>TypeBar — live demo</title>
+		<title>FontProof — live demo</title>
 		<link rel="stylesheet" href="./dist/styles.css" />
 		<style>
 			:root { color-scheme: light dark; }
@@ -22,7 +22,7 @@
 				border: 1px solid #e5e7eb;
 				border-radius: 0.75rem;
 			}
-			.tb__type { line-height: 1.05; }
+			.fp__type { line-height: 1.05; }
 			h2 { margin-top: 2.5rem; }
 			pre { background: #f4f4f5; padding: 1rem; border-radius: 0.5rem; overflow: auto; }
 			code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
@@ -30,13 +30,13 @@
 	</head>
 	<body>
 		<header>
-			<h1>TypeBar</h1>
+			<h1>FontProof</h1>
 			<p>
 				A micro toolbar for testing type. Type below, then adjust size,
 				tracking, weight, italic, alignment, wrap, and composable OpenType features.
-				Install with <code>npm install typebar-tdf</code> —
-				<a href="https://www.npmjs.com/package/typebar-tdf">npm</a> ·
-				<a href="https://github.com/quitequinn/typebar">GitHub</a>.
+				Install with <code>npm install fontproof</code> —
+				<a href="https://www.npmjs.com/package/fontproof">npm</a> ·
+				<a href="https://github.com/quitequinn/fontproof">GitHub</a>.
 			</p>
 		</header>
 
@@ -46,9 +46,9 @@
 		<pre id="out"></pre>
 
 		<script type="module">
-			import { TypeBar } from "./dist/index.js";
+			import { FontProof } from "./dist/index.js";
 
-			new TypeBar(document.getElementById("demo"), {
+			new FontProof(document.getElementById("demo"), {
 				text: "Typography",
 				size: 96,
 				weight: 500,

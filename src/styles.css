@@ -1,7 +1,7 @@
-/* TypeBar — base styles. Import once: `import "typebar-tdf/styles.css"`.
+/* FontProof — base styles. Import once: `import "fontproof/styles.css"`.
    All visual styling is optional; the component is functional without it. */
 
-.tb {
+.fp {
 	--tt-fg: #111;
 	--tt-bg: #fff;
 	--tt-accent: #2563eb;
@@ -13,63 +13,63 @@
 	background: var(--tt-bg);
 }
 
-.tb__stage {
+.fp__stage {
 	min-width: 0;
 }
 
-.tb__type {
+.fp__type {
 	margin: 0;
 	line-height: 1.1;
 }
 
 /* Editable sample text. Placeholder is rendered via CSS so it is never real
    content the user must delete and is never read as stale text. */
-.tb__text {
+.fp__text {
 	outline: none;
 	min-height: 1em;
 }
 
-.tb__text:empty::before {
+.fp__text:empty::before {
 	content: attr(data-placeholder);
 	color: #9ca3af;
 	pointer-events: none;
 }
 
-.tb__text:focus-visible {
+.fp__text:focus-visible {
 	outline: 2px solid var(--tt-accent);
 	outline-offset: 2px;
 }
 
-.tb__controls {
+.fp__controls {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	gap: 0.75rem 1rem;
 }
 
-.tb__control {
+.fp__control {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.4rem;
 	font: 500 0.8125rem/1.2 system-ui, sans-serif;
 }
 
-.tb__label {
+.fp__label {
 	color: #6b7280;
 }
 
-.tb__value {
+.fp__value {
 	min-width: 3.5ch;
 	color: var(--tt-fg);
 	font-variant-numeric: tabular-nums;
 }
 
-.tb__slider {
+.fp__slider {
 	accent-color: var(--tt-accent);
 }
 
-.tb__toggle,
-.tb__select {
+.fp__toggle,
+.fp__select {
 	font: inherit;
 	padding: 0.25rem 0.6rem;
 	color: var(--tt-fg);
@@ -81,25 +81,25 @@
 
 /* Pressed state uses a text-weight + colour change in addition to background,
    so it is not signalled by colour alone. */
-.tb__toggle[aria-pressed="true"] {
+.fp__toggle[aria-pressed="true"] {
 	font-weight: 700;
 	color: #fff;
 	background: var(--tt-accent);
 	border-color: var(--tt-accent);
 }
 
-.tb__toggle:focus-visible,
-.tb__select:focus-visible,
-.tb__slider:focus-visible {
+.fp__toggle:focus-visible,
+.fp__select:focus-visible,
+.fp__slider:focus-visible {
 	outline: 2px solid var(--tt-accent);
 	outline-offset: 2px;
 }
 
-.tb__control--features {
+.fp__control--features {
 	position: relative;
 }
 
-.tb__panel {
+.fp__panel {
 	position: absolute;
 	z-index: 10;
 	top: calc(100% + 0.25rem);
@@ -115,11 +115,11 @@
 	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-.tb__panel[hidden] {
+.fp__panel[hidden] {
 	display: none;
 }
 
-.tb__feature {
+.fp__feature {
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
@@ -127,7 +127,7 @@
 }
 
 /* Visually hidden but available to assistive technology (live region). */
-.tb__sr-only {
+.fp__sr-only {
 	position: absolute;
 	width: 1px;
 	height: 1px;
@@ -140,7 +140,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.tb * {
+	.fp * {
 		transition: none !important;
 		animation: none !important;
 	}

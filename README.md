@@ -1,20 +1,21 @@
-# TypeBar
+# FontProof
 
-[![npm](https://img.shields.io/npm/v/typebar-tdf.svg)](https://www.npmjs.com/package/typebar-tdf)
-[![CI](https://github.com/quitequinn/typebar/actions/workflows/ci.yml/badge.svg)](https://github.com/quitequinn/typebar/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/fontproof.svg)](https://www.npmjs.com/package/fontproof)
+[![CI](https://github.com/quitequinn/fontproof/actions/workflows/ci.yml/badge.svg)](https://github.com/quitequinn/fontproof/actions/workflows/ci.yml)
 
-**[▶ Live demo](https://quitequinn.github.io/typebar/)**
+**[▶ Live demo](https://quitequinn.github.io/fontproof/)**
 
 A **micro toolbar** for testing type on the web — a compact bar of controls over a
 live, editable sample. Accessible and **dependency-free**: adjust size, tracking,
 weight, italic, alignment, line-wrap, and **composable OpenType features** live.
 Ships a framework-agnostic vanilla core and an optional React component.
 
-> Formerly published as `type-tester-tdf`; renamed to **TypeBar** to reflect what
-> it really is — a small type-control toolbar, not a heavyweight tester.
+> Formerly published as `type-tester-tdf` (and briefly `typebar-tdf`); renamed to
+> **FontProof** to reflect what it really is — a focused type-proofing toolbar: a
+> compact bar of controls over a live sample.
 
 > **v2 is a ground-up rewrite.** The legacy jQuery + jQuery UI + BigText widget
-> (v1) is preserved at the [`v1.0.0`](https://github.com/quitequinn/typebar/releases/tag/v1.0.0)
+> (v1) is preserved at the [`v1.0.0`](https://github.com/quitequinn/fontproof/releases/tag/v1.0.0)
 > git tag. v2 has **no runtime
 > dependencies**, builds accessible native controls, escapes all input (no
 > `eval`, no `innerHTML`), composes multiple OpenType features at once, and
@@ -33,13 +34,13 @@ Ships a framework-agnostic vanilla core and an optional React component.
 ## Install
 
 ```bash
-npm install typebar-tdf
+npm install fontproof
 ```
 
 Import the stylesheet once (optional — the component works without it):
 
 ```js
-import "typebar-tdf/styles.css";
+import "fontproof/styles.css";
 ```
 
 ## Vanilla JS
@@ -47,10 +48,10 @@ import "typebar-tdf/styles.css";
 ### Programmatic
 
 ```js
-import { TypeBar } from "typebar-tdf";
-import "typebar-tdf/styles.css";
+import { FontProof } from "fontproof";
+import "fontproof/styles.css";
 
-const tester = new TypeBar(document.querySelector("#demo"), {
+const tester = new FontProof(document.querySelector("#demo"), {
   text: "Typography",
   fontFamily: "Inter",
   size: 96,
@@ -65,7 +66,7 @@ tester.destroy();
 
 ```html
 <div
-  data-typebar
+  data-fontproof
   data-font="Inter"
   data-size="96"
   data-text="Typography"
@@ -73,9 +74,9 @@ tester.destroy();
 ></div>
 
 <script type="module">
-  import { autoInit } from "typebar-tdf";
-  import "typebar-tdf/styles.css";
-  autoInit(); // initialises every [data-typebar] element
+  import { autoInit } from "fontproof";
+  import "fontproof/styles.css";
+  autoInit(); // initialises every [data-fontproof] element
 </script>
 ```
 
@@ -84,12 +85,12 @@ tester.destroy();
 ## React
 
 ```tsx
-import { TypeBarComponent } from "typebar-tdf/react";
-import "typebar-tdf/styles.css";
+import { FontProofComponent } from "fontproof/react";
+import "fontproof/styles.css";
 
 export function Demo() {
   return (
-    <TypeBarComponent
+    <FontProofComponent
       text="Typography"
       fontFamily="Inter"
       size={96}
@@ -104,7 +105,7 @@ React is a **peer dependency** (>=17); the core stays dependency-free.
 
 ## Options
 
-`new TypeBar(host, options)` / `<TypeBarComponent {...options} />`:
+`new FontProof(host, options)` / `<FontProofComponent {...options} />`:
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -150,7 +151,7 @@ Unlike v1 (one feature at a time), **features compose**: selecting Small Caps
 and Oldstyle Figures yields `font-feature-settings: "smcp" 1, "onum" 1`.
 
 ```js
-import { FEATURES, featureSettings } from "typebar-tdf";
+import { FEATURES, featureSettings } from "fontproof";
 
 featureSettings(["smcp", "onum"]); // => '"smcp" 1, "onum" 1'
 ```
@@ -177,7 +178,7 @@ set with `controls: { features: ["smcp", "onum", "ss01"] }`.
 
 | v1 (jQuery attributes) | v2 |
 | --- | --- |
-| `class="typeTester"` | `data-typebar` (or `new TypeBar(el, …)`) |
+| `class="typeTester"` | `data-fontproof` (or `new FontProof(el, …)`) |
 | `font="Inter"` | `data-font="Inter"` / `fontFamily: "Inter"` |
 | `size="90"` / `size=""` (fit) | `data-size="90"` / `data-size="fit"` |
 | `weightoptions="true"` | `data-controls="weight"` / `controls: { weight: true }` |
@@ -185,7 +186,7 @@ set with `controls: { features: ["smcp", "onum", "ss01"] }`.
 | magic words `"yup"`, `"nope"` | plain booleans / `"true"` / `"false"` |
 | jQuery + jQuery UI + BigText | **no dependencies** |
 
-The v1 source remains available at the [`v1.0.0`](https://github.com/quitequinn/typebar/releases/tag/v1.0.0) git tag.
+The v1 source remains available at the [`v1.0.0`](https://github.com/quitequinn/fontproof/releases/tag/v1.0.0) git tag.
 
 ## Development
 

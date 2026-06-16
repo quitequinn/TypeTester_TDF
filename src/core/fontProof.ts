@@ -1,4 +1,4 @@
-// Framework-agnostic, dependency-free TypeBar.
+// Framework-agnostic, dependency-free FontProof.
 //
 // Replaces the legacy jQuery/jQuery-UI/bigtext widget. Key differences:
 //  - No eval, no innerHTML with user data — DOM is built with createElement and
@@ -25,8 +25,8 @@ import type {
 	Align,
 	ControlsConfig,
 	Range,
-	TypeBarOptions,
-	TypeBarState,
+	FontProofOptions,
+	FontProofState,
 } from "./types.js";
 
 /** Default slider ranges, overridable per control. */
@@ -52,12 +52,12 @@ function resolveRange(value: boolean | Range | undefined, fallback: Range): Rang
 	return { min: value.min, max: value.max, step: value.step ?? fallback.step };
 }
 
-/** A TypeBar instance bound to a host element. */
-export class TypeBar {
+/** A FontProof instance bound to a host element. */
+export class FontProof {
 	private readonly host: HTMLElement;
-	private readonly options: TypeBarOptions;
+	private readonly options: FontProofOptions;
 	private readonly controls: ControlsConfig;
-	private readonly state: TypeBarState;
+	private readonly state: FontProofState;
 	private readonly activeFeatures = new Set<FeatureTag>();
 	private readonly cleanups: Array<() => void> = [];
 
@@ -71,7 +71,7 @@ export class TypeBar {
 	 * @param host Element to render the tester into.
 	 * @param options Configuration; all fields optional.
 	 */
-	constructor(host: HTMLElement, options: TypeBarOptions = {}) {
+	constructor(host: HTMLElement, options: FontProofOptions = {}) {
 		this.host = host;
 		this.options = options;
 		this.controls = options.controls ?? {};
@@ -96,7 +96,7 @@ export class TypeBar {
 	}
 
 	/** Returns a snapshot of the current state. */
-	getState(): TypeBarState {
+	getState(): FontProofState {
 		return { ...this.state, features: Array.from(this.activeFeatures) };
 	}
 
@@ -111,10 +111,10 @@ export class TypeBar {
 	// ---- rendering -------------------------------------------------------
 
 	private render(): void {
-		this.host.classList.add("tb");
+		this.host.classList.add("fp");
 
 		this.textEl = el("div", {
-			class: "tb__text",
+			class: "fp__text",
 			text: this.state.text,
 			attrs: {
 				role: "textbox",
@@ -125,11 +125,11 @@ export class TypeBar {
 				"data-placeholder": this.options.placeholder ?? "Type to test…",
 			},
 		});
-		this.typeEl = el("div", { class: "tb__type", children: [this.textEl] });
-		const stage = el("div", { class: "tb__stage", children: [this.typeEl] });
+		this.typeEl = el("div", { class: "fp__type", children: [this.textEl] });
+		const stage = el("div", { class: "fp__stage", children: [this.typeEl] });
 
 		this.liveEl = el("div", {
-			class: "tb__sr-only",
+			class: "fp__sr-only",
 			attrs: { "aria-live": "polite", "aria-atomic": "true" },
 		});
 
@@ -162,7 +162,7 @@ export class TypeBar {
 
 		if (items.length === 0) return null;
 		return el("div", {
-			class: "tb__controls",
+			class: "fp__controls",
 			attrs: { role: "group", "aria-label": "Typography controls" },
 			children: items,
 		});
@@ -178,9 +178,9 @@ export class TypeBar {
 		unit: string,
 		onInput: (value: number) => void,
 	): HTMLElement {
-		const output = el("output", { class: "tb__value", text: `${value}${unit}` });
+		const output = el("output", { class: "fp__value", text: `${value}${unit}` });
 		const input = el("input", {
-			class: `tb__slider tb__slider--${key}`,
+			class: `fp__slider fp__slider--${key}`,
 			attrs: {
 				type: "range",
 				min: range.min,
@@ -200,8 +200,8 @@ export class TypeBar {
 		this.cleanups.push(() => input.removeEventListener("input", handler));
 		if (key === "size") this.sizeOutput = output;
 		return el("label", {
-			class: `tb__control tb__control--${key}`,
-			children: [el("span", { class: "tb__label", text: label }), input, output],
+			class: `fp__control fp__control--${key}`,
+			children: [el("span", { class: "fp__label", text: label }), input, output],
 		});
 	}
 
@@ -246,7 +246,7 @@ export class TypeBar {
 		onToggle: (pressed: boolean) => void,
 	): HTMLButtonElement {
 		const button = el("button", {
-			class: `tb__toggle tb__toggle--${key}`,
+			class: `fp__toggle fp__toggle--${key}`,
 			text: label,
 			// aria-pressed is a string-valued ARIA state and must always be present
 			// ("false"), unlike boolean HTML attributes which are omitted when off.
@@ -269,7 +269,7 @@ export class TypeBar {
 			this.applyStyles();
 			this.emitChange();
 		});
-		return el("div", { class: "tb__control", children: [button] });
+		return el("div", { class: "fp__control", children: [button] });
 	}
 
 	private buildWrap(): HTMLElement {
@@ -279,12 +279,12 @@ export class TypeBar {
 			this.applyStyles();
 			this.emitChange();
 		});
-		return el("div", { class: "tb__control", children: [button] });
+		return el("div", { class: "fp__control", children: [button] });
 	}
 
 	private buildAlign(): HTMLElement {
 		const select = el("select", {
-			class: "tb__select tb__select--align",
+			class: "fp__select fp__select--align",
 			attrs: { "aria-label": "Alignment" },
 			children: ALIGNS.map((a) =>
 				el("option", {
@@ -305,8 +305,8 @@ export class TypeBar {
 		select.addEventListener("change", handler);
 		this.cleanups.push(() => select.removeEventListener("change", handler));
 		return el("label", {
-			class: "tb__control tb__control--align",
-			children: [el("span", { class: "tb__label", text: "Align" }), select],
+			class: "fp__control fp__control--align",
+			children: [el("span", { class: "fp__label", text: "Align" }), select],
 		});
 	}
 
@@ -319,9 +319,9 @@ export class TypeBar {
 					.map((tag) => FEATURE_BY_TAG.get(tag) ?? { tag, label: featureLabel(tag), group: "Alternates" })
 			: FEATURES;
 
-		const panelId = `tb-feat-${nextId()}`;
+		const panelId = `fp-feat-${nextId()}`;
 		const toggle = el("button", {
-			class: "tb__toggle tb__toggle--features",
+			class: "fp__toggle fp__toggle--features",
 			text: "Features",
 			attrs: {
 				type: "button",
@@ -339,19 +339,19 @@ export class TypeBar {
 			input.addEventListener("change", onChange);
 			this.cleanups.push(() => input.removeEventListener("change", onChange));
 			return el("label", {
-				class: "tb__feature",
+				class: "fp__feature",
 				children: [input, el("span", { text: f.label })],
 			});
 		});
 
 		const panel = el("div", {
-			class: "tb__panel",
+			class: "fp__panel",
 			attrs: { id: panelId, role: "group", "aria-label": "OpenType features", hidden: true },
 			children: checks,
 		});
 
 		const wrapper = el("div", {
-			class: "tb__control tb__control--features",
+			class: "fp__control fp__control--features",
 			children: [toggle, panel],
 		});
 

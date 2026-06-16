@@ -1,25 +1,25 @@
-// React wrapper around the framework-agnostic TypeBar core. React is a peer
+// React wrapper around the framework-agnostic FontProof core. React is a peer
 // dependency, externalised at build time, so the core stays dependency-free.
 
 import { useEffect, useRef } from "react";
-import { TypeBar } from "../core/typeBar.js";
-import type { TypeBarOptions, TypeBarState } from "../core/types.js";
+import { FontProof } from "../core/fontProof.js";
+import type { FontProofOptions, FontProofState } from "../core/types.js";
 
-/** Props for {@link TypeBarComponent}. Mirrors {@link TypeBarOptions}. */
-export interface TypeBarProps extends TypeBarOptions {
+/** Props for {@link FontProofComponent}. Mirrors {@link FontProofOptions}. */
+export interface FontProofProps extends FontProofOptions {
 	/** Class applied to the host element. */
 	className?: string;
 }
 
 /**
- * Renders a {@link TypeBar} into a host div. The instance is recreated when
+ * Renders a {@link FontProof} into a host div. The instance is recreated when
  * any structural option changes and is always torn down on unmount.
  */
-export function TypeBarComponent(props: TypeBarProps): JSX.Element {
+export function FontProofComponent(props: FontProofProps): JSX.Element {
 	const { className, onChange, ...options } = props;
 	const hostRef = useRef<HTMLDivElement>(null);
 	// Keep the latest onChange without forcing a tester rebuild on each render.
-	const onChangeRef = useRef<((state: TypeBarState) => void) | undefined>(onChange);
+	const onChangeRef = useRef<((state: FontProofState) => void) | undefined>(onChange);
 	onChangeRef.current = onChange;
 
 	// Serialise structural options so the effect only re-runs on real changes.
@@ -28,7 +28,7 @@ export function TypeBarComponent(props: TypeBarProps): JSX.Element {
 	useEffect(() => {
 		const host = hostRef.current;
 		if (!host) return;
-		const instance = new TypeBar(host, {
+		const instance = new FontProof(host, {
 			...options,
 			onChange: (state) => onChangeRef.current?.(state),
 		});
@@ -39,14 +39,14 @@ export function TypeBarComponent(props: TypeBarProps): JSX.Element {
 	return <div ref={hostRef} className={className} />;
 }
 
-export { TypeBar } from "../core/typeBar.js";
+export { FontProof } from "../core/fontProof.js";
 export type {
 	Align,
 	ControlsConfig,
 	Range,
 	Size,
-	TypeBarOptions,
-	TypeBarState,
+	FontProofOptions,
+	FontProofState,
 	VariableConfig,
 } from "../core/types.js";
 export type { FeatureTag } from "../core/opentype.js";

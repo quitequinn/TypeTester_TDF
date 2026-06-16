@@ -6,18 +6,18 @@ via a CDN that serves ES modules.
 ## Install
 
 ```bash
-npm install typebar-tdf
+npm install fontproof
 ```
 
 ```js
-import { TypeBar, autoInit } from "typebar-tdf";
-import "typebar-tdf/styles.css";
+import { FontProof, autoInit } from "fontproof";
+import "fontproof/styles.css";
 ```
 
 ## Programmatic API
 
 ```js
-const tester = new TypeBar(host, options);
+const tester = new FontProof(host, options);
 tester.getState(); // snapshot of the current typographic state
 tester.destroy();  // remove all DOM, listeners and observers
 ```
@@ -27,7 +27,7 @@ tester.destroy();  // remove all DOM, listeners and observers
 ### Example
 
 ```js
-const tester = new TypeBar(document.querySelector("#demo"), {
+const tester = new FontProof(document.querySelector("#demo"), {
   text: "Hamburgevons",
   fontFamily: "Inter",
   fallback: "Helvetica, Arial, sans-serif",
@@ -55,7 +55,7 @@ Mark up an element and call `autoInit()`:
 
 ```html
 <div
-  data-typebar
+  data-fontproof
   data-font="Inter"
   data-size="96"
   data-text="Typography"
@@ -69,7 +69,7 @@ Mark up an element and call `autoInit()`:
 ```
 
 ```js
-import { autoInit } from "typebar-tdf";
+import { autoInit } from "fontproof";
 autoInit();              // whole document
 autoInit(someContainer); // or a subtree
 ```

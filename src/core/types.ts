@@ -1,4 +1,4 @@
-// Public option and state types for the TypeBar core.
+// Public option and state types for the FontProof core.
 
 import type { FeatureTag } from "./opentype.js";
 
@@ -49,8 +49,8 @@ export interface VariableConfig {
 	wght?: Range;
 }
 
-/** Options accepted by {@link TypeBar}. All fields are optional. */
-export interface TypeBarOptions {
+/** Options accepted by {@link FontProof}. All fields are optional. */
+export interface FontProofOptions {
 	/** Initial sample text. */
 	text?: string;
 	/** Primary font-family name to test. */
@@ -82,11 +82,11 @@ export interface TypeBarOptions {
 	/** Accessible label for the editable region. */
 	ariaLabel?: string;
 	/** Called whenever the typographic state changes. */
-	onChange?: (state: TypeBarState) => void;
+	onChange?: (state: FontProofState) => void;
 }
 
 /** The live typographic state of a tester instance. */
-export interface TypeBarState {
+export interface FontProofState {
 	/** Current text content. */
 	text: string;
 	/** Resolved size in px (the fitted size when in "fit" mode). */

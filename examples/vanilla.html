@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>TypeBar — vanilla example</title>
+		<title>FontProof — vanilla example</title>
 		<!-- Built stylesheet (run `npm run build` first). -->
 		<link rel="stylesheet" href="../dist/styles.css" />
 		<style>
@@ -13,12 +13,12 @@
 		</style>
 	</head>
 	<body>
-		<h1>TypeBar</h1>
+		<h1>FontProof</h1>
 
 		<!-- Declarative auto-init -->
 		<div
 			class="demo"
-			data-typebar
+			data-fontproof
 			data-text="Typography"
 			data-size="96"
 			data-weight="500"
@@ -31,10 +31,10 @@
 
 		<script type="module">
 			// Built ESM bundle (run `npm run build` first).
-			import { TypeBar } from "../dist/index.js";
+			import { FontProof } from "../dist/index.js";
 
-			const host = document.querySelector("[data-typebar]");
-			new TypeBar(host, {
+			const host = document.querySelector("[data-fontproof]");
+			new FontProof(host, {
 				text: host.dataset.text,
 				size: Number(host.dataset.size),
 				weight: Number(host.dataset.weight),

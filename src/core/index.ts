@@ -1,6 +1,6 @@
 // Public surface of the framework-agnostic core.
 
-export { TypeBar } from "./typeBar.js";
+export { FontProof } from "./fontProof.js";
 export {
 	FEATURES,
 	FEATURE_BY_TAG,
@@ -14,7 +14,7 @@ export type {
 	ControlsConfig,
 	Range,
 	Size,
-	TypeBarOptions,
-	TypeBarState,
+	FontProofOptions,
+	FontProofState,
 	VariableConfig,
 } from "./types.js";
