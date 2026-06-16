@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Type Tester TDF — vanilla example</title>
+		<title>TypeBar — vanilla example</title>
 		<!-- Built stylesheet (run `npm run build` first). -->
 		<link rel="stylesheet" href="../dist/styles.css" />
 		<style>
@@ -13,12 +13,12 @@
 		</style>
 	</head>
 	<body>
-		<h1>Type Tester TDF</h1>
+		<h1>TypeBar</h1>
 
 		<!-- Declarative auto-init -->
 		<div
 			class="demo"
-			data-type-tester
+			data-typebar
 			data-text="Typography"
 			data-size="96"
 			data-weight="500"
@@ -31,10 +31,10 @@
 
 		<script type="module">
 			// Built ESM bundle (run `npm run build` first).
-			import { TypeTester } from "../dist/index.js";
+			import { TypeBar } from "../dist/index.js";
 
-			const host = document.querySelector("[data-type-tester]");
-			new TypeTester(host, {
+			const host = document.querySelector("[data-typebar]");
+			new TypeBar(host, {
 				text: host.dataset.text,
 				size: Number(host.dataset.size),
 				weight: Number(host.dataset.weight),

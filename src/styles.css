@@ -1,7 +1,7 @@
-/* Type Tester TDF — base styles. Import once: `import "type-tester-tdf/styles.css"`.
+/* TypeBar — base styles. Import once: `import "typebar/styles.css"`.
    All visual styling is optional; the component is functional without it. */
 
-.tt {
+.tb {
 	--tt-fg: #111;
 	--tt-bg: #fff;
 	--tt-accent: #2563eb;
@@ -13,63 +13,63 @@
 	background: var(--tt-bg);
 }
 
-.tt__stage {
+.tb__stage {
 	min-width: 0;
 }
 
-.tt__type {
+.tb__type {
 	margin: 0;
 	line-height: 1.1;
 }
 
 /* Editable sample text. Placeholder is rendered via CSS so it is never real
    content the user must delete and is never read as stale text. */
-.tt__text {
+.tb__text {
 	outline: none;
 	min-height: 1em;
 }
 
-.tt__text:empty::before {
+.tb__text:empty::before {
 	content: attr(data-placeholder);
 	color: #9ca3af;
 	pointer-events: none;
 }
 
-.tt__text:focus-visible {
+.tb__text:focus-visible {
 	outline: 2px solid var(--tt-accent);
 	outline-offset: 2px;
 }
 
-.tt__controls {
+.tb__controls {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	gap: 0.75rem 1rem;
 }
 
-.tt__control {
+.tb__control {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.4rem;
 	font: 500 0.8125rem/1.2 system-ui, sans-serif;
 }
 
-.tt__label {
+.tb__label {
 	color: #6b7280;
 }
 
-.tt__value {
+.tb__value {
 	min-width: 3.5ch;
 	color: var(--tt-fg);
 	font-variant-numeric: tabular-nums;
 }
 
-.tt__slider {
+.tb__slider {
 	accent-color: var(--tt-accent);
 }
 
-.tt__toggle,
-.tt__select {
+.tb__toggle,
+.tb__select {
 	font: inherit;
 	padding: 0.25rem 0.6rem;
 	color: var(--tt-fg);
@@ -81,25 +81,25 @@
 
 /* Pressed state uses a text-weight + colour change in addition to background,
    so it is not signalled by colour alone. */
-.tt__toggle[aria-pressed="true"] {
+.tb__toggle[aria-pressed="true"] {
 	font-weight: 700;
 	color: #fff;
 	background: var(--tt-accent);
 	border-color: var(--tt-accent);
 }
 
-.tt__toggle:focus-visible,
-.tt__select:focus-visible,
-.tt__slider:focus-visible {
+.tb__toggle:focus-visible,
+.tb__select:focus-visible,
+.tb__slider:focus-visible {
 	outline: 2px solid var(--tt-accent);
 	outline-offset: 2px;
 }
 
-.tt__control--features {
+.tb__control--features {
 	position: relative;
 }
 
-.tt__panel {
+.tb__panel {
 	position: absolute;
 	z-index: 10;
 	top: calc(100% + 0.25rem);
@@ -115,11 +115,11 @@
 	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-.tt__panel[hidden] {
+.tb__panel[hidden] {
 	display: none;
 }
 
-.tt__feature {
+.tb__feature {
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
@@ -127,7 +127,7 @@
 }
 
 /* Visually hidden but available to assistive technology (live region). */
-.tt__sr-only {
+.tb__sr-only {
 	position: absolute;
 	width: 1px;
 	height: 1px;
@@ -140,7 +140,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.tt * {
+	.tb * {
 		transition: none !important;
 		animation: none !important;
 	}

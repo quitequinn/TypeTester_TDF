@@ -1,6 +1,6 @@
 // Public surface of the framework-agnostic core.
 
-export { TypeTester } from "./typeTester.js";
+export { TypeBar } from "./typeBar.js";
 export {
 	FEATURES,
 	FEATURE_BY_TAG,
@@ -14,7 +14,7 @@ export type {
 	ControlsConfig,
 	Range,
 	Size,
-	TypeTesterOptions,
-	TypeTesterState,
+	TypeBarOptions,
+	TypeBarState,
 	VariableConfig,
 } from "./types.js";

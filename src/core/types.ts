@@ -1,4 +1,4 @@
-// Public option and state types for the type tester core.
+// Public option and state types for the TypeBar core.
 
 import type { FeatureTag } from "./opentype.js";
 
@@ -49,8 +49,8 @@ export interface VariableConfig {
 	wght?: Range;
 }
 
-/** Options accepted by {@link TypeTester}. All fields are optional. */
-export interface TypeTesterOptions {
+/** Options accepted by {@link TypeBar}. All fields are optional. */
+export interface TypeBarOptions {
 	/** Initial sample text. */
 	text?: string;
 	/** Primary font-family name to test. */
@@ -82,11 +82,11 @@ export interface TypeTesterOptions {
 	/** Accessible label for the editable region. */
 	ariaLabel?: string;
 	/** Called whenever the typographic state changes. */
-	onChange?: (state: TypeTesterState) => void;
+	onChange?: (state: TypeBarState) => void;
 }
 
 /** The live typographic state of a tester instance. */
-export interface TypeTesterState {
+export interface TypeBarState {
 	/** Current text content. */
 	text: string;
 	/** Resolved size in px (the fitted size when in "fit" mode). */

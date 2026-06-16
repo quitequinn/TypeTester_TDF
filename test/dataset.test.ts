@@ -8,7 +8,7 @@ afterEach(() => {
 describe("dataset auto-init", () => {
 	it("parses data-* attributes into options", () => {
 		const host = document.createElement("div");
-		host.setAttribute("data-type-tester", "");
+		host.setAttribute("data-typebar", "");
 		host.dataset.font = "Inter";
 		host.dataset.size = "48";
 		host.dataset.weight = "600";
@@ -23,15 +23,15 @@ describe("dataset auto-init", () => {
 		expect(state.weight).toBe(600);
 		expect(state.align).toBe("center");
 		expect(state.features).toEqual(["smcp", "onum"]);
-		expect(host.querySelector(".tt__slider--size")).not.toBeNull();
-		expect(host.querySelector(".tt__slider--weight")).not.toBeNull();
-		expect(host.querySelector(".tt__control--features")).not.toBeNull();
+		expect(host.querySelector(".tb__slider--size")).not.toBeNull();
+		expect(host.querySelector(".tb__slider--weight")).not.toBeNull();
+		expect(host.querySelector(".tb__control--features")).not.toBeNull();
 	});
 
 	it("auto-inits all marked elements once (idempotent)", () => {
 		document.body.innerHTML = `
-			<div data-type-tester data-size="40"></div>
-			<div data-type-tester data-size="60"></div>
+			<div data-typebar data-size="40"></div>
+			<div data-typebar data-size="60"></div>
 		`;
 		expect(autoInit().length).toBe(2);
 		// Second pass should find nothing new.
@@ -40,22 +40,22 @@ describe("dataset auto-init", () => {
 
 	it("initialises only within the given subtree", () => {
 		const outside = document.createElement("div");
-		outside.setAttribute("data-type-tester", "");
+		outside.setAttribute("data-typebar", "");
 		document.body.appendChild(outside);
 		const container = document.createElement("section");
 		const inside = document.createElement("div");
-		inside.setAttribute("data-type-tester", "");
+		inside.setAttribute("data-typebar", "");
 		container.appendChild(inside);
 		document.body.appendChild(container);
 
 		expect(autoInit(container).length).toBe(1);
-		expect(inside.dataset.ttReady).toBe("true");
-		expect(outside.dataset.ttReady).toBeUndefined();
+		expect(inside.dataset.typebarReady).toBe("true");
+		expect(outside.dataset.typebarReady).toBeUndefined();
 	});
 
 	it("supports auto-fit mode without throwing", () => {
 		const host = document.createElement("div");
-		host.setAttribute("data-type-tester", "");
+		host.setAttribute("data-typebar", "");
 		host.dataset.size = "fit";
 		document.body.appendChild(host);
 		const tester = createFromElement(host);

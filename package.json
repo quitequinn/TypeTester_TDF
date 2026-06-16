@@ -1,5 +1,5 @@
 {
-  "name": "type-tester-tdf",
+  "name": "typebar",
   "version": "2.0.1",
   "description": "Accessible, dependency-free type tester for the web — a vanilla JS core with an optional React wrapper. Composable OpenType features, variable-font axes, and auto-fit sizing.",
   "type": "module",
@@ -51,11 +51,11 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/quitequinn/TypeTester_TDF.git"
+    "url": "git+https://github.com/quitequinn/typebar.git"
   },
-  "homepage": "https://github.com/quitequinn/TypeTester_TDF#readme",
+  "homepage": "https://github.com/quitequinn/typebar#readme",
   "bugs": {
-    "url": "https://github.com/quitequinn/TypeTester_TDF/issues"
+    "url": "https://github.com/quitequinn/typebar/issues"
   },
   "peerDependencies": {
     "react": ">=17",

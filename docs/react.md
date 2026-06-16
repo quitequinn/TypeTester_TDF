@@ -1,18 +1,18 @@
 # React guide
 
-React is an optional **peer dependency** (>=17). The `type-tester-tdf/react`
+React is an optional **peer dependency** (>=17). The `typebar/react`
 entry wraps the dependency-free core in a component.
 
 ## Install
 
 ```bash
-npm install type-tester-tdf
+npm install typebar
 # react / react-dom are peers you already have in a React app
 ```
 
 ```tsx
-import { TypeTesterComponent } from "type-tester-tdf/react";
-import "type-tester-tdf/styles.css";
+import { TypeBarComponent } from "typebar/react";
+import "typebar/styles.css";
 ```
 
 ## Basic usage
@@ -20,7 +20,7 @@ import "type-tester-tdf/styles.css";
 ```tsx
 export function Demo() {
   return (
-    <TypeTesterComponent
+    <TypeBarComponent
       text="Typography"
       fontFamily="Inter"
       size={96}
@@ -30,21 +30,21 @@ export function Demo() {
 }
 ```
 
-`TypeTesterComponent` accepts every [option](../README.md#options) as a prop,
+`TypeBarComponent` accepts every [option](../README.md#options) as a prop,
 plus `className` for the host element.
 
 ## Reading state
 
 ```tsx
 import { useState } from "react";
-import { TypeTesterComponent } from "type-tester-tdf/react";
-import type { TypeTesterState } from "type-tester-tdf/react";
+import { TypeBarComponent } from "typebar/react";
+import type { TypeBarState } from "typebar/react";
 
 export function Demo() {
-  const [state, setState] = useState<TypeTesterState | null>(null);
+  const [state, setState] = useState<TypeBarState | null>(null);
   return (
     <>
-      <TypeTesterComponent fontFamily="Inter" size={72} controls={{ weight: true }} onChange={setState} />
+      <TypeBarComponent fontFamily="Inter" size={72} controls={{ weight: true }} onChange={setState} />
       <pre>{state && JSON.stringify(state, null, 2)}</pre>
     </>
   );
@@ -59,7 +59,7 @@ tester. The instance is rebuilt only when a **structural** option changes
 ## Variable fonts
 
 ```tsx
-<TypeTesterComponent
+<TypeBarComponent
   fontFamily="Inter Variable"
   size={120}
   weight={400}
@@ -73,14 +73,14 @@ The weight slider then drives `font-variation-settings: "wght" …` (and
 
 ## TypeScript
 
-All option and state types are exported from `type-tester-tdf/react` and
-`type-tester-tdf`:
+All option and state types are exported from `typebar/react` and
+`typebar`:
 
 ```ts
 import type {
-  TypeTesterOptions,
-  TypeTesterState,
+  TypeBarOptions,
+  TypeBarState,
   ControlsConfig,
   FeatureTag,
-} from "type-tester-tdf";
+} from "typebar";
 ```

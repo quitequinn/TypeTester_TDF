@@ -1,10 +1,10 @@
 // Main entry: re-exports the core plus a vanilla, declarative auto-initialiser
 // that reads `data-*` attributes — the modern replacement for the legacy
-// attribute-driven `.typeTester` markup (without eval or magic-word strings).
+// attribute-driven `.typeBar` markup (without eval or magic-word strings).
 
-import { TypeTester } from "./core/typeTester.js";
+import { TypeBar } from "./core/typeBar.js";
 import { isKnownFeature, type FeatureTag } from "./core/opentype.js";
-import type { Align, ControlsConfig, Size, TypeTesterOptions } from "./core/types.js";
+import type { Align, ControlsConfig, Size, TypeBarOptions } from "./core/types.js";
 
 export * from "./core/index.js";
 
@@ -34,7 +34,7 @@ function parseControls(value: string | null): ControlsConfig {
 }
 
 /** Builds options from a host element's dataset. */
-function optionsFromDataset(host: HTMLElement): TypeTesterOptions {
+function optionsFromDataset(host: HTMLElement): TypeBarOptions {
 	const d = host.dataset;
 	const sizeAttr = d.size;
 	let size: Size | undefined;
@@ -67,21 +67,21 @@ function optionsFromDataset(host: HTMLElement): TypeTesterOptions {
 /**
  * Initialises a single host element as a tester from its `data-*` attributes.
  */
-export function createFromElement(host: HTMLElement): TypeTester {
-	return new TypeTester(host, optionsFromDataset(host));
+export function createFromElement(host: HTMLElement): TypeBar {
+	return new TypeBar(host, optionsFromDataset(host));
 }
 
 /**
- * Finds and initialises every `[data-type-tester]` element within `root`
+ * Finds and initialises every `[data-typebar]` element within `root`
  * (default: document). Returns the created instances. Idempotent: elements
  * already initialised (marked with `data-tt-ready`) are skipped.
  */
-export function autoInit(root: ParentNode = document): TypeTester[] {
+export function autoInit(root: ParentNode = document): TypeBar[] {
 	const hosts = Array.from(
-		root.querySelectorAll<HTMLElement>("[data-type-tester]"),
-	).filter((host) => host.dataset.ttReady !== "true");
+		root.querySelectorAll<HTMLElement>("[data-typebar]"),
+	).filter((host) => host.dataset.typebarReady !== "true");
 	return hosts.map((host) => {
-		host.dataset.ttReady = "true";
+		host.dataset.typebarReady = "true";
 		return createFromElement(host);
 	});
 }

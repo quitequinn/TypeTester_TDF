@@ -1,17 +1,20 @@
-# Type Tester TDF
+# TypeBar
 
-[![npm](https://img.shields.io/npm/v/type-tester-tdf.svg)](https://www.npmjs.com/package/type-tester-tdf)
-[![CI](https://github.com/quitequinn/TypeTester_TDF/actions/workflows/ci.yml/badge.svg)](https://github.com/quitequinn/TypeTester_TDF/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/typebar.svg)](https://www.npmjs.com/package/typebar)
+[![CI](https://github.com/quitequinn/typebar/actions/workflows/ci.yml/badge.svg)](https://github.com/quitequinn/typebar/actions/workflows/ci.yml)
 
-**[▶ Live demo](https://quitequinn.github.io/TypeTester_TDF/)**
+**[▶ Live demo](https://quitequinn.github.io/typebar/)**
 
-An accessible, **dependency-free** type tester for the web. Type a sample, then
-adjust size, tracking, weight, italic, alignment, line-wrap, and **composable
-OpenType features** live. Ships a framework-agnostic vanilla core and an optional
-React component.
+A **micro toolbar** for testing type on the web — a compact bar of controls over a
+live, editable sample. Accessible and **dependency-free**: adjust size, tracking,
+weight, italic, alignment, line-wrap, and **composable OpenType features** live.
+Ships a framework-agnostic vanilla core and an optional React component.
+
+> Formerly published as `type-tester-tdf`; renamed to **TypeBar** to reflect what
+> it really is — a small type-control toolbar, not a heavyweight tester.
 
 > **v2 is a ground-up rewrite.** The legacy jQuery + jQuery UI + BigText widget
-> (v1) is preserved at the [`v1.0.0`](https://github.com/quitequinn/TypeTester_TDF/releases/tag/v1.0.0)
+> (v1) is preserved at the [`v1.0.0`](https://github.com/quitequinn/typebar/releases/tag/v1.0.0)
 > git tag. v2 has **no runtime
 > dependencies**, builds accessible native controls, escapes all input (no
 > `eval`, no `innerHTML`), composes multiple OpenType features at once, and
@@ -30,13 +33,13 @@ React component.
 ## Install
 
 ```bash
-npm install type-tester-tdf
+npm install typebar
 ```
 
 Import the stylesheet once (optional — the component works without it):
 
 ```js
-import "type-tester-tdf/styles.css";
+import "typebar/styles.css";
 ```
 
 ## Vanilla JS
@@ -44,10 +47,10 @@ import "type-tester-tdf/styles.css";
 ### Programmatic
 
 ```js
-import { TypeTester } from "type-tester-tdf";
-import "type-tester-tdf/styles.css";
+import { TypeBar } from "typebar";
+import "typebar/styles.css";
 
-const tester = new TypeTester(document.querySelector("#demo"), {
+const tester = new TypeBar(document.querySelector("#demo"), {
   text: "Typography",
   fontFamily: "Inter",
   size: 96,
@@ -62,7 +65,7 @@ tester.destroy();
 
 ```html
 <div
-  data-type-tester
+  data-typebar
   data-font="Inter"
   data-size="96"
   data-text="Typography"
@@ -70,9 +73,9 @@ tester.destroy();
 ></div>
 
 <script type="module">
-  import { autoInit } from "type-tester-tdf";
-  import "type-tester-tdf/styles.css";
-  autoInit(); // initialises every [data-type-tester] element
+  import { autoInit } from "typebar";
+  import "typebar/styles.css";
+  autoInit(); // initialises every [data-typebar] element
 </script>
 ```
 
@@ -81,12 +84,12 @@ tester.destroy();
 ## React
 
 ```tsx
-import { TypeTesterComponent } from "type-tester-tdf/react";
-import "type-tester-tdf/styles.css";
+import { TypeBarComponent } from "typebar/react";
+import "typebar/styles.css";
 
 export function Demo() {
   return (
-    <TypeTesterComponent
+    <TypeBarComponent
       text="Typography"
       fontFamily="Inter"
       size={96}
@@ -101,7 +104,7 @@ React is a **peer dependency** (>=17); the core stays dependency-free.
 
 ## Options
 
-`new TypeTester(host, options)` / `<TypeTesterComponent {...options} />`:
+`new TypeBar(host, options)` / `<TypeBarComponent {...options} />`:
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -147,7 +150,7 @@ Unlike v1 (one feature at a time), **features compose**: selecting Small Caps
 and Oldstyle Figures yields `font-feature-settings: "smcp" 1, "onum" 1`.
 
 ```js
-import { FEATURES, featureSettings } from "type-tester-tdf";
+import { FEATURES, featureSettings } from "typebar";
 
 featureSettings(["smcp", "onum"]); // => '"smcp" 1, "onum" 1'
 ```
@@ -174,7 +177,7 @@ set with `controls: { features: ["smcp", "onum", "ss01"] }`.
 
 | v1 (jQuery attributes) | v2 |
 | --- | --- |
-| `class="typeTester"` | `data-type-tester` (or `new TypeTester(el, …)`) |
+| `class="typeTester"` | `data-typebar` (or `new TypeBar(el, …)`) |
 | `font="Inter"` | `data-font="Inter"` / `fontFamily: "Inter"` |
 | `size="90"` / `size=""` (fit) | `data-size="90"` / `data-size="fit"` |
 | `weightoptions="true"` | `data-controls="weight"` / `controls: { weight: true }` |
@@ -182,7 +185,7 @@ set with `controls: { features: ["smcp", "onum", "ss01"] }`.
 | magic words `"yup"`, `"nope"` | plain booleans / `"true"` / `"false"` |
 | jQuery + jQuery UI + BigText | **no dependencies** |
 
-The v1 source remains available at the [`v1.0.0`](https://github.com/quitequinn/TypeTester_TDF/releases/tag/v1.0.0) git tag.
+The v1 source remains available at the [`v1.0.0`](https://github.com/quitequinn/typebar/releases/tag/v1.0.0) git tag.
 
 ## Development
 

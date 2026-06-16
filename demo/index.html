@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Type Tester TDF — live demo</title>
+		<title>TypeBar — live demo</title>
 		<link rel="stylesheet" href="./dist/styles.css" />
 		<style>
 			:root { color-scheme: light dark; }
@@ -22,7 +22,7 @@
 				border: 1px solid #e5e7eb;
 				border-radius: 0.75rem;
 			}
-			.tt__type { line-height: 1.05; }
+			.tb__type { line-height: 1.05; }
 			h2 { margin-top: 2.5rem; }
 			pre { background: #f4f4f5; padding: 1rem; border-radius: 0.5rem; overflow: auto; }
 			code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
@@ -30,13 +30,13 @@
 	</head>
 	<body>
 		<header>
-			<h1>Type Tester TDF</h1>
+			<h1>TypeBar</h1>
 			<p>
-				An accessible, dependency-free type tester. Type below, then adjust size,
+				A micro toolbar for testing type. Type below, then adjust size,
 				tracking, weight, italic, alignment, wrap, and composable OpenType features.
-				Install with <code>npm install type-tester-tdf</code> —
-				<a href="https://www.npmjs.com/package/type-tester-tdf">npm</a> ·
-				<a href="https://github.com/quitequinn/TypeTester_TDF">GitHub</a>.
+				Install with <code>npm install typebar</code> —
+				<a href="https://www.npmjs.com/package/typebar">npm</a> ·
+				<a href="https://github.com/quitequinn/typebar">GitHub</a>.
 			</p>
 		</header>
 
@@ -46,9 +46,9 @@
 		<pre id="out"></pre>
 
 		<script type="module">
-			import { TypeTester } from "./dist/index.js";
+			import { TypeBar } from "./dist/index.js";
 
-			new TypeTester(document.getElementById("demo"), {
+			new TypeBar(document.getElementById("demo"), {
 				text: "Typography",
 				size: 96,
 				weight: 500,

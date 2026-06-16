@@ -6,18 +6,18 @@ via a CDN that serves ES modules.
 ## Install
 
 ```bash
-npm install type-tester-tdf
+npm install typebar
 ```
 
 ```js
-import { TypeTester, autoInit } from "type-tester-tdf";
-import "type-tester-tdf/styles.css";
+import { TypeBar, autoInit } from "typebar";
+import "typebar/styles.css";
 ```
 
 ## Programmatic API
 
 ```js
-const tester = new TypeTester(host, options);
+const tester = new TypeBar(host, options);
 tester.getState(); // snapshot of the current typographic state
 tester.destroy();  // remove all DOM, listeners and observers
 ```
@@ -27,7 +27,7 @@ tester.destroy();  // remove all DOM, listeners and observers
 ### Example
 
 ```js
-const tester = new TypeTester(document.querySelector("#demo"), {
+const tester = new TypeBar(document.querySelector("#demo"), {
   text: "Hamburgevons",
   fontFamily: "Inter",
   fallback: "Helvetica, Arial, sans-serif",
@@ -55,7 +55,7 @@ Mark up an element and call `autoInit()`:
 
 ```html
 <div
-  data-type-tester
+  data-typebar
   data-font="Inter"
   data-size="96"
   data-text="Typography"
@@ -69,7 +69,7 @@ Mark up an element and call `autoInit()`:
 ```
 
 ```js
-import { autoInit } from "type-tester-tdf";
+import { autoInit } from "typebar";
 autoInit();              // whole document
 autoInit(someContainer); // or a subtree
 ```
