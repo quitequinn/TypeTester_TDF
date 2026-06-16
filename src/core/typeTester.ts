@@ -14,6 +14,7 @@ import { Fitter } from "./fit.js";
 import { clamp, el, toNumber } from "./dom.js";
 import {
 	FEATURES,
+	FEATURE_BY_TAG,
 	type FeatureDef,
 	type FeatureTag,
 	featureLabel,
@@ -36,6 +37,13 @@ const DEFAULT_RANGES = {
 } as const;
 
 const ALIGNS: readonly Align[] = ["left", "center", "right"];
+
+// Monotonic counter for unique element ids (deterministic, collision-free even
+// for instances created within the same millisecond).
+let idCounter = 0;
+function nextId(): number {
+	return ++idCounter;
+}
 
 /** Resolves a boolean|Range control config against a default range. */
 function resolveRange(value: boolean | Range | undefined, fallback: Range): Range | null {
@@ -111,7 +119,7 @@ export class TypeTester {
 			attrs: {
 				role: "textbox",
 				"aria-label": this.options.ariaLabel ?? "Sample text",
-				"aria-multiline": this.state.wrap,
+				"aria-multiline": String(this.state.wrap),
 				contenteditable: this.options.editable !== false ? "true" : null,
 				spellcheck: "true",
 				"data-placeholder": this.options.placeholder ?? "Type to test…",
@@ -304,14 +312,14 @@ export class TypeTester {
 
 	private buildFeatures(): HTMLElement {
 		const offered: readonly FeatureDef[] = Array.isArray(this.controls.features)
-			? this.controls.features.filter(isKnownFeature).map((tag) => ({
-					tag,
-					label: featureLabel(tag),
-					group: "Alternates" as const,
-				}))
+			? this.controls.features
+					.filter(isKnownFeature)
+					// Preserve each feature's real group/label from the registry rather
+					// than flattening everything into "Alternates".
+					.map((tag) => FEATURE_BY_TAG.get(tag) ?? { tag, label: featureLabel(tag), group: "Alternates" })
 			: FEATURES;
 
-		const panelId = `tt-feat-${Math.round(performance.now())}-${offered.length}`;
+		const panelId = `tt-feat-${nextId()}`;
 		const toggle = el("button", {
 			class: "tt__toggle tt__toggle--features",
 			text: "Features",
@@ -367,11 +375,13 @@ export class TypeTester {
 			if (!wrapper.contains(e.target as Node)) setOpen(false);
 		};
 		toggle.addEventListener("click", onToggleClick);
-		wrapper.addEventListener("keydown", onKeydown);
+		// Escape is handled at the document level so it closes the panel no matter
+		// where focus currently is, then restores focus to the toggle.
+		document.addEventListener("keydown", onKeydown);
 		document.addEventListener("click", onOutside);
 		this.cleanups.push(() => {
 			toggle.removeEventListener("click", onToggleClick);
-			wrapper.removeEventListener("keydown", onKeydown);
+			document.removeEventListener("keydown", onKeydown);
 			document.removeEventListener("click", onOutside);
 		});
 

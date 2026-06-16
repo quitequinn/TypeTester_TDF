@@ -34,6 +34,10 @@ export class Fitter {
 	private frame = 0;
 	private onFit: ((size: number) => void) | null = null;
 	private destroyed = false;
+	// Last container width fitted against. Used to ignore ResizeObserver
+	// notifications caused purely by height changes (a fit grows the line
+	// height, which would otherwise re-trigger the observer in a loop).
+	private lastWidth = -1;
 
 	/**
 	 * @param target Element whose text is being fitted.
@@ -53,8 +57,12 @@ export class Fitter {
 	start(onFit: (size: number) => void): void {
 		this.onFit = onFit;
 		if (typeof ResizeObserver !== "undefined") {
-			this.observer = new ResizeObserver(() => this.schedule());
 			const container = this.target.parentElement ?? this.target;
+			this.observer = new ResizeObserver(() => {
+				// Only re-fit when the available width changes; height-only changes
+				// are a consequence of fitting and must not feed back.
+				if (container.clientWidth !== this.lastWidth) this.schedule();
+			});
 			this.observer.observe(container);
 		}
 		// Re-fit after web fonts load so we never measure fallback metrics.
@@ -97,6 +105,7 @@ export class Fitter {
 		const measured = mirror.getBoundingClientRect().width;
 		if (measured <= 0) return;
 
+		this.lastWidth = width;
 		const size = clamp((REFERENCE_SIZE * width) / measured, this.min, this.max);
 		this.onFit(Math.round(size * 100) / 100);
 	}

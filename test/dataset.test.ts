@@ -38,6 +38,21 @@ describe("dataset auto-init", () => {
 		expect(autoInit().length).toBe(0);
 	});
 
+	it("initialises only within the given subtree", () => {
+		const outside = document.createElement("div");
+		outside.setAttribute("data-type-tester", "");
+		document.body.appendChild(outside);
+		const container = document.createElement("section");
+		const inside = document.createElement("div");
+		inside.setAttribute("data-type-tester", "");
+		container.appendChild(inside);
+		document.body.appendChild(container);
+
+		expect(autoInit(container).length).toBe(1);
+		expect(inside.dataset.ttReady).toBe("true");
+		expect(outside.dataset.ttReady).toBeUndefined();
+	});
+
 	it("supports auto-fit mode without throwing", () => {
 		const host = document.createElement("div");
 		host.setAttribute("data-type-tester", "");

@@ -114,11 +114,112 @@ describe("TypeTester controls", () => {
 	});
 });
 
+describe("TypeTester more controls", () => {
+	it("updates tracking and weight from sliders", () => {
+		new TypeTester(host, { controls: { tracking: true, weight: true } });
+		const type = host.querySelector<HTMLElement>(".tt__type")!;
+		const tracking = host.querySelector<HTMLInputElement>(".tt__slider--tracking")!;
+		tracking.value = "0.2";
+		tracking.dispatchEvent(new Event("input"));
+		expect(type.style.letterSpacing).toBe("0.2em");
+		const weight = host.querySelector<HTMLInputElement>(".tt__slider--weight")!;
+		weight.value = "700";
+		weight.dispatchEvent(new Event("input"));
+		expect(type.style.fontWeight).toBe("700");
+	});
+
+	it("changes alignment via the select", () => {
+		new TypeTester(host, { controls: { align: true } });
+		const select = host.querySelector<HTMLSelectElement>(".tt__select--align")!;
+		select.value = "right";
+		select.dispatchEvent(new Event("change"));
+		expect(host.querySelector<HTMLElement>(".tt__type")!.style.textAlign).toBe("right");
+	});
+
+	it("wrap toggle updates white-space and aria-multiline", () => {
+		new TypeTester(host, { wrap: true, controls: { wrap: true } });
+		const text = host.querySelector<HTMLElement>(".tt__text")!;
+		expect(text.getAttribute("aria-multiline")).toBe("true");
+		host.querySelector<HTMLButtonElement>(".tt__toggle--wrap")!.click();
+		expect(text.getAttribute("aria-multiline")).toBe("false");
+		expect(text.style.whiteSpace).toBe("nowrap");
+	});
+
+	it("drives weight via font-variation-settings when variable", () => {
+		new TypeTester(host, {
+			weight: 500,
+			variable: { wght: { min: 100, max: 900 } },
+			controls: { weight: true },
+		});
+		const type = host.querySelector<HTMLElement>(".tt__type")!;
+		expect(type.style.getPropertyValue("font-variation-settings")).toBe('"wght" 500');
+	});
+
+	it("restricted features keep their real group/label", () => {
+		const tester = new TypeTester(host, { controls: { features: ["liga", "onum"] } });
+		const labels = Array.from(host.querySelectorAll(".tt__feature span")).map(
+			(s) => s.textContent,
+		);
+		expect(labels).toContain("Standard Ligatures");
+		expect(labels).toContain("Oldstyle Figures");
+		tester.destroy();
+	});
+
+	it("emits a complete state payload", () => {
+		let last: ReturnType<TypeTester["getState"]> | null = null;
+		new TypeTester(host, {
+			size: 40,
+			controls: { size: true },
+			onChange: (s) => (last = s),
+		});
+		const slider = host.querySelector<HTMLInputElement>(".tt__slider--size")!;
+		slider.value = "50";
+		slider.dispatchEvent(new Event("input"));
+		expect(last).not.toBeNull();
+		expect(Object.keys(last!).sort()).toEqual(
+			["align", "features", "fit", "italic", "size", "text", "tracking", "weight", "wrap"].sort(),
+		);
+	});
+});
+
+describe("TypeTester features panel behaviour", () => {
+	it("closes on Escape and restores focus to the toggle", () => {
+		new TypeTester(host, { controls: { features: true } });
+		const toggle = host.querySelector<HTMLButtonElement>(".tt__toggle--features")!;
+		const panel = host.querySelector<HTMLElement>(".tt__panel")!;
+		toggle.click();
+		expect(panel.hasAttribute("hidden")).toBe(false);
+		document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+		expect(panel.hasAttribute("hidden")).toBe(true);
+		expect(toggle.getAttribute("aria-expanded")).toBe("false");
+	});
+
+	it("closes on outside click", () => {
+		new TypeTester(host, { controls: { features: true } });
+		const toggle = host.querySelector<HTMLButtonElement>(".tt__toggle--features")!;
+		const panel = host.querySelector<HTMLElement>(".tt__panel")!;
+		toggle.click();
+		expect(panel.hasAttribute("hidden")).toBe(false);
+		document.body.click();
+		expect(panel.hasAttribute("hidden")).toBe(true);
+	});
+});
+
 describe("TypeTester teardown", () => {
 	it("removes all DOM on destroy", () => {
 		const tester = new TypeTester(host, { controls: { size: true }, size: 40 });
 		expect(host.children.length).toBeGreaterThan(0);
 		tester.destroy();
 		expect(host.children.length).toBe(0);
+	});
+
+	it("removes document-level listeners on destroy", () => {
+		const tester = new TypeTester(host, { controls: { features: true } });
+		tester.destroy();
+		// After destroy the outside-click/Escape listeners must be gone: dispatching
+		// must not throw and there is no panel left to toggle.
+		document.body.click();
+		document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+		expect(host.querySelector(".tt__panel")).toBeNull();
 	});
 });
