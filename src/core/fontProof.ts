@@ -190,9 +190,16 @@ export class FontProof {
 				"aria-label": label,
 			},
 		});
+		// Expose the value as a 0–100% custom property so the stylesheet can paint
+		// the filled portion of the track (a green/accent fill) without JS styling.
+		const span = range.max - range.min || 1;
+		const setFill = (v: number) =>
+			input.style.setProperty("--fp-fill", `${((v - range.min) / span) * 100}%`);
+		setFill(value);
 		const handler = () => {
 			const v = Number(input.value);
 			output.textContent = `${v}${unit}`;
+			setFill(v);
 			onInput(v);
 			this.announce(`${label} ${v}${unit}`);
 		};

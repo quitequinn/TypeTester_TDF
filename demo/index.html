@@ -40,6 +40,11 @@
 			</p>
 		</header>
 
+		<p>
+			<button type="button" id="theme">Toggle TDF theme (green on black)</button>
+			<span style="color: #6b7280">— the bar is slim at rest; hover or tab into it to expand.</span>
+		</p>
+
 		<div class="card"><div id="demo"></div></div>
 
 		<h2>Current state</h2>
@@ -48,7 +53,12 @@
 		<script type="module">
 			import { FontProof } from "./dist/index.js";
 
-			new FontProof(document.getElementById("demo"), {
+			const host = document.getElementById("demo");
+			document.getElementById("theme").addEventListener("click", () => {
+				host.classList.toggle("fp--tdf");
+			});
+
+			new FontProof(host, {
 				text: "Typography",
 				size: 96,
 				weight: 500,

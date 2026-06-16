@@ -112,6 +112,15 @@ describe("FontProof controls", () => {
 		const slider = host.querySelector<HTMLInputElement>(".fp__slider--size")!;
 		expect(Number(slider.value)).toBe(200);
 	});
+
+	it("sets the --fp-fill track variable from the slider value", () => {
+		new FontProof(host, { size: 100, controls: { size: { min: 0, max: 200 } } });
+		const slider = host.querySelector<HTMLInputElement>(".fp__slider--size")!;
+		expect(slider.style.getPropertyValue("--fp-fill")).toBe("50%");
+		slider.value = "150";
+		slider.dispatchEvent(new Event("input"));
+		expect(slider.style.getPropertyValue("--fp-fill")).toBe("75%");
+	});
 });
 
 describe("FontProof more controls", () => {

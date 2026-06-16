@@ -174,6 +174,44 @@ set with `controls: { features: ["smcp", "onum", "ss01"] }`.
 - Toggle states use weight + colour (not colour alone); animations respect
   `prefers-reduced-motion`.
 
+## Styling & themes
+
+The controls render as a **single segmented bar** under the sample: slim at rest
+(showing each slider's fill), expanding on hover **and keyboard focus**
+(`:focus-within`) to reveal labels and values. Import the stylesheet to get it:
+
+```js
+import "fontproof/styles.css";
+```
+
+The look is driven by CSS variables on the host (neutral defaults shown):
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `--fp-accent` | `#2563eb` | Focus rings, slider/checkbox accent |
+| `--fp-bar-bg` | `#f4f4f5` | Bar background |
+| `--fp-bar-fg` | `#18181b` | Label/value text on the bar |
+| `--fp-bar-track` | `#e4e4e7` | Unfilled slider track |
+| `--fp-bar-fill` | `--fp-accent` | Filled slider track / pressed toggle |
+| `--fp-bar-divider` | `rgba(0,0,0,.08)` | Segment dividers |
+| `--fp-bar-h` / `--fp-bar-h-expanded` | `30px` / `54px` | Bar height at rest / expanded |
+| `--fp-bar-radius` | `8px` | Bar corner radius |
+| `--fp-speed` | `0.18s` | Reveal/expand transition |
+
+Override any of them, e.g.:
+
+```css
+.fp { --fp-accent: #e11d48; --fp-bar-h-expanded: 60px; }
+```
+
+A faithful **TDF green-on-black** preset ships built in — add `fp--tdf` to the host:
+
+```js
+new FontProof(el, { /* … */ });
+el.classList.add("fp--tdf");
+// React: <FontProofComponent className="fp--tdf" … />
+```
+
 ## Migrating from v1
 
 | v1 (jQuery attributes) | v2 |
