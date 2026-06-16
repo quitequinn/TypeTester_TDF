@@ -21,8 +21,9 @@ Saved: 2026-06-15
   non-variable fonts.
 - The React wrapper keys instance rebuilds on `JSON.stringify(options)` and reads
   `onChange` via a ref (so changing the callback does not rebuild). Intentional.
-- `legacy/` holds the original v1 jQuery widget for reference; it is not the
-  shipped module and should not be reviewed as product code.
+- The original v1 jQuery widget lives at the `v1.0.0` git tag (the `legacy/`
+  folder was removed after v2 shipped). It is not the shipped module and should
+  not be reviewed as product code.
 
 ## History
 - 2026-06-15/16: Full panel review of legacy v1 → 36 issues (#2–#37). Rewrote as
