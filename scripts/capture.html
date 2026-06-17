@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>FontProof — asset capture</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Nabla:EDPT,EHLT@0..200,0..24&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="/dist/styles.css" />
+		<style>
+			@font-palette-values --sunset {
+				font-family: Nabla;
+				override-colors: 0 #ffd166, 1 #ef476f, 2 #f78c6b, 3 #06d6a0, 4 #118ab2, 5 #073b4c;
+			}
+			@font-palette-values --candy {
+				font-family: Nabla;
+				override-colors: 0 #ff6ec7, 1 #7873f5, 2 #4ade80, 3 #fde047, 4 #38bdf8, 5 #fb7185;
+			}
+			* { box-sizing: border-box; }
+			body { margin: 0; background: #fff; font-family: system-ui, sans-serif; }
+			#stage { display: flex; flex-direction: column; gap: 40px; padding: 40px; width: max-content; }
+			.scene { width: 1100px; padding: 34px 44px; border-radius: 14px; }
+			.row { display: flex; flex-direction: column; gap: 4px; }
+			.row + .row { margin-top: 22px; }
+			.lbl {
+				font: 600 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				opacity: 0.55;
+			}
+			/* Force the control bar open for the hero capture (normally focus-gated). */
+			.show-bar .fp__controls {
+				max-height: none !important;
+				opacity: 1 !important;
+				overflow: visible !important;
+				pointer-events: auto !important;
+				transform: none !important;
+				margin-top: 0.7rem !important;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="stage"></div>
+		<script type="module">
+			import { FontProof } from "/dist/index.js";
+
+			const FR_VAR = { wght: { min: 100, max: 900 }, opsz: { min: 9, max: 144, default: 40, label: "Optical" } };
+
+			// Each scene: id (output filename), background, foreground token overrides,
+			// and one or more rows (label + FontProof config).
+			const SCENES = [
+				{
+					id: "bar",
+					showBar: true,
+					vars: { "--fp-bg": "#0b0b0c", "--fp-fg": "#ededed", "--fp-bar-bg": "#1c1c1f", "--fp-bar-track": "#2c2c31", "--fp-bar-fill": "#ededed", "--fp-accent": "#8ab4ff" },
+					bg: "#0b0b0c",
+					rows: [
+						{
+							cfg: {
+								text: "FontProof AaBb123",
+								fontFamily: "Fraunces",
+								size: 88,
+								weight: 480,
+								variable: FR_VAR,
+								controls: { size: true, tracking: true, weight: true, axes: true, italic: true, align: true, wrap: true, features: true },
+							},
+						},
+					],
+				},
+				{
+					id: "axes",
+					bg: "#0b0b0c",
+					vars: { "--fp-bg": "transparent", "--fp-fg": "#ededed" },
+					rows: [
+						{ label: "wght 200 · opsz 12", cfg: { text: "Optical", fontFamily: "Fraunces", size: 84, weight: 200, variable: { wght: { min: 100, max: 900 }, opsz: { min: 9, max: 144, default: 12 } } } },
+						{ label: "wght 850 · opsz 144", cfg: { text: "Optical", fontFamily: "Fraunces", size: 84, weight: 850, variable: { wght: { min: 100, max: 900 }, opsz: { min: 9, max: 144, default: 144 } } } },
+					],
+				},
+				{
+					id: "features",
+					bg: "#0b0b0c",
+					vars: { "--fp-bg": "transparent", "--fp-fg": "#ededed" },
+					rows: [
+						{ label: "default — lining figures", cfg: { text: "Hamburg 0123 1/2", fontFamily: "Fraunces", size: 60, weight: 460 } },
+						{ label: "onum + frac", cfg: { text: "Hamburg 0123 1/2", fontFamily: "Fraunces", size: 60, weight: 460, features: ["onum", "frac"] } },
+					],
+				},
+				{
+					id: "colour",
+					bg: "#101014",
+					vars: { "--fp-bg": "transparent", "--fp-fg": "#ededed" },
+					rows: [
+						{ label: "palette --sunset", cfg: { text: "Colour", fontFamily: "Nabla", size: 96, palette: "--sunset", variable: { EDPT: { min: 0, max: 200, default: 100 }, EHLT: { min: 0, max: 24, default: 12 } } } },
+						{ label: "palette --candy", cfg: { text: "Colour", fontFamily: "Nabla", size: 96, palette: "--candy", variable: { EDPT: { min: 0, max: 200, default: 100 }, EHLT: { min: 0, max: 24, default: 12 } } } },
+					],
+				},
+			];
+
+			const stage = document.getElementById("stage");
+			for (const scene of SCENES) {
+				const el = document.createElement("div");
+				el.className = "scene" + (scene.showBar ? " show-bar" : "");
+				el.id = scene.id;
+				el.style.background = scene.bg;
+				stage.appendChild(el);
+				for (const row of scene.rows) {
+					const rowEl = document.createElement("div");
+					rowEl.className = "row";
+					if (row.label) {
+						const lbl = document.createElement("div");
+						lbl.className = "lbl";
+						lbl.style.color = scene.vars["--fp-fg"] || "#111";
+						lbl.textContent = row.label;
+						rowEl.appendChild(lbl);
+					}
+					const host = document.createElement("div");
+					for (const [k, v] of Object.entries(scene.vars)) host.style.setProperty(k, v);
+					rowEl.appendChild(host);
+					el.appendChild(rowEl);
+					new FontProof(host, row.cfg);
+				}
+			}
+
+			// Signal readiness for the capture script.
+			window.__ready = (async () => {
+				await document.fonts.ready;
+			})();
+		</script>
+	</body>
+</html>
