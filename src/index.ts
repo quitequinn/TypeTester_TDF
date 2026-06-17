@@ -29,6 +29,8 @@ function parseControls(value: string | null): ControlsConfig {
 		else if (key === "align") config.align = true;
 		else if (key === "wrap") config.wrap = true;
 		else if (key === "features") config.features = true;
+		else if (key === "axes") config.axes = true;
+		else if (key === "palette") config.palette = true;
 	}
 	return config;
 }
@@ -61,6 +63,8 @@ function optionsFromDataset(host: HTMLElement): FontProofOptions {
 		placeholder: d.placeholder,
 		ariaLabel: d.ariaLabel,
 		showValues: d.showValues != null ? d.showValues !== "false" : undefined,
+		palette: d.palette,
+		synthesis: d.synthesis != null ? d.synthesis !== "false" : undefined,
 		controls: parseControls(d.controls ?? null),
 	};
 }

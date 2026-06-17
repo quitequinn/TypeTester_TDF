@@ -41,13 +41,35 @@ export interface ControlsConfig {
 	 * an array restricts the offered features to the given tags.
 	 */
 	features?: boolean | FeatureTag[];
+	/**
+	 * Variable-axis sliders (besides `wght`, which uses the weight control).
+	 * `true` shows a slider for every axis configured in `variable`; an array
+	 * restricts to the given axis tags.
+	 */
+	axes?: boolean | string[];
+	/**
+	 * Colour-font palette control (`font-palette`). `true` offers
+	 * normal/light/dark; an array offers the given palette identifiers
+	 * (e.g. custom `--name` palettes you define with `@font-palette-values`).
+	 */
+	palette?: boolean | string[];
 }
 
-/** Optional variable-font axis configuration. */
-export interface VariableConfig {
-	/** `wght` axis range; when set, weight is driven via font-variation-settings. */
-	wght?: Range;
+/** Configuration for one variable-font axis. Extends a numeric {@link Range}. */
+export interface AxisConfig extends Range {
+	/** Initial value (defaults to `min`). */
+	default?: number;
+	/** Display label for the slider (defaults to the axis tag). */
+	label?: string;
 }
+
+/**
+ * Variable-font axis configuration, keyed by 4-character axis tag — registered
+ * (`wght`, `wdth`, `opsz`, `slnt`, `ital`) or custom (`GRAD`, `SOFT`, `WONK`…).
+ * Each configured axis is applied via `font-variation-settings`. `wght` is
+ * special: it also drives the weight control.
+ */
+export type VariableConfig = Record<string, AxisConfig>;
 
 /** Options accepted by {@link FontProof}. All fields are optional. */
 export interface FontProofOptions {
@@ -82,8 +104,19 @@ export interface FontProofOptions {
 	 * "Size: 96px"). Off by default — only titles are shown.
 	 */
 	showValues?: boolean;
-	/** Variable-font axis configuration. */
+	/** Variable-font axis configuration (keyed by axis tag). */
 	variable?: VariableConfig;
+	/**
+	 * Initial colour-font palette (`font-palette`): "normal", "light", "dark",
+	 * or a custom `--name`. Defaults to "normal".
+	 */
+	palette?: string;
+	/**
+	 * Whether the browser may synthesise missing weights/styles (faux bold /
+	 * faux italic / faux small-caps). Defaults to true. Set false for honest
+	 * proofing — missing faces render as-is instead of being faked.
+	 */
+	synthesis?: boolean;
 	/** Accessible label for the editable region. */
 	ariaLabel?: string;
 	/** Called whenever the typographic state changes. */
@@ -110,4 +143,8 @@ export interface FontProofState {
 	wrap: boolean;
 	/** Active OpenType feature tags. */
 	features: FeatureTag[];
+	/** Current value per configured variable axis (excluding `wght`). */
+	axes: Record<string, number>;
+	/** Current colour-font palette (`font-palette`). */
+	palette: string;
 }

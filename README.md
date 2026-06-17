@@ -123,7 +123,9 @@ React is a **peer dependency** (>=17); the core stays dependency-free.
 | `placeholder` | `string` | `"Type to test…"` | Empty-state placeholder (CSS, not real text). |
 | `controls` | `ControlsConfig` | `{}` | Which controls to render (see below). |
 | `showValues` | `boolean` | `false` | Show each control's value inline (e.g. `Size: 96px`). |
-| `variable` | `{ wght?: { min, max, step? } }` | — | Drive weight via `font-variation-settings`. |
+| `variable` | `Record<tag, AxisConfig>` | — | Variable-font axes (see [below](#variable--colour-fonts)). |
+| `palette` | `string` | `"normal"` | Initial colour-font palette (`font-palette`). |
+| `synthesis` | `boolean` | `true` | Allow faux bold/italic. `false` for honest proofing. |
 | `ariaLabel` | `string` | `"Sample text"` | Accessible name for the editable region. |
 | `onChange` | `(state) => void` | — | Called on every state change. |
 
@@ -145,10 +147,56 @@ controls: {
   align: true,                          // native <select>
   wrap: true,                           // single-line toggle
   features: true,                       // full OpenType list (or string[] subset)
+  axes: true,                           // a slider per variable axis (or string[] subset)
+  palette: ["normal", "light", "dark"], // colour-font palette <select> (or `true`)
 }
 ```
 
 Default ranges: size `8–300px`, tracking `-0.1–0.5em`, weight `100–900` step 100.
+
+## Variable & colour fonts
+
+**Variable axes.** Configure any axis by its 4-character tag in `variable`, then
+enable sliders with `controls.axes`. `wght` is special — it drives the weight
+control; all other axes (`opsz`, `slnt`, `wdth`, `ital`, or custom `GRAD`/`SOFT`/
+`WONK`…) get their own slider and compose into one `font-variation-settings`.
+
+```js
+new FontProof(el, {
+  fontFamily: "Fraunces",
+  variable: {
+    wght: { min: 100, max: 900 },
+    opsz: { min: 9, max: 144, default: 40, label: "Optical" },
+    slnt: { min: -10, max: 0 },
+  },
+  controls: { weight: true, axes: true }, // weight = wght; opsz + slnt = axis sliders
+});
+```
+
+When an `opsz` axis is configured, `font-optical-sizing: none` is set so your
+manual value isn't overridden by the browser's automatic optical sizing.
+
+**Colour fonts** (COLR/CPAL — e.g. Nabla, Bungee Spice). They render in colour
+automatically; expose palette switching with `controls.palette` (sets
+`font-palette`). Use the keywords `normal`/`light`/`dark`, or custom palettes you
+define with [`@font-palette-values`](https://developer.mozilla.org/docs/Web/CSS/@font-palette-values):
+
+```css
+@font-palette-values --brand {
+  font-family: Nabla;
+  base-palette: 2;
+}
+```
+```js
+controls: { palette: ["normal", "light", "dark", "--brand"] }
+```
+
+**Honest proofing.** Set `synthesis: false` to apply `font-synthesis: none`, so a
+missing bold/italic renders as the real font rather than a faux (synthesised)
+style — useful when proofing which weights/styles a family actually ships.
+
+Static, bitmap (sbix/CBDT), SVG, emoji and icon fonts all work too — they need no
+special controls beyond size/features.
 
 ## OpenType features
 

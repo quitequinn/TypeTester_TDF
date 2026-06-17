@@ -23,6 +23,7 @@ import {
 } from "./opentype.js";
 import type {
 	Align,
+	AxisConfig,
 	ControlsConfig,
 	Range,
 	FontProofOptions,
@@ -83,6 +84,13 @@ export class FontProof {
 		for (const tag of options.features ?? []) {
 			if (isKnownFeature(tag)) this.activeFeatures.add(tag);
 		}
+		// Initial value for every configured variable axis except wght (which the
+		// weight control owns).
+		const axes: Record<string, number> = {};
+		for (const [tag, cfg] of Object.entries(options.variable ?? {})) {
+			if (tag === "wght") continue;
+			axes[tag] = clamp(cfg.default ?? cfg.min, cfg.min, cfg.max);
+		}
 		this.state = {
 			text: options.text ?? "",
 			size: fit ? 0 : toNumber(options.size, 80),
@@ -93,6 +101,8 @@ export class FontProof {
 			align: options.align ?? "left",
 			wrap: options.wrap ?? true,
 			features: Array.from(this.activeFeatures),
+			axes,
+			palette: options.palette ?? "normal",
 		};
 
 		this.render();
@@ -100,7 +110,11 @@ export class FontProof {
 
 	/** Returns a snapshot of the current state. */
 	getState(): FontProofState {
-		return { ...this.state, features: Array.from(this.activeFeatures) };
+		return {
+			...this.state,
+			features: Array.from(this.activeFeatures),
+			axes: { ...this.state.axes },
+		};
 	}
 
 	/** Removes all DOM, listeners and observers created by this instance. */
@@ -159,10 +173,12 @@ export class FontProof {
 			this.options.variable?.wght ?? DEFAULT_RANGES.weight,
 		);
 		if (weightRange) items.push(this.buildWeight(weightRange));
+		for (const axis of this.buildAxes()) items.push(axis);
 		if (this.controls.italic) items.push(this.buildItalic());
 		if (this.controls.align) items.push(this.buildAlign());
 		if (this.controls.wrap) items.push(this.buildWrap());
 		if (this.controls.features) items.push(this.buildFeatures());
+		if (this.controls.palette) items.push(this.buildPalette());
 
 		if (items.length === 0) return null;
 		return el("div", {
@@ -189,7 +205,7 @@ export class FontProof {
 	}
 
 	private buildSlider(
-		key: "size" | "tracking" | "weight",
+		key: string,
 		label: string,
 		range: Range,
 		value: number,
@@ -262,6 +278,57 @@ export class FontProof {
 			this.state.weight = v;
 			this.applyStyles();
 			this.emitChange();
+		});
+	}
+
+	/** Builds a slider for each configured variable axis (except wght). */
+	private buildAxes(): HTMLElement[] {
+		if (!this.controls.axes || !this.options.variable) return [];
+		const want = Array.isArray(this.controls.axes) ? this.controls.axes : null;
+		const out: HTMLElement[] = [];
+		for (const [tag, cfg] of Object.entries(this.options.variable)) {
+			if (tag === "wght") continue;
+			if (want && !want.includes(tag)) continue;
+			out.push(this.buildAxis(tag, cfg));
+		}
+		return out;
+	}
+
+	private buildAxis(tag: string, cfg: AxisConfig): HTMLElement {
+		const range: Range = { min: cfg.min, max: cfg.max, step: cfg.step ?? 1 };
+		const init = clamp(this.state.axes[tag] ?? cfg.default ?? cfg.min, cfg.min, cfg.max);
+		this.state.axes[tag] = init;
+		return this.buildSlider(`axis-${tag}`, cfg.label ?? tag, range, init, "", (v) => {
+			this.state.axes[tag] = v;
+			this.applyStyles();
+			this.emitChange();
+		});
+	}
+
+	private buildPalette(): HTMLElement {
+		const opts = Array.isArray(this.controls.palette)
+			? this.controls.palette
+			: ["normal", "light", "dark"];
+		const select = el("select", {
+			class: "fp__select fp__select--palette",
+			attrs: { "aria-label": "Palette" },
+			children: opts.map((p) =>
+				el("option", { text: p, attrs: { value: p, selected: p === this.state.palette } }),
+			),
+		});
+		const value = el("span", { class: "fp__value", text: this.state.palette });
+		const handler = () => {
+			this.state.palette = select.value;
+			value.textContent = select.value;
+			this.applyStyles();
+			this.emitChange();
+			this.announce(`Palette ${select.value}`);
+		};
+		select.addEventListener("change", handler);
+		this.cleanups.push(() => select.removeEventListener("change", handler));
+		return el("label", {
+			class: "fp__control fp__control--palette",
+			children: [select, this.caption("Palette", value)],
 		});
 	}
 
@@ -467,10 +534,20 @@ export class FontProof {
 		s.textAlign = this.state.align;
 		this.textEl.style.whiteSpace = this.state.wrap ? "normal" : "nowrap";
 
-		if (this.options.variable?.wght) {
-			s.fontVariationSettings = `"wght" ${this.state.weight}`;
-		}
+		// Compose every variable axis into a single font-variation-settings value:
+		// wght (driven by the weight control) plus any other configured axes.
+		const varParts: string[] = [];
+		if (this.options.variable?.wght) varParts.push(`"wght" ${this.state.weight}`);
+		for (const [tag, v] of Object.entries(this.state.axes)) varParts.push(`"${tag}" ${v}`);
+		s.fontVariationSettings = varParts.length ? varParts.join(", ") : "normal";
 		s.fontWeight = String(this.state.weight);
+
+		// Colour fonts: select the COLR/CPAL palette.
+		s.setProperty("font-palette", this.state.palette);
+		// If opsz is driven manually, stop auto optical-sizing from overriding it.
+		if (this.state.axes.opsz !== undefined) s.setProperty("font-optical-sizing", "none");
+		// Honest proofing: optionally disable faux bold/italic/small-caps.
+		if (this.options.synthesis === false) s.setProperty("font-synthesis", "none");
 
 		const settings = featureSettings(this.activeFeatures);
 		s.fontFeatureSettings = settings;

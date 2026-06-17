@@ -56,20 +56,27 @@ tester. The instance is rebuilt only when a **structural** option changes
 (serialised via the option object) and is always torn down on unmount via
 `destroy()`.
 
-## Variable fonts
+## Variable & colour fonts
+
+Configure any axis by tag and enable sliders with `controls.axes` (`wght` uses
+the weight control). For colour fonts, expose palettes with `controls.palette`.
 
 ```tsx
 <FontProofComponent
-  fontFamily="Inter Variable"
+  fontFamily="Fraunces"
   size={120}
-  weight={400}
-  variable={{ wght: { min: 100, max: 900, step: 1 } }}
-  controls={{ weight: true }}
+  variable={{
+    wght: { min: 100, max: 900 },
+    opsz: { min: 9, max: 144, default: 40, label: "Optical" },
+  }}
+  controls={{ weight: true, axes: true }}
+  palette="normal"
+  synthesis={false}
 />
 ```
 
-The weight slider then drives `font-variation-settings: "wght" …` (and
-`font-weight` as a fallback for non-variable fonts).
+See the [README](../README.md#variable--colour-fonts) for the full axis/palette/
+synthesis reference. All exported types include `AxisConfig` and `VariableConfig`.
 
 ## TypeScript
 

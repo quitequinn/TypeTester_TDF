@@ -12,6 +12,8 @@
 			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap"
 			rel="stylesheet"
 		/>
+		<!-- Nabla: a COLRv1 variable COLOUR font (Depth/Highlight axes + palettes). -->
+		<link href="https://fonts.googleapis.com/css2?family=Nabla&display=swap" rel="stylesheet" />
 		<link rel="stylesheet" href="./dist/styles.css" />
 		<style>
 			:root {
@@ -85,6 +87,20 @@
 			button:hover {
 				border-color: var(--fg);
 			}
+			.controls label {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+				font-size: 0.875rem;
+				color: var(--muted);
+			}
+			.controls select {
+				font: 500 0.875rem/1 system-ui, sans-serif;
+				padding: 0.4rem 0.5rem;
+				color: var(--fg);
+				background: var(--code-bg);
+				border: 1px solid var(--border);
+			}
 			.hint {
 				color: var(--muted);
 				font-size: 0.875rem;
@@ -143,6 +159,12 @@
 		</header>
 
 		<div class="controls">
+			<label>Font
+				<select id="font">
+					<option value="Fraunces">Fraunces (variable serif)</option>
+					<option value="Nabla">Nabla (colour font)</option>
+				</select>
+			</label>
 			<button type="button" id="theme">Toggle TDF theme</button>
 			<button type="button" id="values">Toggle values</button>
 			<span class="hint">The bar hides when focus leaves the tester.</span>
@@ -157,32 +179,46 @@
 			import { FontProof } from "./dist/index.js";
 
 			const host = document.getElementById("demo");
-			document.getElementById("theme").addEventListener("click", () => {
-				host.classList.toggle("fp--tdf");
-			});
-			document.getElementById("values").addEventListener("click", () => {
-				host.classList.toggle("fp--show-values");
-			});
+			const out = document.getElementById("out");
 
-			new FontProof(host, {
-				text: "Typography",
-				fontFamily: "Fraunces",
-				size: 100,
-				weight: 400,
-				variable: { wght: { min: 100, max: 900 } },
-				controls: {
-					size: true,
-					tracking: true,
-					weight: true,
-					italic: true,
-					align: true,
-					wrap: true,
-					features: true,
+			// Per-font configuration. Fraunces drives weight + optical size; Nabla is
+			// a colour font driven by its Depth/Highlight axes + palette selection.
+			const FONTS = {
+				Fraunces: {
+					fontFamily: "Fraunces",
+					size: 100,
+					weight: 400,
+					variable: { wght: { min: 100, max: 900 }, opsz: { min: 9, max: 144, default: 40, label: "Optical" } },
+					controls: { size: true, tracking: true, weight: true, axes: true, italic: true, align: true, wrap: true, features: true },
 				},
-				onChange: (state) => {
-					document.getElementById("out").textContent = JSON.stringify(state, null, 2);
+				Nabla: {
+					fontFamily: "Nabla",
+					size: 132,
+					variable: {
+						EDPT: { min: 0, max: 200, default: 100, label: "Depth" },
+						EHLT: { min: 0, max: 24, default: 12, label: "Highlight" },
+					},
+					controls: { size: true, tracking: true, axes: true, align: true, wrap: true, palette: ["normal", "light", "dark"] },
 				},
-			});
+			};
+
+			let instance = null;
+			function mount(key) {
+				if (instance) instance.destroy();
+				instance = new FontProof(host, {
+					text: "Typography",
+					...FONTS[key],
+					onChange: (state) => {
+						out.textContent = JSON.stringify(state, null, 2);
+					},
+				});
+			}
+
+			document.getElementById("font").addEventListener("change", (e) => mount(e.target.value));
+			document.getElementById("theme").addEventListener("click", () => host.classList.toggle("fp--tdf"));
+			document.getElementById("values").addEventListener("click", () => host.classList.toggle("fp--show-values"));
+
+			mount("Fraunces");
 		</script>
 	</body>
 </html>

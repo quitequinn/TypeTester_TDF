@@ -186,7 +186,70 @@ describe("FontProof more controls", () => {
 		slider.dispatchEvent(new Event("input"));
 		expect(last).not.toBeNull();
 		expect(Object.keys(last!).sort()).toEqual(
-			["align", "features", "fit", "italic", "size", "text", "tracking", "weight", "wrap"].sort(),
+			[
+				"align",
+				"axes",
+				"features",
+				"fit",
+				"italic",
+				"palette",
+				"size",
+				"text",
+				"tracking",
+				"weight",
+				"wrap",
+			].sort(),
+		);
+	});
+});
+
+describe("FontProof variable axes", () => {
+	it("renders a slider per configured non-wght axis and composes them", () => {
+		const tester = new FontProof(host, {
+			weight: 400,
+			variable: { wght: { min: 100, max: 900 }, opsz: { min: 9, max: 144, default: 40 } },
+			controls: { weight: true, axes: true },
+		});
+		const opsz = host.querySelector<HTMLInputElement>(".fp__slider--axis-opsz")!;
+		expect(opsz).not.toBeNull();
+		expect(tester.getState().axes.opsz).toBe(40);
+		const type = host.querySelector<HTMLElement>(".fp__type")!;
+		expect(type.style.getPropertyValue("font-variation-settings")).toBe('"wght" 400, "opsz" 40');
+		opsz.value = "100";
+		opsz.dispatchEvent(new Event("input"));
+		expect(type.style.getPropertyValue("font-variation-settings")).toBe('"wght" 400, "opsz" 100');
+		expect(type.style.getPropertyValue("font-optical-sizing")).toBe("none");
+	});
+
+	it("restricts axis sliders with controls.axes array", () => {
+		new FontProof(host, {
+			variable: { slnt: { min: -10, max: 0 }, GRAD: { min: -200, max: 150 } },
+			controls: { axes: ["slnt"] },
+		});
+		expect(host.querySelector(".fp__slider--axis-slnt")).not.toBeNull();
+		expect(host.querySelector(".fp__slider--axis-GRAD")).toBeNull();
+	});
+});
+
+describe("FontProof colour fonts & synthesis", () => {
+	it("sets font-palette and updates it from the palette control", () => {
+		const tester = new FontProof(host, {
+			palette: "light",
+			controls: { palette: ["normal", "light", "dark", "--brand"] },
+		});
+		const type = host.querySelector<HTMLElement>(".fp__type")!;
+		expect(type.style.getPropertyValue("font-palette")).toBe("light");
+		const select = host.querySelector<HTMLSelectElement>(".fp__select--palette")!;
+		select.value = "--brand";
+		select.dispatchEvent(new Event("change"));
+		expect(type.style.getPropertyValue("font-palette")).toBe("--brand");
+		expect(tester.getState().palette).toBe("--brand");
+	});
+
+	it("disables font-synthesis when synthesis is false", () => {
+		new FontProof(host, { synthesis: false });
+		expect(host.querySelector<HTMLElement>(".fp__type")!.style.getPropertyValue("font-synthesis")).toBe(
+			"none",
 		);
 	});
 });

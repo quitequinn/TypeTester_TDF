@@ -91,9 +91,12 @@ autoInit(someContainer); // or a subtree
 | `data-placeholder` | `placeholder` |
 | `data-aria-label` | `ariaLabel` |
 | `data-show-values` | `showValues` (`"true"` to show values inline) |
-| `data-controls` | `controls` (comma list of control keys) |
+| `data-palette` | `palette` (colour-font `font-palette`) |
+| `data-synthesis` | `synthesis` (`"false"` for honest proofing) |
+| `data-controls` | `controls` (comma list of control keys, incl. `axes`, `palette`) |
 
-The `variable` axis config has no `data-*` form — set it via the programmatic API.
+The `variable` axis config (ranges/labels) has no `data-*` form — set it via the
+programmatic API.
 
 `autoInit()` is idempotent: it marks elements with `data-fontproof-ready` and skips
 them on subsequent calls, so it is safe to run after dynamic content loads.

@@ -11,6 +11,7 @@ export {
 export type { FeatureDef, FeatureGroup, FeatureTag } from "./opentype.js";
 export type {
 	Align,
+	AxisConfig,
 	ControlsConfig,
 	Range,
 	Size,

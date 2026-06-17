@@ -42,6 +42,7 @@ export function FontProofComponent(props: FontProofProps): JSX.Element {
 export { FontProof } from "../core/fontProof.js";
 export type {
 	Align,
+	AxisConfig,
 	ControlsConfig,
 	Range,
 	Size,
