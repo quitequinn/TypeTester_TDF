@@ -5,6 +5,8 @@
 
 **[▶ Live demo](https://quitequinn.github.io/fontproof/)**
 
+![FontProof: the segmented control bar (size, tracking, weight, optical, italic, align, wrap, features) beneath a live type specimen](./media/fontproof-bar.png)
+
 A **micro toolbar** for testing type on the web — a compact bar of controls over a
 live, editable sample. Accessible and **dependency-free**: adjust size, tracking,
 weight, italic, alignment, line-wrap, and **composable OpenType features** live.
