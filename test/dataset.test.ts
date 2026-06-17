@@ -28,6 +28,16 @@ describe("dataset auto-init", () => {
 		expect(host.querySelector(".fp__control--features")).not.toBeNull();
 	});
 
+	it("parses data-show-values", () => {
+		const host = document.createElement("div");
+		host.setAttribute("data-fontproof", "");
+		host.dataset.showValues = "true";
+		host.dataset.controls = "size";
+		document.body.appendChild(host);
+		createFromElement(host);
+		expect(host.classList.contains("fp--show-values")).toBe(true);
+	});
+
 	it("auto-inits all marked elements once (idempotent)", () => {
 		document.body.innerHTML = `
 			<div data-fontproof data-size="40"></div>

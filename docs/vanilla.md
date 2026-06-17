@@ -22,7 +22,7 @@ tester.getState(); // snapshot of the current typographic state
 tester.destroy();  // remove all DOM, listeners and observers
 ```
 
-`host` is any element; the tester renders into it and adds the `tt` class.
+`host` is any element; the tester renders into it and adds the `fp` class.
 
 ### Example
 
@@ -90,10 +90,13 @@ autoInit(someContainer); // or a subtree
 | `data-editable` | `editable` (`"false"` for read-only) |
 | `data-placeholder` | `placeholder` |
 | `data-aria-label` | `ariaLabel` |
+| `data-show-values` | `showValues` (`"true"` to show values inline) |
 | `data-controls` | `controls` (comma list of control keys) |
 
-`autoInit()` is idempotent: it marks elements with `data-tt-ready` and skips them
-on subsequent calls, so it is safe to run after dynamic content loads.
+The `variable` axis config has no `data-*` form — set it via the programmatic API.
+
+`autoInit()` is idempotent: it marks elements with `data-fontproof-ready` and skips
+them on subsequent calls, so it is safe to run after dynamic content loads.
 
 ## Auto-fit
 

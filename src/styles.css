@@ -72,7 +72,9 @@
 }
 
 .fp:focus-within .fp__controls {
-	max-height: 200px;
+	/* Generous cap so a bar that wraps to several rows on narrow widths still
+	   animates open without snapping at the end. */
+	max-height: 50vh;
 	margin-top: 0.5rem;
 	opacity: 1;
 	overflow: visible;

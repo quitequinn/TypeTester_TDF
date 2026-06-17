@@ -60,6 +60,7 @@ function optionsFromDataset(host: HTMLElement): FontProofOptions {
 		editable: d.editable !== "false",
 		placeholder: d.placeholder,
 		ariaLabel: d.ariaLabel,
+		showValues: d.showValues != null ? d.showValues !== "false" : undefined,
 		controls: parseControls(d.controls ?? null),
 	};
 }

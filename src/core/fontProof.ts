@@ -66,6 +66,9 @@ export class FontProof {
 	private liveEl!: HTMLElement;
 	private sizeOutput: HTMLOutputElement | null = null;
 	private fitter: Fitter | null = null;
+	// Last font spec passed to the Font Loading API, so we only request a face
+	// when family/weight/style actually change (not on every size/tracking tick).
+	private lastFontSpec = "";
 
 	/**
 	 * @param host Element to render the tester into.
@@ -216,7 +219,8 @@ export class FontProof {
 			output.textContent = `${v}${unit}`;
 			setFill(v);
 			onInput(v);
-			this.announce(`${label} ${v}${unit}`);
+			// No announce() here: a native range input already reports its value to
+			// assistive tech, and announcing per tick floods the live region.
 		};
 		input.addEventListener("input", handler);
 		this.cleanups.push(() => input.removeEventListener("input", handler));
@@ -445,11 +449,16 @@ export class FontProof {
 		});
 	}
 
+	/** The tested family with quotes/backslashes stripped, safe to interpolate. */
+	private get safeFamily(): string {
+		return this.options.fontFamily?.replace(/["\\]/g, "").trim() ?? "";
+	}
+
 	/** Applies the full typographic state to the type element via element.style. */
 	private applyStyles(): void {
 		const s = this.typeEl.style;
-		const family = this.options.fontFamily
-			? `"${this.options.fontFamily}"${this.options.fallback ? `, ${this.options.fallback}` : ", sans-serif"}`
+		const family = this.safeFamily
+			? `"${this.safeFamily}"${this.options.fallback ? `, ${this.options.fallback}` : ", sans-serif"}`
 			: (this.options.fallback ?? "sans-serif");
 		s.fontFamily = family;
 		if (!this.state.fit) s.fontSize = `${this.state.size}px`;
@@ -478,11 +487,15 @@ export class FontProof {
 	 * no family is set or the Font Loading API is unavailable.
 	 */
 	private loadFont(): void {
-		const family = this.options.fontFamily;
+		const family = this.safeFamily;
 		const fonts = (document as Document & { fonts?: FontFaceSet }).fonts;
 		if (!family || !fonts?.load) return;
 		const style = this.state.italic ? "italic" : "normal";
 		const spec = `${style} ${this.state.weight} 1em "${family}"`;
+		// Only request a face when the spec actually changes; size/tracking edits
+		// run applyStyles too but don't affect which face is needed.
+		if (spec === this.lastFontSpec) return;
+		this.lastFontSpec = spec;
 		try {
 			fonts.load(spec).catch(() => {});
 		} catch {
