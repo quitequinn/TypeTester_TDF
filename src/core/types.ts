@@ -77,6 +77,11 @@ export interface FontProofOptions {
 	placeholder?: string;
 	/** Which controls to render. Omit to show none (display-only). */
 	controls?: ControlsConfig;
+	/**
+	 * Show each control's current value inline next to its title (e.g.
+	 * "Size: 96px"). Off by default — only titles are shown.
+	 */
+	showValues?: boolean;
 	/** Variable-font axis configuration. */
 	variable?: VariableConfig;
 	/** Accessible label for the editable region. */

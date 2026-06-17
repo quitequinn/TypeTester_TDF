@@ -112,6 +112,7 @@ export class FontProof {
 
 	private render(): void {
 		this.host.classList.add("fp");
+		if (this.options.showValues) this.host.classList.add("fp--show-values");
 
 		this.textEl = el("div", {
 			class: "fp__text",
@@ -170,6 +171,20 @@ export class FontProof {
 
 	// ---- generic control builders (no per-control copy-paste) -------------
 
+	/**
+	 * Builds the decorative caption overlaid on a control: the title, plus an
+	 * optional value element shown only when `showValues` is set. Sits above the
+	 * underlying input (z-index) and ignores pointer events so dragging works.
+	 */
+	private caption(title: string, value?: HTMLElement): HTMLSpanElement {
+		const labelSpan = el("span", { class: "fp__label", text: title });
+		return el("span", {
+			class: "fp__caption",
+			attrs: { "aria-hidden": "true" },
+			children: value ? [labelSpan, value] : [labelSpan],
+		});
+	}
+
 	private buildSlider(
 		key: "size" | "tracking" | "weight",
 		label: string,
@@ -208,7 +223,7 @@ export class FontProof {
 		if (key === "size") this.sizeOutput = output;
 		return el("label", {
 			class: `fp__control fp__control--${key}`,
-			children: [el("span", { class: "fp__label", text: label }), input, output],
+			children: [input, this.caption(label, output)],
 		});
 	}
 
@@ -254,10 +269,10 @@ export class FontProof {
 	): HTMLButtonElement {
 		const button = el("button", {
 			class: `fp__toggle fp__toggle--${key}`,
-			text: label,
 			// aria-pressed is a string-valued ARIA state and must always be present
 			// ("false"), unlike boolean HTML attributes which are omitted when off.
-			attrs: { type: "button", "aria-pressed": String(pressed) },
+			attrs: { type: "button", "aria-pressed": String(pressed), "aria-label": label },
+			children: [this.caption(label)],
 		});
 		const handler = () => {
 			const next = button.getAttribute("aria-pressed") !== "true";
@@ -300,20 +315,22 @@ export class FontProof {
 				}),
 			),
 		});
+		const value = el("span", { class: "fp__value", text: this.state.align });
 		const handler = () => {
-			const value = select.value as Align;
-			if (ALIGNS.includes(value)) {
-				this.state.align = value;
+			const v = select.value as Align;
+			if (ALIGNS.includes(v)) {
+				this.state.align = v;
+				value.textContent = v;
 				this.applyStyles();
 				this.emitChange();
-				this.announce(`Alignment ${value}`);
+				this.announce(`Alignment ${v}`);
 			}
 		};
 		select.addEventListener("change", handler);
 		this.cleanups.push(() => select.removeEventListener("change", handler));
 		return el("label", {
 			class: "fp__control fp__control--align",
-			children: [el("span", { class: "fp__label", text: "Align" }), select],
+			children: [select, this.caption("Align", value)],
 		});
 	}
 
@@ -329,13 +346,14 @@ export class FontProof {
 		const panelId = `fp-feat-${nextId()}`;
 		const toggle = el("button", {
 			class: "fp__toggle fp__toggle--features",
-			text: "Features",
 			attrs: {
 				type: "button",
+				"aria-label": "Features",
 				"aria-haspopup": "true",
 				"aria-expanded": "false",
 				"aria-controls": panelId,
 			},
+			children: [this.caption("Features")],
 		});
 
 		const checks = offered.map((f) => {

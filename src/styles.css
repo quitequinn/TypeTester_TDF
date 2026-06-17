@@ -1,9 +1,9 @@
 /* FontProof — base styles. Import once: `import "fontproof/styles.css"`.
-   The control bar is the signature UI: a segmented strip that stays hidden until
-   the tester is engaged (focus-within), then reveals controls under the sample.
-   Monochrome by default and themeable via CSS variables; a faithful TDF
-   green-on-black preset is `.fp--tdf`, and `.fp--blend` difference-blends the
-   type against its backdrop. */
+   The control bar is the signature UI: a slim segmented strip that stays hidden
+   until the tester is engaged (focus-within), then reveals controls under the
+   sample. Titles difference-blend against the bar so they stay legible over the
+   slider fills. Monochrome by default; `.fp--tdf` is a green-on-black preset.
+   Values are hidden unless `showValues` is set. */
 
 .fp {
 	/* Theme tokens — black & white defaults */
@@ -11,12 +11,10 @@
 	--fp-fg: #000;
 	--fp-bg: #fff;
 	--fp-bar-bg: #fff;
-	--fp-bar-fg: #000;
 	--fp-bar-track: #e5e5e5;
 	--fp-bar-fill: #000;
-	--fp-bar-divider: rgba(0, 0, 0, 0.14);
-	--fp-bar-h: 52px;
-	--fp-bar-radius: 8px;
+	--fp-bar-h: 26px;
+	--fp-bar-radius: 6px;
 	--fp-speed: 0.18s;
 
 	display: flex;
@@ -52,17 +50,14 @@
 }
 
 /* ---- The control bar ------------------------------------------------- */
-/* Hidden until the tester is focused (clicking the sample, or tabbing into any
-   control, reveals it; it collapses again when focus leaves). */
+/* Hidden until the tester is focused; reveals on :focus-within. */
 .fp__controls {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: stretch;
 	margin: 0;
 	background: var(--fp-bar-bg);
-	border: 1px solid var(--fp-bar-divider);
 	border-radius: var(--fp-bar-radius);
-	font: 500 13px/1 system-ui, sans-serif;
 	max-height: 0;
 	opacity: 0;
 	overflow: hidden;
@@ -76,57 +71,61 @@
 }
 
 .fp:focus-within .fp__controls {
-	max-height: 240px;
-	margin-top: 0.6rem;
+	max-height: 200px;
+	margin-top: 0.5rem;
 	opacity: 1;
 	overflow: visible;
 	pointer-events: auto;
 	transform: none;
 }
 
-/* Each control is an equal-width segment. */
+/* Equal-width segments, no dividers/borders. */
 .fp__control {
 	position: relative;
 	flex: 1 1 0;
-	min-width: 64px;
+	min-width: 56px;
 	height: var(--fp-bar-h);
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border-left: 1px solid var(--fp-bar-divider);
 	overflow: visible;
 }
 
-.fp__control:first-child {
-	border-left: 0;
-}
-
-.fp__label {
+/* The title (+ optional value) overlaid on each control. It sits above the
+   input (z-index) so the slider never hides it, ignores pointer events so the
+   control underneath still works, and difference-blends so it stays legible
+   over both the filled and unfilled parts of the track. */
+.fp__caption {
 	position: absolute;
-	top: 7px;
-	left: 0;
-	right: 0;
-	text-align: center;
+	inset: 0;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.35em;
+	padding: 0 6px;
+	font: 600 10px/1 system-ui, sans-serif;
+	letter-spacing: 0.07em;
 	text-transform: uppercase;
-	letter-spacing: 0.08em;
-	font-size: 10px;
-	color: var(--fp-bar-fg);
-	opacity: 0.55;
+	white-space: nowrap;
+	overflow: hidden;
 	pointer-events: none;
-	z-index: 2;
+	color: #fff;
+	mix-blend-mode: difference;
 }
 
+/* Values are hidden by default; shown (inline, after the title) with showValues. */
 .fp__value {
-	position: absolute;
-	bottom: 7px;
-	left: 0;
-	right: 0;
-	text-align: center;
-	font-size: 12px;
-	font-variant-numeric: tabular-nums;
-	color: var(--fp-bar-fg);
-	pointer-events: none;
-	z-index: 2;
+	display: none;
+	text-transform: none;
+}
+
+.fp--show-values .fp__value {
+	display: inline;
+}
+
+.fp--show-values .fp__value::before {
+	content: ": ";
 }
 
 /* Sliders: the range input fills the segment; the filled portion of the track
@@ -162,22 +161,20 @@
 	);
 }
 
-/* Thin thumb — you drag anywhere on the segment (like v1). */
 .fp__slider::-webkit-slider-thumb {
 	-webkit-appearance: none;
 	width: 2px;
 	height: 100%;
-	background: var(--fp-bar-fg);
-	opacity: 0.35;
+	background: var(--fp-bar-fill);
+	opacity: 0;
 }
 
 .fp__slider::-moz-range-thumb {
 	width: 2px;
 	height: 100%;
 	border: 0;
-	border-radius: 0;
-	background: var(--fp-bar-fg);
-	opacity: 0.35;
+	background: var(--fp-bar-fill);
+	opacity: 0;
 }
 
 .fp__slider:focus-visible {
@@ -185,8 +182,8 @@
 	outline-offset: -2px;
 }
 
-/* Toggle buttons (italic / wrap / features). Pressed state uses fill + weight,
-   not colour alone. */
+/* Toggle buttons (italic / wrap / features). The title lives in the caption;
+   pressed state is the filled background. */
 .fp__toggle {
 	appearance: none;
 	width: 100%;
@@ -194,17 +191,12 @@
 	margin: 0;
 	border: 0;
 	background: transparent;
-	color: var(--fp-bar-fg);
-	font: 600 10px/1 system-ui, sans-serif;
-	text-transform: uppercase;
-	letter-spacing: 0.08em;
 	cursor: pointer;
-	transition: background var(--fp-speed) ease, color var(--fp-speed) ease;
+	transition: background var(--fp-speed) ease;
 }
 
 .fp__toggle[aria-pressed="true"] {
 	background: var(--fp-bar-fill);
-	color: var(--fp-bg);
 }
 
 .fp__toggle:focus-visible {
@@ -212,20 +204,14 @@
 	outline-offset: -2px;
 }
 
-/* Alignment select fills its segment. */
-.fp__control--align .fp__label {
-	top: 4px;
-}
-
+/* Alignment select fills its segment; its own text is hidden (the caption shows
+   the title/value), but it still opens the native option list. */
 .fp__select {
 	width: 100%;
 	height: 100%;
 	border: 0;
 	background: transparent;
-	color: var(--fp-bar-fg);
-	font: 600 11px/1 system-ui, sans-serif;
-	text-align: center;
-	text-align-last: center;
+	color: transparent;
 	cursor: pointer;
 }
 
@@ -252,7 +238,7 @@
 	padding: 0.5rem 0.75rem;
 	color: var(--fp-fg);
 	background: var(--fp-bg);
-	border: 1px solid var(--fp-bar-divider);
+	border: 1px solid rgba(0, 0, 0, 0.14);
 	border-radius: 0.5rem;
 	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
 	font: 500 13px/1.3 system-ui, sans-serif;
@@ -286,13 +272,6 @@
 	border: 0;
 }
 
-/* ---- Optional: difference-blend the type against its backdrop ------------
-   Add `fp--blend` to the host. The sample auto-inverts over light/dark areas. */
-.fp--blend .fp__type {
-	color: #fff;
-	mix-blend-mode: difference;
-}
-
 /* ---- Faithful TDF preset: green on black --------------------------------
    Add `fp--tdf` to the host (or className="fp--tdf"). */
 .fp--tdf {
@@ -300,15 +279,9 @@
 	--fp-bg: #000;
 	--fp-fg: #fff;
 	--fp-bar-bg: #000;
-	--fp-bar-fg: #fff;
 	--fp-bar-track: #000;
 	--fp-bar-fill: #67f4b8;
-	--fp-bar-divider: rgba(255, 255, 255, 0.16);
 	--fp-bar-radius: 0;
-}
-
-.fp--tdf .fp__toggle[aria-pressed="true"] {
-	color: #000;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -214,6 +214,38 @@ describe("FontProof features panel behaviour", () => {
 	});
 });
 
+describe("FontProof captions & values", () => {
+	it("renders the title in a caption for each control", () => {
+		new FontProof(host, { controls: { size: true, align: true, italic: true } });
+		expect(host.querySelector(".fp__control--size .fp__caption .fp__label")?.textContent).toBe(
+			"Size",
+		);
+		expect(host.querySelector(".fp__control--align .fp__label")?.textContent).toBe("Align");
+		expect(host.querySelector(".fp__toggle--italic .fp__label")?.textContent).toBe("Italic");
+	});
+
+	it("hides values by default and exposes them with showValues", () => {
+		new FontProof(host, { controls: { size: true } });
+		expect(host.classList.contains("fp--show-values")).toBe(false);
+
+		const other = document.createElement("div");
+		document.body.appendChild(other);
+		new FontProof(other, { showValues: true, controls: { size: true } });
+		expect(other.classList.contains("fp--show-values")).toBe(true);
+		other.remove();
+	});
+
+	it("updates the align value as the selection changes", () => {
+		new FontProof(host, { align: "left", controls: { align: true } });
+		const value = host.querySelector<HTMLElement>(".fp__control--align .fp__value")!;
+		expect(value.textContent).toBe("left");
+		const select = host.querySelector<HTMLSelectElement>(".fp__select--align")!;
+		select.value = "center";
+		select.dispatchEvent(new Event("change"));
+		expect(value.textContent).toBe("center");
+	});
+});
+
 describe("FontProof teardown", () => {
 	it("removes all DOM on destroy", () => {
 		const tester = new FontProof(host, { controls: { size: true }, size: 40 });

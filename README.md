@@ -122,6 +122,7 @@ React is a **peer dependency** (>=17); the core stays dependency-free.
 | `editable` | `boolean` | `true` | Whether the sample is user-editable. |
 | `placeholder` | `string` | `"Type to test…"` | Empty-state placeholder (CSS, not real text). |
 | `controls` | `ControlsConfig` | `{}` | Which controls to render (see below). |
+| `showValues` | `boolean` | `false` | Show each control's value inline (e.g. `Size: 96px`). |
 | `variable` | `{ wght?: { min, max, step? } }` | — | Drive weight via `font-variation-settings`. |
 | `ariaLabel` | `string` | `"Sample text"` | Accessible name for the editable region. |
 | `onChange` | `(state) => void` | — | Called on every state change. |
@@ -176,10 +177,13 @@ set with `controls: { features: ["smcp", "onum", "ss01"] }`.
 
 ## Styling & themes
 
-The controls render as a **single segmented bar** under the sample. It stays
-hidden until the tester is engaged — clicking the sample (or tabbing into any
-control) reveals it via `:focus-within`, and it collapses again when focus
-leaves. Import the stylesheet to get it:
+The controls render as a **slim, borderless segmented bar** under the sample. It
+stays hidden until the tester is engaged — clicking the sample (or tabbing into
+any control) reveals it via `:focus-within`, and it collapses again when focus
+leaves. Each segment shows only its **title** by default; the control titles
+`mix-blend-mode: difference` against the bar so they stay legible over the slider
+fills. Set [`showValues`](#options) to also show the value (`Size: 96px`). Import
+the stylesheet to get it:
 
 ```js
 import "fontproof/styles.css";
@@ -192,25 +196,20 @@ The look is **monochrome by default** and driven by CSS variables on the host:
 | `--fp-accent` | `#000` | Focus rings, slider/checkbox accent |
 | `--fp-bg` / `--fp-fg` | `#fff` / `#000` | Component background / text |
 | `--fp-bar-bg` | `#fff` | Bar background |
-| `--fp-bar-fg` | `#000` | Label/value text on the bar |
 | `--fp-bar-track` | `#e5e5e5` | Unfilled slider track |
 | `--fp-bar-fill` | `#000` | Filled slider track / pressed toggle |
-| `--fp-bar-divider` | `rgba(0,0,0,.14)` | Bar border + segment dividers |
-| `--fp-bar-h` | `52px` | Bar (segment) height |
-| `--fp-bar-radius` | `8px` | Bar corner radius |
+| `--fp-bar-h` | `26px` | Bar (segment) height |
+| `--fp-bar-radius` | `6px` | Bar corner radius |
 | `--fp-speed` | `0.18s` | Reveal transition |
 
 Override any of them, e.g. `.fp { --fp-accent: #e11d48; }`.
 
-Two built-in presets — add the class to the host (`className="fp--…"` in React):
-
-- **`fp--tdf`** — the faithful TDF green-on-black skin.
-- **`fp--blend`** — difference-blends the type against its backdrop, so the
-  sample auto-inverts over light/dark areas.
+A faithful **TDF green-on-black** preset ships built in — add `fp--tdf` to the host:
 
 ```js
 new FontProof(el, { /* … */ });
-el.classList.add("fp--blend");
+el.classList.add("fp--tdf");
+// React: <FontProofComponent className="fp--tdf" … />
 ```
 
 ## Migrating from v1

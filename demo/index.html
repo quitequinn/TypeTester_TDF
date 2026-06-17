@@ -4,6 +4,14 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>FontProof — live demo</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<!-- Fraunces: an expressive variable serif (weight, italic, optical size,
+		     soft/wonky axes, stylistic sets) — a good specimen face. -->
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap"
+			rel="stylesheet"
+		/>
 		<link rel="stylesheet" href="./dist/styles.css" />
 		<style>
 			:root { color-scheme: light dark; }
@@ -42,7 +50,7 @@
 
 		<p>
 			<button type="button" id="theme">Toggle TDF theme (green on black)</button>
-			<button type="button" id="blend">Toggle difference blend</button>
+			<button type="button" id="values">Toggle values</button>
 			<span style="color: #6b7280">— click the sample to reveal the bar; it hides when focus leaves.</span>
 		</p>
 
@@ -55,18 +63,19 @@
 			import { FontProof } from "./dist/index.js";
 
 			const host = document.getElementById("demo");
-			host.classList.add("fp--blend");
 			document.getElementById("theme").addEventListener("click", () => {
 				host.classList.toggle("fp--tdf");
 			});
-			document.getElementById("blend").addEventListener("click", () => {
-				host.classList.toggle("fp--blend");
+			document.getElementById("values").addEventListener("click", () => {
+				host.classList.toggle("fp--show-values");
 			});
 
 			new FontProof(host, {
 				text: "Typography",
-				size: 96,
-				weight: 500,
+				fontFamily: "Fraunces",
+				size: 132,
+				weight: 400,
+				variable: { wght: { min: 100, max: 900 } },
 				controls: {
 					size: true,
 					tracking: true,
