@@ -1,27 +1,26 @@
 /* FontProof — base styles. Import once: `import "fontproof/styles.css"`.
-   The control bar is the signature UI: a slim segmented strip under the sample
-   that shows each control's fill at rest and expands on hover/focus to reveal
-   labels and values. All styling is optional and themeable via CSS variables;
-   a faithful TDF green-on-black preset is available as `.fp--tdf`. */
+   The control bar is the signature UI: a segmented strip that stays hidden until
+   the tester is engaged (focus-within), then reveals controls under the sample.
+   Monochrome by default and themeable via CSS variables; a faithful TDF
+   green-on-black preset is `.fp--tdf`, and `.fp--blend` difference-blends the
+   type against its backdrop. */
 
 .fp {
-	/* Theme tokens (neutral defaults) */
-	--fp-accent: #2563eb;
-	--fp-fg: #111;
+	/* Theme tokens — black & white defaults */
+	--fp-accent: #000;
+	--fp-fg: #000;
 	--fp-bg: #fff;
-	--fp-bar-bg: #f4f4f5;
-	--fp-bar-fg: #18181b;
-	--fp-bar-track: #e4e4e7;
-	--fp-bar-fill: var(--fp-accent);
-	--fp-bar-divider: rgba(0, 0, 0, 0.08);
-	--fp-bar-h: 30px;
-	--fp-bar-h-expanded: 54px;
+	--fp-bar-bg: #fff;
+	--fp-bar-fg: #000;
+	--fp-bar-track: #e5e5e5;
+	--fp-bar-fill: #000;
+	--fp-bar-divider: rgba(0, 0, 0, 0.14);
+	--fp-bar-h: 52px;
 	--fp-bar-radius: 8px;
 	--fp-speed: 0.18s;
 
 	display: flex;
 	flex-direction: column;
-	gap: 0.75rem;
 	color: var(--fp-fg);
 	background: var(--fp-bg);
 }
@@ -53,18 +52,39 @@
 }
 
 /* ---- The control bar ------------------------------------------------- */
-
+/* Hidden until the tester is focused (clicking the sample, or tabbing into any
+   control, reveals it; it collapses again when focus leaves). */
 .fp__controls {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: stretch;
 	margin: 0;
 	background: var(--fp-bar-bg);
+	border: 1px solid var(--fp-bar-divider);
 	border-radius: var(--fp-bar-radius);
 	font: 500 13px/1 system-ui, sans-serif;
+	max-height: 0;
+	opacity: 0;
+	overflow: hidden;
+	pointer-events: none;
+	transform: translateY(-4px);
+	transition:
+		max-height var(--fp-speed) ease,
+		opacity var(--fp-speed) ease,
+		transform var(--fp-speed) ease,
+		margin-top var(--fp-speed) ease;
 }
 
-/* Each control is an equal-width segment that grows when the bar is active. */
+.fp:focus-within .fp__controls {
+	max-height: 240px;
+	margin-top: 0.6rem;
+	opacity: 1;
+	overflow: visible;
+	pointer-events: auto;
+	transform: none;
+}
+
+/* Each control is an equal-width segment. */
 .fp__control {
 	position: relative;
 	flex: 1 1 0;
@@ -74,7 +94,6 @@
 	align-items: center;
 	justify-content: center;
 	border-left: 1px solid var(--fp-bar-divider);
-	transition: height var(--fp-speed) ease;
 	overflow: visible;
 }
 
@@ -82,16 +101,9 @@
 	border-left: 0;
 }
 
-.fp__controls:hover .fp__control,
-.fp__controls:focus-within .fp__control {
-	height: var(--fp-bar-h-expanded);
-}
-
-/* Labels/values are hidden at rest and revealed (via opacity) on hover/focus.
-   focus-within means keyboard users get the expanded state too. */
 .fp__label {
 	position: absolute;
-	top: 6px;
+	top: 7px;
 	left: 0;
 	right: 0;
 	text-align: center;
@@ -99,39 +111,26 @@
 	letter-spacing: 0.08em;
 	font-size: 10px;
 	color: var(--fp-bar-fg);
-	opacity: 0;
+	opacity: 0.55;
 	pointer-events: none;
-	transition: opacity var(--fp-speed) ease;
 	z-index: 2;
 }
 
 .fp__value {
 	position: absolute;
-	bottom: 6px;
+	bottom: 7px;
 	left: 0;
 	right: 0;
 	text-align: center;
 	font-size: 12px;
 	font-variant-numeric: tabular-nums;
 	color: var(--fp-bar-fg);
-	opacity: 0;
 	pointer-events: none;
-	transition: opacity var(--fp-speed) ease;
 	z-index: 2;
 }
 
-.fp__controls:hover .fp__label,
-.fp__controls:focus-within .fp__label {
-	opacity: 0.6;
-}
-
-.fp__controls:hover .fp__value,
-.fp__controls:focus-within .fp__value {
-	opacity: 1;
-}
-
-/* Sliders: the range input fills the whole segment; the filled portion of the
-   track is painted from the --fp-fill variable the component sets per value. */
+/* Sliders: the range input fills the segment; the filled portion of the track
+   is painted from the --fp-fill variable the component sets per value. */
 .fp__slider {
 	-webkit-appearance: none;
 	appearance: none;
@@ -163,14 +162,13 @@
 	);
 }
 
-/* Thin, mostly-hidden thumb — you drag anywhere on the segment (like v1). */
+/* Thin thumb — you drag anywhere on the segment (like v1). */
 .fp__slider::-webkit-slider-thumb {
 	-webkit-appearance: none;
 	width: 2px;
 	height: 100%;
 	background: var(--fp-bar-fg);
-	opacity: 0;
-	transition: opacity var(--fp-speed) ease;
+	opacity: 0.35;
 }
 
 .fp__slider::-moz-range-thumb {
@@ -179,12 +177,7 @@
 	border: 0;
 	border-radius: 0;
 	background: var(--fp-bar-fg);
-	opacity: 0;
-}
-
-.fp__controls:hover .fp__slider::-webkit-slider-thumb,
-.fp__controls:focus-within .fp__slider::-webkit-slider-thumb {
-	opacity: 0.5;
+	opacity: 0.35;
 }
 
 .fp__slider:focus-visible {
@@ -192,9 +185,8 @@
 	outline-offset: -2px;
 }
 
-/* Toggle buttons (italic / wrap / features): the button fills the segment; its
-   text is the label, hidden at rest and shown when the bar expands. The pressed
-   state is signalled by fill + weight (not colour alone). */
+/* Toggle buttons (italic / wrap / features). Pressed state uses fill + weight,
+   not colour alone. */
 .fp__toggle {
 	appearance: none;
 	width: 100%;
@@ -202,22 +194,17 @@
 	margin: 0;
 	border: 0;
 	background: transparent;
-	color: transparent;
+	color: var(--fp-bar-fg);
 	font: 600 10px/1 system-ui, sans-serif;
 	text-transform: uppercase;
 	letter-spacing: 0.08em;
 	cursor: pointer;
-	transition: color var(--fp-speed) ease, background var(--fp-speed) ease;
-}
-
-.fp__controls:hover .fp__toggle,
-.fp__controls:focus-within .fp__toggle {
-	color: var(--fp-bar-fg);
+	transition: background var(--fp-speed) ease, color var(--fp-speed) ease;
 }
 
 .fp__toggle[aria-pressed="true"] {
 	background: var(--fp-bar-fill);
-	color: #fff;
+	color: var(--fp-bg);
 }
 
 .fp__toggle:focus-visible {
@@ -235,16 +222,11 @@
 	height: 100%;
 	border: 0;
 	background: transparent;
-	color: transparent;
+	color: var(--fp-bar-fg);
 	font: 600 11px/1 system-ui, sans-serif;
 	text-align: center;
 	text-align-last: center;
 	cursor: pointer;
-}
-
-.fp__controls:hover .fp__select,
-.fp__controls:focus-within .fp__select {
-	color: var(--fp-bar-fg);
 }
 
 .fp__select:focus-visible {
@@ -304,10 +286,19 @@
 	border: 0;
 }
 
+/* ---- Optional: difference-blend the type against its backdrop ------------
+   Add `fp--blend` to the host. The sample auto-inverts over light/dark areas. */
+.fp--blend .fp__type {
+	color: #fff;
+	mix-blend-mode: difference;
+}
+
 /* ---- Faithful TDF preset: green on black --------------------------------
-   Apply by adding `fp--tdf` to the host element (or className="fp--tdf"). */
+   Add `fp--tdf` to the host (or className="fp--tdf"). */
 .fp--tdf {
 	--fp-accent: #67f4b8;
+	--fp-bg: #000;
+	--fp-fg: #fff;
 	--fp-bar-bg: #000;
 	--fp-bar-fg: #fff;
 	--fp-bar-track: #000;

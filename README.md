@@ -176,40 +176,41 @@ set with `controls: { features: ["smcp", "onum", "ss01"] }`.
 
 ## Styling & themes
 
-The controls render as a **single segmented bar** under the sample: slim at rest
-(showing each slider's fill), expanding on hover **and keyboard focus**
-(`:focus-within`) to reveal labels and values. Import the stylesheet to get it:
+The controls render as a **single segmented bar** under the sample. It stays
+hidden until the tester is engaged — clicking the sample (or tabbing into any
+control) reveals it via `:focus-within`, and it collapses again when focus
+leaves. Import the stylesheet to get it:
 
 ```js
 import "fontproof/styles.css";
 ```
 
-The look is driven by CSS variables on the host (neutral defaults shown):
+The look is **monochrome by default** and driven by CSS variables on the host:
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `--fp-accent` | `#2563eb` | Focus rings, slider/checkbox accent |
-| `--fp-bar-bg` | `#f4f4f5` | Bar background |
-| `--fp-bar-fg` | `#18181b` | Label/value text on the bar |
-| `--fp-bar-track` | `#e4e4e7` | Unfilled slider track |
-| `--fp-bar-fill` | `--fp-accent` | Filled slider track / pressed toggle |
-| `--fp-bar-divider` | `rgba(0,0,0,.08)` | Segment dividers |
-| `--fp-bar-h` / `--fp-bar-h-expanded` | `30px` / `54px` | Bar height at rest / expanded |
+| `--fp-accent` | `#000` | Focus rings, slider/checkbox accent |
+| `--fp-bg` / `--fp-fg` | `#fff` / `#000` | Component background / text |
+| `--fp-bar-bg` | `#fff` | Bar background |
+| `--fp-bar-fg` | `#000` | Label/value text on the bar |
+| `--fp-bar-track` | `#e5e5e5` | Unfilled slider track |
+| `--fp-bar-fill` | `#000` | Filled slider track / pressed toggle |
+| `--fp-bar-divider` | `rgba(0,0,0,.14)` | Bar border + segment dividers |
+| `--fp-bar-h` | `52px` | Bar (segment) height |
 | `--fp-bar-radius` | `8px` | Bar corner radius |
-| `--fp-speed` | `0.18s` | Reveal/expand transition |
+| `--fp-speed` | `0.18s` | Reveal transition |
 
-Override any of them, e.g.:
+Override any of them, e.g. `.fp { --fp-accent: #e11d48; }`.
 
-```css
-.fp { --fp-accent: #e11d48; --fp-bar-h-expanded: 60px; }
-```
+Two built-in presets — add the class to the host (`className="fp--…"` in React):
 
-A faithful **TDF green-on-black** preset ships built in — add `fp--tdf` to the host:
+- **`fp--tdf`** — the faithful TDF green-on-black skin.
+- **`fp--blend`** — difference-blends the type against its backdrop, so the
+  sample auto-inverts over light/dark areas.
 
 ```js
 new FontProof(el, { /* … */ });
-el.classList.add("fp--tdf");
-// React: <FontProofComponent className="fp--tdf" … />
+el.classList.add("fp--blend");
 ```
 
 ## Migrating from v1

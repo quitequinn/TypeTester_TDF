@@ -42,7 +42,8 @@
 
 		<p>
 			<button type="button" id="theme">Toggle TDF theme (green on black)</button>
-			<span style="color: #6b7280">— the bar is slim at rest; hover or tab into it to expand.</span>
+			<button type="button" id="blend">Toggle difference blend</button>
+			<span style="color: #6b7280">— click the sample to reveal the bar; it hides when focus leaves.</span>
 		</p>
 
 		<div class="card"><div id="demo"></div></div>
@@ -54,8 +55,12 @@
 			import { FontProof } from "./dist/index.js";
 
 			const host = document.getElementById("demo");
+			host.classList.add("fp--blend");
 			document.getElementById("theme").addEventListener("click", () => {
 				host.classList.toggle("fp--tdf");
+			});
+			document.getElementById("blend").addEventListener("click", () => {
+				host.classList.toggle("fp--blend");
 			});
 
 			new FontProof(host, {
