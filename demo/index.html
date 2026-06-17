@@ -120,6 +120,14 @@
 				background: var(--code-bg);
 				border: 1px solid var(--border);
 			}
+			.controls input[type="color"] {
+				width: 2rem;
+				height: 1.9rem;
+				padding: 0;
+				background: none;
+				border: 1px solid var(--border);
+				cursor: pointer;
+			}
 			.hint {
 				color: var(--muted);
 				font-size: 0.875rem;
@@ -184,7 +192,7 @@
 					<option value="Nabla">Nabla (colour font)</option>
 				</select>
 			</label>
-			<button type="button" id="theme">Toggle TDF theme</button>
+			<label>Colour <input type="color" id="color" value="#111111" /></label>
 			<button type="button" id="values">Toggle values</button>
 			<span class="hint">The bar hides when focus leaves the tester.</span>
 		</div>
@@ -234,10 +242,20 @@
 			}
 
 			document.getElementById("font").addEventListener("change", (e) => mount(e.target.value));
-			document.getElementById("theme").addEventListener("click", () => host.classList.toggle("fp--tdf"));
 			document.getElementById("values").addEventListener("click", () => host.classList.toggle("fp--show-values"));
 
 			mount("Fraunces");
+
+			// Colour selector recolours the specimen + bar fills via inline CSS
+			// variables (inline styles win over the stylesheet, so it works in any mode).
+			const color = document.getElementById("color");
+			const initFg = getComputedStyle(host).getPropertyValue("--fp-fg").trim();
+			if (/^#[0-9a-f]{6}$/i.test(initFg)) color.value = initFg;
+			color.addEventListener("input", () => {
+				host.style.setProperty("--fp-fg", color.value);
+				host.style.setProperty("--fp-bar-fill", color.value);
+				host.style.setProperty("--fp-accent", color.value);
+			});
 		</script>
 	</body>
 </html>
