@@ -192,7 +192,9 @@
 					<option value="Nabla">Nabla (colour font)</option>
 				</select>
 			</label>
-			<label>Colour <input type="color" id="color" value="#111111" /></label>
+			<label>Text <input type="color" id="c-text" value="#111111" /></label>
+			<label>Background <input type="color" id="c-bg" value="#ffffff" /></label>
+			<label>Controls <input type="color" id="c-controls" value="#111111" /></label>
 			<button type="button" id="values">Toggle values</button>
 			<span class="hint">The bar hides when focus leaves the tester.</span>
 		</div>
@@ -246,16 +248,20 @@
 
 			mount("Fraunces");
 
-			// Colour selector recolours the specimen + bar fills via inline CSS
-			// variables (inline styles win over the stylesheet, so it works in any mode).
-			const color = document.getElementById("color");
-			const initFg = getComputedStyle(host).getPropertyValue("--fp-fg").trim();
-			if (/^#[0-9a-f]{6}$/i.test(initFg)) color.value = initFg;
-			color.addEventListener("input", () => {
-				host.style.setProperty("--fp-fg", color.value);
-				host.style.setProperty("--fp-bar-fill", color.value);
-				host.style.setProperty("--fp-accent", color.value);
-			});
+			// Colour selectors recolour parts of the tester independently via inline
+			// CSS variables (inline styles win over the stylesheet, so they work in
+			// light or dark mode). Each picker maps to one or more --fp-* tokens.
+			function wireColor(id, vars) {
+				const input = document.getElementById(id);
+				const cur = getComputedStyle(host).getPropertyValue(vars[0]).trim();
+				if (/^#[0-9a-f]{6}$/i.test(cur)) input.value = cur;
+				input.addEventListener("input", () => {
+					for (const v of vars) host.style.setProperty(v, input.value);
+				});
+			}
+			wireColor("c-text", ["--fp-fg"]); // the specimen type colour
+			wireColor("c-bg", ["--fp-bg", "--fp-bar-bg"]); // specimen + bar background
+			wireColor("c-controls", ["--fp-bar-fill", "--fp-accent"]); // slider fills, toggles, focus
 		</script>
 	</body>
 </html>
