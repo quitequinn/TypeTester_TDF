@@ -25,6 +25,16 @@ Saved: 2026-06-15
   folder was removed after v2 shipped). It is not the shipped module and should
   not be reviewed as product code.
 
+## Known intentional patterns (FontProof v2.x)
+- `loadFont()` lives inside `applyStyles()` but is deduped by the `${style} ${weight} 1em "${family}"` spec, so it does NOT hit the network per slider tick. Don't re-flag "network I/O in styling" or "load per tick".
+- Sliders intentionally do NOT push to the live region — native `<input type=range>` reports its value to AT. Don't re-flag "missing slider announce".
+- `overflow: hidden` on `.fp__stage` is a deliberate, user-requested choice (contains overflowing large type). Don't re-flag glyph/swash clipping.
+- Control bar height (`--fp-bar-h: 26px`) is a deliberate design choice, below WCAG 2.5.5 AAA 44px. Don't re-flag touch-target size.
+- Variable-font axis support is intentionally `wght`-only for now (scope), even though demos load `opsz`. Not a bug.
+- `.fp__caption` is `aria-hidden`; the value/state is conveyed by the native control (range/select/checkbox). Not an a11y gap.
+- `mix-blend-mode: difference` on bar titles is intentional; contrast for *custom* `--fp-bar-fill` values is the consumer's responsibility (defaults verified).
+- The bar is hidden via `opacity/max-height/pointer-events` and revealed on `.fp:focus-within` — controls stay in the tab order; tabbing in reveals the bar. Intentional.
+
 ## History
 - 2026-06-15/16: Full panel review of legacy v1 → 36 issues (#2–#37). Rewrote as
   dependency-free npm module (v2) on branch `rewrite/npm-module`; all 36 issues
