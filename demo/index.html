@@ -12,8 +12,12 @@
 			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap"
 			rel="stylesheet"
 		/>
-		<!-- Nabla: a COLRv1 variable COLOUR font (Depth/Highlight axes + palettes). -->
-		<link href="https://fonts.googleapis.com/css2?family=Nabla&display=swap" rel="stylesheet" />
+		<!-- Nabla: a COLRv1 variable COLOUR font. Request the EDPT/EHLT axes so the
+		     variable font (not a static default) is served. -->
+		<link
+			href="https://fonts.googleapis.com/css2?family=Nabla:EDPT,EHLT@0..200,0..24&display=swap"
+			rel="stylesheet"
+		/>
 		<link rel="stylesheet" href="./dist/styles.css" />
 		<style>
 			:root {
@@ -45,6 +49,21 @@
 					--fp-bar-fill: #e7e7ea;
 					--fp-accent: #8ab4ff;
 				}
+			}
+
+			/* Custom colour-font palettes for Nabla. override-colors recolours the
+			   COLR/CPAL layers, so palette selection visibly changes the type. */
+			@font-palette-values --sunset {
+				font-family: Nabla;
+				override-colors: 0 #ffd166, 1 #ef476f, 2 #f78c6b, 3 #06d6a0, 4 #118ab2, 5 #073b4c;
+			}
+			@font-palette-values --mono {
+				font-family: Nabla;
+				override-colors: 0 #f4f4f5, 1 #a1a1aa, 2 #71717a, 3 #3f3f46, 4 #18181b, 5 #000000;
+			}
+			@font-palette-values --candy {
+				font-family: Nabla;
+				override-colors: 0 #ff6ec7, 1 #7873f5, 2 #4ade80, 3 #fde047, 4 #38bdf8, 5 #fb7185;
 			}
 
 			* {
@@ -198,7 +217,7 @@
 						EDPT: { min: 0, max: 200, default: 100, label: "Depth" },
 						EHLT: { min: 0, max: 24, default: 12, label: "Highlight" },
 					},
-					controls: { size: true, tracking: true, axes: true, align: true, wrap: true, palette: ["normal", "light", "dark"] },
+					controls: { size: true, tracking: true, axes: true, align: true, wrap: true, palette: ["normal", "--sunset", "--mono", "--candy"] },
 				},
 			};
 
