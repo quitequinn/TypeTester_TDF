@@ -127,6 +127,10 @@ React is a **peer dependency** (>=17); the core stays dependency-free.
 | `ariaLabel` | `string` | `"Sample text"` | Accessible name for the editable region. |
 | `onChange` | `(state) => void` | — | Called on every state change. |
 
+When `fontFamily` is set, FontProof asks the browser (Font Loading API) to load
+the matching weight/style as you change them, so toggling italic or weight uses
+the real glyphs instead of a heavier-looking fallback.
+
 ## Controls
 
 `controls` selects which interactive controls appear. A `true` value uses the

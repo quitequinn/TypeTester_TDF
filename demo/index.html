@@ -14,50 +14,145 @@
 		/>
 		<link rel="stylesheet" href="./dist/styles.css" />
 		<style>
-			:root { color-scheme: light dark; }
+			:root {
+				color-scheme: light dark;
+				--bg: #ffffff;
+				--fg: #111114;
+				--muted: #6b7280;
+				--link: #2563eb;
+				--panel: #ffffff;
+				--border: #e5e7eb;
+				--code-bg: #f4f4f5;
+			}
+			@media (prefers-color-scheme: dark) {
+				:root {
+					--bg: #0b0b0c;
+					--fg: #e7e7ea;
+					--muted: #9aa0a6;
+					--link: #8ab4ff;
+					--panel: #161618;
+					--border: #2a2a30;
+					--code-bg: #161618;
+				}
+				/* Make the specimen + bar follow dark mode too. */
+				.fp {
+					--fp-bg: #161618;
+					--fp-fg: #e7e7ea;
+					--fp-bar-bg: #161618;
+					--fp-bar-track: #34343a;
+					--fp-bar-fill: #e7e7ea;
+					--fp-accent: #8ab4ff;
+				}
+			}
+
+			* {
+				box-sizing: border-box;
+			}
 			body {
 				margin: 0;
 				padding: 2.5rem clamp(1rem, 5vw, 4rem);
-				font-family: system-ui, sans-serif;
-				line-height: 1.5;
-				max-width: 70rem;
+				max-width: 72rem;
+				font-family: system-ui, -apple-system, sans-serif;
+				line-height: 1.55;
+				background: var(--bg);
+				color: var(--fg);
 			}
-			header p { color: #6b7280; max-width: 42rem; }
-			a { color: #2563eb; }
+			h1 {
+				margin: 0 0 0.5rem;
+			}
+			header p {
+				color: var(--muted);
+				max-width: 46rem;
+			}
+			a {
+				color: var(--link);
+			}
+			.controls {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+				align-items: center;
+				margin: 1.5rem 0;
+			}
+			button {
+				font: 500 0.875rem/1 system-ui, sans-serif;
+				padding: 0.45rem 0.75rem;
+				color: var(--fg);
+				background: var(--code-bg);
+				border: 1px solid var(--border);
+				border-radius: 0.5rem;
+				cursor: pointer;
+			}
+			button:hover {
+				border-color: var(--fg);
+			}
+			.hint {
+				color: var(--muted);
+				font-size: 0.875rem;
+			}
 			.card {
-				margin-top: 2rem;
-				padding: 1.5rem;
-				border: 1px solid #e5e7eb;
-				border-radius: 0.75rem;
+				padding: 2rem clamp(1rem, 4vw, 2.5rem);
+				background: var(--panel);
+				border: 1px solid var(--border);
 			}
-			.fp__type { line-height: 1.05; }
-			h2 { margin-top: 2.5rem; }
-			pre { background: #f4f4f5; padding: 1rem; border-radius: 0.5rem; overflow: auto; }
-			code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+			.fp__type {
+				line-height: 1.25;
+			}
+			h2 {
+				margin: 2.5rem 0 0.75rem;
+				font-size: 1.1rem;
+			}
+			code,
+			pre {
+				font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+			}
+			code {
+				background: var(--code-bg);
+				border: 1px solid var(--border);
+				padding: 0.08em 0.35em;
+				border-radius: 0.35rem;
+				font-size: 0.9em;
+			}
+			pre {
+				margin: 0;
+				padding: 1rem;
+				background: var(--code-bg);
+				color: var(--fg);
+				border: 1px solid var(--border);
+				border-radius: 0.5rem;
+				overflow: auto;
+				font-size: 0.85rem;
+				line-height: 1.5;
+			}
+			pre code {
+				background: none;
+				border: 0;
+				padding: 0;
+			}
 		</style>
 	</head>
 	<body>
 		<header>
 			<h1>FontProof</h1>
 			<p>
-				A micro toolbar for testing type. Type below, then adjust size,
-				tracking, weight, italic, alignment, wrap, and composable OpenType features.
-				Install with <code>npm install fontproof</code> —
-				<a href="https://www.npmjs.com/package/fontproof">npm</a> ·
+				A micro toolbar for testing type. Click the sample to reveal the control
+				bar, then adjust size, tracking, weight, italic, alignment, wrap, and
+				composable OpenType features. Install with <code>npm install fontproof</code>
+				— <a href="https://www.npmjs.com/package/fontproof">npm</a> ·
 				<a href="https://github.com/quitequinn/fontproof">GitHub</a>.
 			</p>
 		</header>
 
-		<p>
-			<button type="button" id="theme">Toggle TDF theme (green on black)</button>
+		<div class="controls">
+			<button type="button" id="theme">Toggle TDF theme</button>
 			<button type="button" id="values">Toggle values</button>
-			<span style="color: #6b7280">— click the sample to reveal the bar; it hides when focus leaves.</span>
-		</p>
+			<span class="hint">The bar hides when focus leaves the tester.</span>
+		</div>
 
 		<div class="card"><div id="demo"></div></div>
 
 		<h2>Current state</h2>
-		<pre id="out"></pre>
+		<pre><code id="out"></code></pre>
 
 		<script type="module">
 			import { FontProof } from "./dist/index.js";
@@ -73,7 +168,7 @@
 			new FontProof(host, {
 				text: "Typography",
 				fontFamily: "Fraunces",
-				size: 132,
+				size: 100,
 				weight: 400,
 				variable: { wght: { min: 100, max: 900 } },
 				controls: {

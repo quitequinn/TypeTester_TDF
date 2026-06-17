@@ -25,6 +25,7 @@
 
 .fp__stage {
 	min-width: 0;
+	overflow: hidden;
 }
 
 .fp__type {

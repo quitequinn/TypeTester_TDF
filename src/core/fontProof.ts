@@ -467,6 +467,27 @@ export class FontProof {
 		s.fontFeatureSettings = settings;
 		// Older Safari needs the prefixed property; modern engines ignore it.
 		s.setProperty("-webkit-font-feature-settings", settings);
+
+		this.loadFont();
+	}
+
+	/**
+	 * Asks the browser to load the exact face for the current family, weight and
+	 * style so toggling italic or changing weight uses the real glyphs instead of
+	 * a fallback (which can look heavier/wrong until the face arrives). No-op when
+	 * no family is set or the Font Loading API is unavailable.
+	 */
+	private loadFont(): void {
+		const family = this.options.fontFamily;
+		const fonts = (document as Document & { fonts?: FontFaceSet }).fonts;
+		if (!family || !fonts?.load) return;
+		const style = this.state.italic ? "italic" : "normal";
+		const spec = `${style} ${this.state.weight} 1em "${family}"`;
+		try {
+			fonts.load(spec).catch(() => {});
+		} catch {
+			/* invalid font shorthand — ignore */
+		}
 	}
 
 	private announce(message: string): void {
