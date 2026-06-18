@@ -24,7 +24,10 @@
 				override-colors: 0 #ff6ec7, 1 #7873f5, 2 #4ade80, 3 #fde047, 4 #38bdf8, 5 #fb7185;
 			}
 			* { box-sizing: border-box; }
-			body { margin: 0; background: #fff; font-family: system-ui, sans-serif; }
+			/* Transparent so element screenshots (with omitBackground) leave the
+			   area outside each card's border-radius transparent — no white corner
+			   artifacts on dark pages. */
+			body { margin: 0; background: transparent; font-family: system-ui, sans-serif; }
 			#stage { display: flex; flex-direction: column; gap: 40px; padding: 40px; width: max-content; }
 			.scene { width: 1100px; padding: 34px 44px; border-radius: 14px; }
 			.row { display: flex; flex-direction: column; gap: 4px; }

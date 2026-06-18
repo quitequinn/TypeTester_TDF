@@ -5,7 +5,7 @@
 
 **[▶ Live demo](https://quitequinn.github.io/fontproof/)**
 
-![FontProof: the segmented control bar (size, tracking, weight, optical, italic, align, wrap, features) beneath a live type specimen](https://raw.githubusercontent.com/quitequinn/fontproof/master/assets/bar.png)
+![FontProof: the segmented control bar (size, tracking, weight, optical, italic, align, wrap, features) beneath a live type specimen](https://raw.githubusercontent.com/quitequinn/fontproof/master/assets/bar.png?v=2)
 
 A **micro toolbar** for testing type on the web — a compact bar of controls over a
 live, editable sample. Accessible and **dependency-free**: adjust size, tracking,
@@ -178,7 +178,7 @@ new FontProof(el, {
 When an `opsz` axis is configured, `font-optical-sizing: none` is set so your
 manual value isn't overridden by the browser's automatic optical sizing.
 
-![Fraunces at weight 200 / optical 12 versus weight 850 / optical 144, showing the variable axes](https://raw.githubusercontent.com/quitequinn/fontproof/master/assets/axes.png)
+![Fraunces at weight 200 / optical 12 versus weight 850 / optical 144, showing the variable axes](https://raw.githubusercontent.com/quitequinn/fontproof/master/assets/axes.png?v=2)
 
 **Colour fonts** (COLR/CPAL — e.g. Nabla, Bungee Spice). They render in colour
 automatically; expose palette switching with `controls.palette` (sets
@@ -195,7 +195,7 @@ define with [`@font-palette-values`](https://developer.mozilla.org/docs/Web/CSS/
 controls: { palette: ["normal", "light", "dark", "--brand"] }
 ```
 
-![The Nabla colour font in two custom palettes — sunset and candy](https://raw.githubusercontent.com/quitequinn/fontproof/master/assets/colour.png)
+![The Nabla colour font in two custom palettes — sunset and candy](https://raw.githubusercontent.com/quitequinn/fontproof/master/assets/colour.png?v=2)
 
 **Honest proofing.** Set `synthesis: false` to apply `font-synthesis: none`, so a
 missing bold/italic renders as the real font rather than a faux (synthesised)
@@ -215,7 +215,7 @@ import { FEATURES, featureSettings } from "fontproof";
 featureSettings(["smcp", "onum"]); // => '"smcp" 1, "onum" 1'
 ```
 
-![Fraunces with default lining figures versus oldstyle figures and fractions enabled](https://raw.githubusercontent.com/quitequinn/fontproof/master/assets/features.png)
+![Fraunces with default lining figures versus oldstyle figures and fractions enabled](https://raw.githubusercontent.com/quitequinn/fontproof/master/assets/features.png?v=2)
 
 Supported tags include ligatures (`liga`, `dlig`, `hlig`, `clig`), case (`smcp`,
 `c2sc`, `case`, `cpsp`), figures (`lnum`, `onum`, `pnum`, `tnum`, `zero`, `ordn`),

@@ -44,7 +44,8 @@ await page.waitForTimeout(600); // let colour/variable fonts paint
 const ids = await page.$$eval(".scene", (els) => els.map((e) => e.id));
 for (const id of ids) {
 	const el = await page.$(`#${id}`);
-	await el.screenshot({ path: `assets/${id}.png` });
+	// omitBackground keeps the rounded-corner area outside each card transparent.
+	await el.screenshot({ path: `assets/${id}.png`, omitBackground: true });
 	console.log("captured assets/%s.png", id);
 }
 
